@@ -25,7 +25,7 @@ export const syntheticKanjidicXml = `<?xml version="1.0" encoding="UTF-8"?>
 </kanjidic2>`;
 
 export function makeList(kanji: string[], overrides: Partial<LevelList> = {}): LevelList {
-  return { version: '0.0.1-test', level: 'N5', sources: [SYNTHETIC_SOURCE], kanji, ...overrides };
+  return { version: '0.0.1-test', level: 'N5', name: 'Synthetic list', sourceType: 'test', sources: [SYNTHETIC_SOURCE], kanji, ...overrides };
 }
 
 export function makeDataset(version: string, chars: Array<[string, string, string]>): KanjiDatasetFile {

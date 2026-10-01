@@ -6,6 +6,9 @@ import { sourceInfoSchema } from '../../src/services/content/datasetFiles';
 export const levelListSchema = z.object({
   version: z.string().min(1),
   level: z.enum(JLPT_LEVELS),
+  /** Human name. This is a project-defined list, not an official JLPT list. */
+  name: z.string().min(1),
+  sourceType: z.string().min(1),
   /** Where this list comes from. Must be non-empty and approved by the project before use. */
   sources: z.array(sourceInfoSchema),
   kanji: z.array(z.string().refine((s) => [...s].length === 1, 'must be exactly one character')),

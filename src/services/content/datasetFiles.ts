@@ -10,11 +10,14 @@ import { kanjiReadingSchema } from '../../types/schemas';
 
 export const sourceInfoSchema = z.object({
   name: z.string().min(1),
+  /** Kind of source, e.g. "user-provided-source" for the Project Owner's list. Optional. */
+  type: z.string().min(1).optional(),
   /** Version string from the source itself, or null when the source does not state one. */
-  version: z.string().min(1).nullable(),
-  date: z.string().min(1).nullable(),
-  officialUrl: z.url(),
-  license: z.string().min(1),
+  version: z.string().min(1).nullable().default(null),
+  date: z.string().min(1).nullable().default(null),
+  /** null for sources without a public URL (e.g. project-owner-provided). Never invented. */
+  officialUrl: z.url().nullable().default(null),
+  license: z.string().min(1).nullable().default(null),
 });
 export type SourceInfo = z.infer<typeof sourceInfoSchema>;
 

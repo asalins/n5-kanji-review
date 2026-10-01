@@ -22,10 +22,17 @@ Status: verified against the EDRDG licence page on 2026-10-01. This is engineeri
 - **Source / licence:** same EDRDG licence statement as above (Japanese and English components only; other-language glosses have separate copyright)
 - **Status in this project:** NOT used in Phase 3 (vocabulary and example sentences are out of this phase's scope). Nothing from JMdict is bundled. The same conditions apply if it is added later.
 
-## N5 kanji list (project source of truth)
-- **Source: NOT YET APPROVED** -> `N5 LIST SOURCE REQUIRED`
-- `data/lists/n5-list.json` is intentionally empty. The KANJIDIC2 `jlpt` field is ignored by the pipeline (it is a reference only and uses the old 4-level scheme).
-- To approve a source, record its name, version/date, official URL and licence in the list's `sources` field, then fill `kanji`. The pipeline refuses to build while either is empty.
+## Project N5 Kanji List
+- **Name:** Project N5 Kanji List (`data/lists/n5-list.json`, version 1.0.0, 196 kanji, order 1-196 preserved)
+- **Source:** provided by the Project Owner (`sourceType: project-owner-provided`). Status: source received (previously `N5 LIST SOURCE REQUIRED`).
+
+This project uses a project-defined N5 Kanji curriculum containing 196 Kanji.
+The list is provided by the Project Owner and is the source of truth for this application's N5 curriculum.
+It is **NOT** claimed to be an official JLPT N5 Kanji list.
+
+- The pipeline filters KANJIDIC2 by this list. KANJIDIC2 never adds, removes, reorders or edits list entries: kanji absent from KANJIDIC2 are reported as missing, kanji outside the list are ignored.
+- The KANJIDIC2 `jlpt` field is ignored (reference only, and it uses the old 4-level scheme).
+- The list has no external licence or URL (none is recorded rather than invented).
 
 ## Thai meanings
 - Authored and reviewed separately in `data/kanji/n5.th.json` (not generated from a source). Each entry has `reviewed` and `ambiguous` flags. Copyright of the Thai text belongs to this project's authors. If the Thai text is adapted from the English glosses, treat it as ShareAlike material as well.
