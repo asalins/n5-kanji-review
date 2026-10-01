@@ -1,6 +1,9 @@
 {
+  "documentation": {
+    "strokeCount": "The primary/default stroke count from KANJIDIC2 is used. Alternative stroke counts reported by KANJIDIC2 are not represented in the current Kanji entity model."
+  },
   "datasetVersion": "n5-2026.10.01",
-  "generatedAt": "2026-10-01T11:50:38.704Z",
+  "generatedAt": "2026-10-01T23:09:48.110Z",
   "total": 196,
   "valid": 196,
   "missing": [],

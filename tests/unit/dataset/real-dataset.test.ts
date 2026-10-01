@@ -62,6 +62,20 @@ describe('real n5.json', () => {
   });
 });
 
+describe('real report: stroke count decision', () => {
+  const report = read('data/kanji/n5.report.json') as { documentation: { strokeCount: string }; ambiguous: string[] };
+
+  it('uses the primary KANJIDIC2 stroke count and documents the limitation', () => {
+    expect(report.documentation.strokeCount).toContain('primary/default stroke count from KANJIDIC2');
+    expect(report.documentation.strokeCount).toContain('not represented in the current Kanji entity model');
+    const primary: Record<string, number> = { 週: 11, 近: 7, 遠: 13, 送: 9, 道: 12 };
+    for (const [character, strokes] of Object.entries(primary)) {
+      expect(byChar(character)?.strokeCount).toBe(strokes);
+      expect(report.ambiguous).toContain(`${character}:strokeCount`);
+    }
+  });
+});
+
 describe('real dataset loaded through replaceContent', () => {
   let repos: Repositories;
   let dispose: () => Promise<void>;

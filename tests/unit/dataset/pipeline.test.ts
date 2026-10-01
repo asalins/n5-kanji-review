@@ -76,6 +76,7 @@ describe('buildDataset', () => {
   it('reports a stroke-count conflict as ambiguous, not silently resolved', () => {
     const { report } = run(makeList(['火']));
     expect(report.ambiguous).toContain('火:strokeCount');
+    expect(report.documentation.strokeCount).toContain('primary/default stroke count');
   });
 
   it('detects duplicates in the list', () => {

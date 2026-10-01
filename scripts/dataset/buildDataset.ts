@@ -24,7 +24,15 @@ export interface BuildInput {
   readonly generatedAt: string;
 }
 
+/** Field-level documentation carried in every report so the data's limits are explicit. */
+export const REPORT_DOCUMENTATION = {
+  strokeCount:
+    'The primary/default stroke count from KANJIDIC2 is used. Alternative stroke counts reported by ' +
+    'KANJIDIC2 are not represented in the current Kanji entity model.',
+} as const;
+
 export interface DatasetReport {
+  readonly documentation: typeof REPORT_DOCUMENTATION;
   readonly datasetVersion: string;
   readonly generatedAt: string;
   readonly total: number;
@@ -163,6 +171,7 @@ export function buildDataset(input: BuildInput): BuildOutput {
   }
 
   const report: DatasetReport = {
+    documentation: REPORT_DOCUMENTATION,
     datasetVersion: input.datasetVersion,
     generatedAt: input.generatedAt,
     total: listChars.length,
