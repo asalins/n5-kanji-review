@@ -48,3 +48,10 @@ export interface ContentBundle {
   readonly vocabulary: readonly Vocabulary[];
   readonly examples: readonly ExampleSentence[];
 }
+
+/** Which dataset the content stores currently hold. Single record, written together with the content. */
+export interface ContentMeta {
+  readonly datasetVersion: string;
+  /** Epoch ms when this dataset was loaded into the content stores. */
+  readonly loadedAt: number;
+}

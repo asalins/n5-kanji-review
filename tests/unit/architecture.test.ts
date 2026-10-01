@@ -55,4 +55,18 @@ describe('architecture boundaries', () => {
       .map((f) => f.rel);
     expect(offenders).toEqual([]);
   });
+  it('src never imports build-time scripts or raw data sources', () => {
+    const offenders = files
+      .filter((f) => /from ['"][^'"]*(scripts\/dataset|data-sources)[^'"]*['"]/.test(f.text))
+      .map((f) => f.rel);
+    expect(offenders).toEqual([]);
+  });
+
+  it('only app code and the content loader service wire ContentWriter', () => {
+    const offenders = files
+      .filter((f) => /ContentWriter|replaceContent|saveContent/.test(f.text))
+      .filter((f) => !/^(repositories\/|services\/content\/|types\/)/.test(f.rel))
+      .map((f) => f.rel);
+    expect(offenders).toEqual([]);
+  });
 });

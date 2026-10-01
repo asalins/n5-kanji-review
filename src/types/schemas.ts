@@ -10,7 +10,7 @@ import {
   THEMES,
   UI_LANGUAGES,
 } from './common';
-import type { ContentBundle, ExampleSentence, Kanji, KanjiReading, Vocabulary } from './content';
+import type { ContentBundle, ContentMeta, ExampleSentence, Kanji, KanjiReading, Vocabulary } from './content';
 import type { ReviewCard, ReviewLog, StreakState, StudySession, UserSettings } from './user';
 
 /** Compile-time guarantee that each schema produces exactly its entity type. */
@@ -142,4 +142,8 @@ export const streakStateSchema = conform<StreakState>(
     currentStreak: count,
     longestStreak: count,
   }),
+);
+
+export const contentMetaSchema = conform<ContentMeta>(
+  z.object({ datasetVersion: text, loadedAt: epochMs }),
 );

@@ -8,5 +8,6 @@ test-results
 .env.*
 !.env.example
 # raw external datasets are never committed (see DATA_SOURCES.md in Phase 3)
-data-sources/*
-!data-sources/.gitkeep
+data-sources/**
+!data-sources/README.md
+!data-sources/**/.gitkeep

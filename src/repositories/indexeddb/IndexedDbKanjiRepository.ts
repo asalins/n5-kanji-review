@@ -1,6 +1,7 @@
 import type { AppDatabase } from '../../services/storage/database';
-import { STORES } from '../../services/storage/schema';
+import { SINGLETON_KEY, STORES } from '../../services/storage/schema';
 import {
+  contentMetaSchema,
   exampleSentenceSchema,
   kanjiReadingSchema,
   kanjiSchema,
@@ -111,6 +112,13 @@ export class IndexedDbKanjiRepository implements KanjiRepository {
     return runRepositoryOperation('KanjiRepository.getReadings', async () => {
       const records = await this.db.getAllFromIndex(STORES.kanjiReadings, 'by-kanjiId', kanjiId);
       return parseRecords(kanjiReadingSchema, records, 'kanji reading');
+    });
+  }
+
+  getDatasetVersion(): Promise<string | null> {
+    return runRepositoryOperation('KanjiRepository.getDatasetVersion', async () => {
+      const record = await this.db.get(STORES.contentMeta, SINGLETON_KEY);
+      return record === undefined ? null : parseRecord(contentMetaSchema, record, 'content meta').datasetVersion;
     });
   }
 }

@@ -40,3 +40,11 @@ UI -> features/hooks -> services -> repository interfaces -> repository implemen
 **Repositories:** `src/repositories/interfaces` (application boundary) and `src/repositories/indexeddb` (implementations). Errors: invalid data -> `ValidationError`, IndexedDB failures -> `RepositoryError`, database open/unavailable -> `StorageError`. Reads and writes are validated with Zod (`src/types/schemas.ts`), structure only (no SRS rules).
 
 **Content vs user data:** `KanjiRepository` is read-only. Only the internal `ContentWriter` (dataset loader) writes content; UI/features must not use it (architecture test).
+
+## Dataset pipeline (Phase 3)
+
+`npm run dataset:build [-- --dataset-version n5-YYYY.MM.DD]` reads `data/lists/n5-list.json`, `data-sources/kanjidic2/kanjidic2.xml` and the optional `data/kanji/n5.th.json`, then writes `data/kanji/n5.json` and `data/kanji/n5.report.json`. It refuses to run (exit 2) without an approved N5 list or the source file, and writes no dataset (exit 1) when the report has blockers. Sources and licences: `DATA_SOURCES.md`.
+
+- **Content vs user data.** Content stores (kanji, kanjiReadings, vocabulary, exampleSentences, contentMeta) come from the dataset and are replaced as a whole by `ContentWriter.replaceContent` in one transaction. User stores (reviewCards, reviewLogs, studySessions, userSettings, streakState) are never part of that transaction.
+- **Version.** `datasetVersion` in `n5.json` is the single source of truth; the loaded version is stored in `contentMeta` (DB v2) and read via `KanjiRepository.getDatasetVersion()` for `ReviewLog.datasetVersion`. `n5.th.json` must carry the same version.
+- **Loader.** `src/services/content/loadDatasetContent` validates both files, checks integrity, skips if the version is already loaded, otherwise replaces content. Wiring it to the files at app start is Phase 4.

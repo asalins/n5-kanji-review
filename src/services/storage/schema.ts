@@ -1,5 +1,6 @@
 import type { DBSchema } from 'idb';
 import type {
+  ContentMeta,
   ExampleSentence,
   JlptLevel,
   Kanji,
@@ -20,6 +21,7 @@ export const STORES = {
   kanjiReadings: 'kanjiReadings',
   vocabulary: 'vocabulary',
   exampleSentences: 'exampleSentences',
+  contentMeta: 'contentMeta',
   // user data
   reviewCards: 'reviewCards',
   reviewLogs: 'reviewLogs',
@@ -44,6 +46,7 @@ export interface AppSchema extends DBSchema {
   };
   vocabulary: { key: string; value: Vocabulary; indexes: { 'by-kanjiId': string } };
   exampleSentences: { key: string; value: ExampleSentence; indexes: { 'by-vocabId': string } };
+  contentMeta: { key: string; value: ContentMeta };
   reviewCards: {
     key: string;
     value: ReviewCard;

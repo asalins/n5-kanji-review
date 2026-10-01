@@ -1,10 +1,16 @@
-import type { ContentBundle } from '../../types/entities';
+import type { ContentBundle, ContentMeta } from '../../types/entities';
 
 /**
- * Write side of the content stores. Used only by the dataset loader (Phase 3), never by UI/features.
- * Kept separate from KanjiRepository so content stays read-only for the application.
+ * Write side of the CONTENT stores only (kanji, readings, vocabulary, examples, contentMeta).
+ * Used by the dataset loader, never by UI/features. User data (cards, logs, sessions, settings,
+ * streak) is a different set of stores and is never touched by anything here.
  */
 export interface ContentWriter {
-  /** Atomic upsert of a validated bundle: all of it is stored, or none of it. */
+  /** Atomic upsert. Does NOT remove records that are absent from the bundle. */
   saveContent(bundle: ContentBundle): Promise<void>;
+  /**
+   * Atomic replace: clears the content stores, writes the complete bundle and the dataset
+   * metadata in one transaction. Either everything is replaced or nothing changes.
+   */
+  replaceContent(bundle: ContentBundle, meta: ContentMeta): Promise<void>;
 }

@@ -10,6 +10,8 @@ export interface KanjiRepository {
   getById(id: string): Promise<Kanji | null>;
   getByLevel(level: JlptLevel): Promise<readonly Kanji[]>;
   search(query: string, filters?: KanjiSearchFilters): Promise<readonly Kanji[]>;
+  /** Version of the dataset currently loaded into the content stores, or null if none. */
+  getDatasetVersion(): Promise<string | null>;
   getReadings(kanjiId: string): Promise<readonly KanjiReading[]>;
   getVocabulary(kanjiId: string): Promise<readonly Vocabulary[]>;
   getExamples(kanjiId: string): Promise<readonly ExampleSentence[]>;
