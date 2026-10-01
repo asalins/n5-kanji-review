@@ -1,0 +1,1181 @@
+{
+  "datasetVersion": "n5-2026.10.01",
+  "entries": [
+    {
+      "kanjiId": "kanji:U+4E00",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+4E8C",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+4E09",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+56DB",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+4E94",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+516D",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+4E03",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+516B",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+4E5D",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5341",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+767E",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5343",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+4E07",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5186",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+65E5",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6708",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+706B",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6C34",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6728",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+91D1",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+571F",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5348",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5E74",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6642",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5206",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+4ECA",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+534A",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+9031",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+671D",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+663C",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+591C",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+9593",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6625",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+590F",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+79CB",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+51AC",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+624B",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+8DB3",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+529B",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+53E3",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+9996",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+58F0",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+8033",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+76EE",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+4F53",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5FC3",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5927",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5C0F",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+591A",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5C11",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+9577",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+77ED",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+9AD8",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5B89",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+65B0",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+53E4",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+660E",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6697",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6691",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5BD2",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5F37",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5F31",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+8FD1",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+9060",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+592A",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5E83",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+8D64",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+767D",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+9752",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+9ED2",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+9EC4",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+8272",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+53F3",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5DE6",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+4E0A",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+4E0B",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+4E2D",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5916",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+524D",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5F8C",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5317",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5357",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6771",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+897F",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6797",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+68EE",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5C71",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5DDD",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+77F3",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5929",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6C17",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+96E8",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5915",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+7A7A",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+96F2",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+96EA",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6D77",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5730",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6C60",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+98A8",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+7537",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5973",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+4EBA",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+738B",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5B50",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+7236",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6BCD",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5144",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5F1F",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+59C9",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+59B9",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+540D",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+53CB",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+89AA",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+72AC",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+866B",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+8C9D",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+725B",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+8089",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+9B5A",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+99AC",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+9CE5",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+82B1",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+8349",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+7AF9",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+7C73",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+8336",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+98EF",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5148",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+672C",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6587",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5B57",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6B63",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5B66",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6821",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+7D19",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+8A9E",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+70B9",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+56F3",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5165",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+51FA",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+4F11",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+7ACB",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+898B",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+884C",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6765",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5E30",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6B69",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+8A00",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+8A71",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+66F8",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+8AAD",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+805E",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+98DF",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+98F2",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+8CB7",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+58F2",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+4F1A",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+77E5",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+601D",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+4F5C",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+4F4F",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+4F7F",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+8CB8",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+501F",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5207",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6301",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+9001",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+7740",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6559",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+7FD2",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+753A",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6751",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+7530",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5BB6",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+5E97",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+56FD",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+9053",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+793E",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6240",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+9662",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+9928",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+99C5",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+8ECA",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+4F55",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+6BCE",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+4E0D",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+97F3",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+65E9",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+554F",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+597D",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+96FB",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+533B",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+75C5",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    },
+    {
+      "kanjiId": "kanji:U+85AC",
+      "meaningsTh": [],
+      "reviewed": false,
+      "ambiguous": false
+    }
+  ]
+}

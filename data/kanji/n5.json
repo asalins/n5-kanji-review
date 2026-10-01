@@ -1,0 +1,7558 @@
+{
+  "datasetVersion": "n5-2026.10.01",
+  "generatedAt": "2026-10-01T11:50:38.704Z",
+  "level": "N5",
+  "sources": [
+    {
+      "name": "KANJIDIC2",
+      "version": "2026-274",
+      "date": "2026-10-01",
+      "officialUrl": "https://www.edrdg.org/wiki/index.php/KANJIDIC_Project",
+      "license": "CC BY-SA 4.0 (EDRDG General Dictionary Licence Statement)"
+    },
+    {
+      "name": "Project Owner Provided N5 Kanji List",
+      "type": "user-provided-source",
+      "version": null,
+      "date": null,
+      "officialUrl": null,
+      "license": null
+    }
+  ],
+  "kanji": [
+    {
+      "id": "kanji:U+4E00",
+      "character": "一",
+      "level": "N5",
+      "strokeCount": 1,
+      "frequency": 2,
+      "meanings": {
+        "en": [
+          "one",
+          "one radical (no.1)"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+4E8C",
+      "character": "二",
+      "level": "N5",
+      "strokeCount": 2,
+      "frequency": 9,
+      "meanings": {
+        "en": [
+          "two",
+          "two radical (no. 7)"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+4E09",
+      "character": "三",
+      "level": "N5",
+      "strokeCount": 3,
+      "frequency": 14,
+      "meanings": {
+        "en": [
+          "three"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+56DB",
+      "character": "四",
+      "level": "N5",
+      "strokeCount": 5,
+      "frequency": 47,
+      "meanings": {
+        "en": [
+          "four"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+4E94",
+      "character": "五",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 31,
+      "meanings": {
+        "en": [
+          "five"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+516D",
+      "character": "六",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 93,
+      "meanings": {
+        "en": [
+          "six"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+4E03",
+      "character": "七",
+      "level": "N5",
+      "strokeCount": 2,
+      "frequency": 115,
+      "meanings": {
+        "en": [
+          "seven"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+516B",
+      "character": "八",
+      "level": "N5",
+      "strokeCount": 2,
+      "frequency": 92,
+      "meanings": {
+        "en": [
+          "eight",
+          "eight radical (no. 12)"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+4E5D",
+      "character": "九",
+      "level": "N5",
+      "strokeCount": 2,
+      "frequency": 55,
+      "meanings": {
+        "en": [
+          "nine"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5341",
+      "character": "十",
+      "level": "N5",
+      "strokeCount": 2,
+      "frequency": 8,
+      "meanings": {
+        "en": [
+          "ten"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+767E",
+      "character": "百",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 163,
+      "meanings": {
+        "en": [
+          "hundred"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5343",
+      "character": "千",
+      "level": "N5",
+      "strokeCount": 3,
+      "frequency": 195,
+      "meanings": {
+        "en": [
+          "thousand"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+4E07",
+      "character": "万",
+      "level": "N5",
+      "strokeCount": 3,
+      "frequency": 375,
+      "meanings": {
+        "en": [
+          "ten thousand",
+          "10,000"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5186",
+      "character": "円",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 69,
+      "meanings": {
+        "en": [
+          "circle",
+          "yen",
+          "round"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+65E5",
+      "character": "日",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 1,
+      "meanings": {
+        "en": [
+          "day",
+          "sun",
+          "Japan",
+          "counter for days"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6708",
+      "character": "月",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 23,
+      "meanings": {
+        "en": [
+          "month",
+          "moon"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+706B",
+      "character": "火",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 574,
+      "meanings": {
+        "en": [
+          "fire"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6C34",
+      "character": "水",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 223,
+      "meanings": {
+        "en": [
+          "water"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6728",
+      "character": "木",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 317,
+      "meanings": {
+        "en": [
+          "tree",
+          "wood"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+91D1",
+      "character": "金",
+      "level": "N5",
+      "strokeCount": 8,
+      "frequency": 53,
+      "meanings": {
+        "en": [
+          "gold"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+571F",
+      "character": "土",
+      "level": "N5",
+      "strokeCount": 3,
+      "frequency": 307,
+      "meanings": {
+        "en": [
+          "soil",
+          "earth",
+          "ground",
+          "Turkey"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5348",
+      "character": "午",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 154,
+      "meanings": {
+        "en": [
+          "noon",
+          "sign of the horse",
+          "11AM-1PM",
+          "seventh sign of Chinese zodiac"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5E74",
+      "character": "年",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 6,
+      "meanings": {
+        "en": [
+          "year",
+          "counter for years"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6642",
+      "character": "時",
+      "level": "N5",
+      "strokeCount": 10,
+      "frequency": 16,
+      "meanings": {
+        "en": [
+          "time",
+          "hour"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5206",
+      "character": "分",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 24,
+      "meanings": {
+        "en": [
+          "part",
+          "minute of time",
+          "segment",
+          "share",
+          "degree",
+          "one's lot",
+          "duty",
+          "understand",
+          "know",
+          "rate",
+          "1%",
+          "chances",
+          "shaku/100"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+4ECA",
+      "character": "今",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 49,
+      "meanings": {
+        "en": [
+          "now"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+534A",
+      "character": "半",
+      "level": "N5",
+      "strokeCount": 5,
+      "frequency": 224,
+      "meanings": {
+        "en": [
+          "half",
+          "middle",
+          "odd number",
+          "semi-",
+          "part-"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+9031",
+      "character": "週",
+      "level": "N5",
+      "strokeCount": 11,
+      "frequency": 540,
+      "meanings": {
+        "en": [
+          "week"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+671D",
+      "character": "朝",
+      "level": "N5",
+      "strokeCount": 12,
+      "frequency": 248,
+      "meanings": {
+        "en": [
+          "morning",
+          "dynasty",
+          "regime",
+          "epoch",
+          "period",
+          "(North) Korea"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+663C",
+      "character": "昼",
+      "level": "N5",
+      "strokeCount": 9,
+      "frequency": 1115,
+      "meanings": {
+        "en": [
+          "daytime",
+          "noon"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+591C",
+      "character": "夜",
+      "level": "N5",
+      "strokeCount": 8,
+      "frequency": 487,
+      "meanings": {
+        "en": [
+          "night",
+          "evening"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+9593",
+      "character": "間",
+      "level": "N5",
+      "strokeCount": 12,
+      "frequency": 33,
+      "meanings": {
+        "en": [
+          "interval",
+          "space"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6625",
+      "character": "春",
+      "level": "N5",
+      "strokeCount": 9,
+      "frequency": 579,
+      "meanings": {
+        "en": [
+          "springtime",
+          "spring (season)"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+590F",
+      "character": "夏",
+      "level": "N5",
+      "strokeCount": 10,
+      "frequency": 659,
+      "meanings": {
+        "en": [
+          "summer"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+79CB",
+      "character": "秋",
+      "level": "N5",
+      "strokeCount": 9,
+      "frequency": 635,
+      "meanings": {
+        "en": [
+          "autumn"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+51AC",
+      "character": "冬",
+      "level": "N5",
+      "strokeCount": 5,
+      "frequency": 1090,
+      "meanings": {
+        "en": [
+          "winter"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+624B",
+      "character": "手",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 60,
+      "meanings": {
+        "en": [
+          "hand"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+8DB3",
+      "character": "足",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 343,
+      "meanings": {
+        "en": [
+          "leg",
+          "foot",
+          "be sufficient",
+          "counter for pairs of footwear"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+529B",
+      "character": "力",
+      "level": "N5",
+      "strokeCount": 2,
+      "frequency": 62,
+      "meanings": {
+        "en": [
+          "power",
+          "strength",
+          "strong",
+          "strain",
+          "bear up",
+          "exert"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+53E3",
+      "character": "口",
+      "level": "N5",
+      "strokeCount": 3,
+      "frequency": 284,
+      "meanings": {
+        "en": [
+          "mouth"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+9996",
+      "character": "首",
+      "level": "N5",
+      "strokeCount": 9,
+      "frequency": 98,
+      "meanings": {
+        "en": [
+          "neck",
+          "counter for songs and poems"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+58F0",
+      "character": "声",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 388,
+      "meanings": {
+        "en": [
+          "voice"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+8033",
+      "character": "耳",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 1328,
+      "meanings": {
+        "en": [
+          "ear"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+76EE",
+      "character": "目",
+      "level": "N5",
+      "strokeCount": 5,
+      "frequency": 76,
+      "meanings": {
+        "en": [
+          "eye",
+          "class",
+          "look",
+          "insight",
+          "experience",
+          "care",
+          "favor"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+4F53",
+      "character": "体",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 88,
+      "meanings": {
+        "en": [
+          "body",
+          "substance",
+          "object",
+          "reality",
+          "counter for images"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5FC3",
+      "character": "心",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 157,
+      "meanings": {
+        "en": [
+          "heart",
+          "mind",
+          "spirit",
+          "heart radical (no. 61)"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5927",
+      "character": "大",
+      "level": "N5",
+      "strokeCount": 3,
+      "frequency": 7,
+      "meanings": {
+        "en": [
+          "large",
+          "big"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5C0F",
+      "character": "小",
+      "level": "N5",
+      "strokeCount": 3,
+      "frequency": 114,
+      "meanings": {
+        "en": [
+          "little",
+          "small"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+591A",
+      "character": "多",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 139,
+      "meanings": {
+        "en": [
+          "many",
+          "frequent",
+          "much"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5C11",
+      "character": "少",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 287,
+      "meanings": {
+        "en": [
+          "few",
+          "little"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+9577",
+      "character": "長",
+      "level": "N5",
+      "strokeCount": 8,
+      "frequency": 12,
+      "meanings": {
+        "en": [
+          "long",
+          "leader",
+          "superior",
+          "senior"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+77ED",
+      "character": "短",
+      "level": "N5",
+      "strokeCount": 12,
+      "frequency": 689,
+      "meanings": {
+        "en": [
+          "short",
+          "brevity",
+          "fault",
+          "defect",
+          "weak point"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+9AD8",
+      "character": "高",
+      "level": "N5",
+      "strokeCount": 10,
+      "frequency": 65,
+      "meanings": {
+        "en": [
+          "tall",
+          "high",
+          "expensive"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5B89",
+      "character": "安",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 144,
+      "meanings": {
+        "en": [
+          "relax",
+          "cheap",
+          "low",
+          "quiet",
+          "rested",
+          "contented",
+          "peaceful"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+65B0",
+      "character": "新",
+      "level": "N5",
+      "strokeCount": 13,
+      "frequency": 51,
+      "meanings": {
+        "en": [
+          "new"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+53E4",
+      "character": "古",
+      "level": "N5",
+      "strokeCount": 5,
+      "frequency": 509,
+      "meanings": {
+        "en": [
+          "old"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+660E",
+      "character": "明",
+      "level": "N5",
+      "strokeCount": 8,
+      "frequency": 67,
+      "meanings": {
+        "en": [
+          "bright",
+          "light"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6697",
+      "character": "暗",
+      "level": "N5",
+      "strokeCount": 13,
+      "frequency": 1040,
+      "meanings": {
+        "en": [
+          "darkness",
+          "disappear",
+          "shade",
+          "informal",
+          "grow dark",
+          "be blinded"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6691",
+      "character": "暑",
+      "level": "N5",
+      "strokeCount": 12,
+      "frequency": 1442,
+      "meanings": {
+        "en": [
+          "sultry",
+          "hot",
+          "summer heat"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5BD2",
+      "character": "寒",
+      "level": "N5",
+      "strokeCount": 12,
+      "frequency": 1456,
+      "meanings": {
+        "en": [
+          "cold"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5F37",
+      "character": "強",
+      "level": "N5",
+      "strokeCount": 11,
+      "frequency": 112,
+      "meanings": {
+        "en": [
+          "strong"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5F31",
+      "character": "弱",
+      "level": "N5",
+      "strokeCount": 10,
+      "frequency": 958,
+      "meanings": {
+        "en": [
+          "weak",
+          "frail"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+8FD1",
+      "character": "近",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 194,
+      "meanings": {
+        "en": [
+          "near",
+          "early",
+          "akin",
+          "tantamount"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+9060",
+      "character": "遠",
+      "level": "N5",
+      "strokeCount": 13,
+      "frequency": 887,
+      "meanings": {
+        "en": [
+          "distant",
+          "far"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+592A",
+      "character": "太",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 552,
+      "meanings": {
+        "en": [
+          "plump",
+          "thick",
+          "big around"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5E83",
+      "character": "広",
+      "level": "N5",
+      "strokeCount": 5,
+      "frequency": 263,
+      "meanings": {
+        "en": [
+          "wide",
+          "broad",
+          "spacious"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+8D64",
+      "character": "赤",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 584,
+      "meanings": {
+        "en": [
+          "red"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+767D",
+      "character": "白",
+      "level": "N5",
+      "strokeCount": 5,
+      "frequency": 483,
+      "meanings": {
+        "en": [
+          "white"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+9752",
+      "character": "青",
+      "level": "N5",
+      "strokeCount": 8,
+      "frequency": 589,
+      "meanings": {
+        "en": [
+          "blue",
+          "green"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+9ED2",
+      "character": "黒",
+      "level": "N5",
+      "strokeCount": 11,
+      "frequency": 573,
+      "meanings": {
+        "en": [
+          "black"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+9EC4",
+      "character": "黄",
+      "level": "N5",
+      "strokeCount": 11,
+      "frequency": 1240,
+      "meanings": {
+        "en": [
+          "yellow"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+8272",
+      "character": "色",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 621,
+      "meanings": {
+        "en": [
+          "color"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+53F3",
+      "character": "右",
+      "level": "N5",
+      "strokeCount": 5,
+      "frequency": 602,
+      "meanings": {
+        "en": [
+          "right"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5DE6",
+      "character": "左",
+      "level": "N5",
+      "strokeCount": 5,
+      "frequency": 630,
+      "meanings": {
+        "en": [
+          "left"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+4E0A",
+      "character": "上",
+      "level": "N5",
+      "strokeCount": 3,
+      "frequency": 35,
+      "meanings": {
+        "en": [
+          "above",
+          "up"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+4E0B",
+      "character": "下",
+      "level": "N5",
+      "strokeCount": 3,
+      "frequency": 97,
+      "meanings": {
+        "en": [
+          "below",
+          "down",
+          "descend",
+          "give",
+          "low",
+          "inferior"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+4E2D",
+      "character": "中",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 11,
+      "meanings": {
+        "en": [
+          "in",
+          "inside",
+          "middle",
+          "mean",
+          "center"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5916",
+      "character": "外",
+      "level": "N5",
+      "strokeCount": 5,
+      "frequency": 81,
+      "meanings": {
+        "en": [
+          "outside"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+524D",
+      "character": "前",
+      "level": "N5",
+      "strokeCount": 9,
+      "frequency": 27,
+      "meanings": {
+        "en": [
+          "in front",
+          "before"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5F8C",
+      "character": "後",
+      "level": "N5",
+      "strokeCount": 9,
+      "frequency": 26,
+      "meanings": {
+        "en": [
+          "behind",
+          "back",
+          "later"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5317",
+      "character": "北",
+      "level": "N5",
+      "strokeCount": 5,
+      "frequency": 153,
+      "meanings": {
+        "en": [
+          "north"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5357",
+      "character": "南",
+      "level": "N5",
+      "strokeCount": 9,
+      "frequency": 341,
+      "meanings": {
+        "en": [
+          "south"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6771",
+      "character": "東",
+      "level": "N5",
+      "strokeCount": 8,
+      "frequency": 37,
+      "meanings": {
+        "en": [
+          "east"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+897F",
+      "character": "西",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 259,
+      "meanings": {
+        "en": [
+          "west",
+          "Spain"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6797",
+      "character": "林",
+      "level": "N5",
+      "strokeCount": 8,
+      "frequency": 656,
+      "meanings": {
+        "en": [
+          "grove",
+          "forest"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+68EE",
+      "character": "森",
+      "level": "N5",
+      "strokeCount": 12,
+      "frequency": 609,
+      "meanings": {
+        "en": [
+          "forest",
+          "woods"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5C71",
+      "character": "山",
+      "level": "N5",
+      "strokeCount": 3,
+      "frequency": 131,
+      "meanings": {
+        "en": [
+          "mountain"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5DDD",
+      "character": "川",
+      "level": "N5",
+      "strokeCount": 3,
+      "frequency": 181,
+      "meanings": {
+        "en": [
+          "stream",
+          "river",
+          "river or three-stroke river radical (no. 47)"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+77F3",
+      "character": "石",
+      "level": "N5",
+      "strokeCount": 5,
+      "frequency": 342,
+      "meanings": {
+        "en": [
+          "stone"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5929",
+      "character": "天",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 512,
+      "meanings": {
+        "en": [
+          "heavens",
+          "sky",
+          "imperial"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6C17",
+      "character": "気",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 113,
+      "meanings": {
+        "en": [
+          "spirit",
+          "mind",
+          "air",
+          "atmosphere",
+          "mood"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+96E8",
+      "character": "雨",
+      "level": "N5",
+      "strokeCount": 8,
+      "frequency": 950,
+      "meanings": {
+        "en": [
+          "rain"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5915",
+      "character": "夕",
+      "level": "N5",
+      "strokeCount": 3,
+      "frequency": 924,
+      "meanings": {
+        "en": [
+          "evening"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+7A7A",
+      "character": "空",
+      "level": "N5",
+      "strokeCount": 8,
+      "frequency": 304,
+      "meanings": {
+        "en": [
+          "empty",
+          "sky",
+          "void",
+          "vacant",
+          "vacuum"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+96F2",
+      "character": "雲",
+      "level": "N5",
+      "strokeCount": 12,
+      "frequency": 1256,
+      "meanings": {
+        "en": [
+          "cloud"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+96EA",
+      "character": "雪",
+      "level": "N5",
+      "strokeCount": 11,
+      "frequency": 1131,
+      "meanings": {
+        "en": [
+          "snow"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6D77",
+      "character": "海",
+      "level": "N5",
+      "strokeCount": 9,
+      "frequency": 200,
+      "meanings": {
+        "en": [
+          "sea",
+          "ocean"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5730",
+      "character": "地",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 40,
+      "meanings": {
+        "en": [
+          "ground",
+          "earth"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6C60",
+      "character": "池",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 827,
+      "meanings": {
+        "en": [
+          "pond",
+          "cistern",
+          "pool",
+          "reservoir"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+98A8",
+      "character": "風",
+      "level": "N5",
+      "strokeCount": 9,
+      "frequency": 558,
+      "meanings": {
+        "en": [
+          "wind",
+          "air",
+          "style",
+          "manner"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+7537",
+      "character": "男",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 240,
+      "meanings": {
+        "en": [
+          "male"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5973",
+      "character": "女",
+      "level": "N5",
+      "strokeCount": 3,
+      "frequency": 151,
+      "meanings": {
+        "en": [
+          "woman",
+          "female"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+4EBA",
+      "character": "人",
+      "level": "N5",
+      "strokeCount": 2,
+      "frequency": 5,
+      "meanings": {
+        "en": [
+          "person"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+738B",
+      "character": "王",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 684,
+      "meanings": {
+        "en": [
+          "king",
+          "rule",
+          "magnate"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5B50",
+      "character": "子",
+      "level": "N5",
+      "strokeCount": 3,
+      "frequency": 72,
+      "meanings": {
+        "en": [
+          "child",
+          "sign of the rat",
+          "11PM-1AM",
+          "first sign of Chinese zodiac"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+7236",
+      "character": "父",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 646,
+      "meanings": {
+        "en": [
+          "father"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6BCD",
+      "character": "母",
+      "level": "N5",
+      "strokeCount": 5,
+      "frequency": 570,
+      "meanings": {
+        "en": [
+          "mother"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5144",
+      "character": "兄",
+      "level": "N5",
+      "strokeCount": 5,
+      "frequency": 1219,
+      "meanings": {
+        "en": [
+          "elder brother",
+          "big brother"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5F1F",
+      "character": "弟",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 1161,
+      "meanings": {
+        "en": [
+          "younger brother",
+          "faithful service to elders"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+59C9",
+      "character": "姉",
+      "level": "N5",
+      "strokeCount": 8,
+      "frequency": 1473,
+      "meanings": {
+        "en": [
+          "elder sister"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+59B9",
+      "character": "妹",
+      "level": "N5",
+      "strokeCount": 8,
+      "frequency": 1446,
+      "meanings": {
+        "en": [
+          "younger sister"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+540D",
+      "character": "名",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 177,
+      "meanings": {
+        "en": [
+          "name",
+          "noted",
+          "distinguished",
+          "reputation"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+53CB",
+      "character": "友",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 622,
+      "meanings": {
+        "en": [
+          "friend"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+89AA",
+      "character": "親",
+      "level": "N5",
+      "strokeCount": 16,
+      "frequency": 406,
+      "meanings": {
+        "en": [
+          "parent",
+          "intimacy",
+          "relative",
+          "familiarity",
+          "dealer (cards)"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+72AC",
+      "character": "犬",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 1326,
+      "meanings": {
+        "en": [
+          "dog"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+866B",
+      "character": "虫",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 1351,
+      "meanings": {
+        "en": [
+          "insect",
+          "bug",
+          "temper"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+8C9D",
+      "character": "貝",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 1787,
+      "meanings": {
+        "en": [
+          "shellfish"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+725B",
+      "character": "牛",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 1202,
+      "meanings": {
+        "en": [
+          "cow"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+8089",
+      "character": "肉",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 986,
+      "meanings": {
+        "en": [
+          "meat"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+9B5A",
+      "character": "魚",
+      "level": "N5",
+      "strokeCount": 11,
+      "frequency": 1208,
+      "meanings": {
+        "en": [
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+99AC",
+      "character": "馬",
+      "level": "N5",
+      "strokeCount": 10,
+      "frequency": 639,
+      "meanings": {
+        "en": [
+          "horse"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+9CE5",
+      "character": "鳥",
+      "level": "N5",
+      "strokeCount": 11,
+      "frequency": 1043,
+      "meanings": {
+        "en": [
+          "bird",
+          "chicken"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+82B1",
+      "character": "花",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 578,
+      "meanings": {
+        "en": [
+          "flower"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+8349",
+      "character": "草",
+      "level": "N5",
+      "strokeCount": 9,
+      "frequency": 967,
+      "meanings": {
+        "en": [
+          "grass",
+          "weeds",
+          "herbs",
+          "pasture",
+          "write",
+          "draft"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+7AF9",
+      "character": "竹",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 593,
+      "meanings": {
+        "en": [
+          "bamboo"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+7C73",
+      "character": "米",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 61,
+      "meanings": {
+        "en": [
+          "rice",
+          "USA",
+          "metre"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+8336",
+      "character": "茶",
+      "level": "N5",
+      "strokeCount": 9,
+      "frequency": 1116,
+      "meanings": {
+        "en": [
+          "tea"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+98EF",
+      "character": "飯",
+      "level": "N5",
+      "strokeCount": 12,
+      "frequency": 1046,
+      "meanings": {
+        "en": [
+          "meal",
+          "boiled rice"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5148",
+      "character": "先",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 173,
+      "meanings": {
+        "en": [
+          "before",
+          "ahead",
+          "previous",
+          "future",
+          "precedence"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+751F",
+      "character": "生",
+      "level": "N5",
+      "strokeCount": 5,
+      "frequency": 29,
+      "meanings": {
+        "en": [
+          "life",
+          "genuine",
+          "birth"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+672C",
+      "character": "本",
+      "level": "N5",
+      "strokeCount": 5,
+      "frequency": 10,
+      "meanings": {
+        "en": [
+          "book",
+          "present",
+          "main",
+          "origin",
+          "true",
+          "real",
+          "counter for long cylindrical things"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6587",
+      "character": "文",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 190,
+      "meanings": {
+        "en": [
+          "sentence",
+          "literature",
+          "style",
+          "art",
+          "decoration",
+          "figures",
+          "plan",
+          "literary radical (no. 67)"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5B57",
+      "character": "字",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 485,
+      "meanings": {
+        "en": [
+          "character",
+          "letter",
+          "word",
+          "section of village"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6B63",
+      "character": "正",
+      "level": "N5",
+      "strokeCount": 5,
+      "frequency": 143,
+      "meanings": {
+        "en": [
+          "correct",
+          "justice",
+          "righteous",
+          "10**40"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5B66",
+      "character": "学",
+      "level": "N5",
+      "strokeCount": 8,
+      "frequency": 63,
+      "meanings": {
+        "en": [
+          "study",
+          "learning",
+          "science"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6821",
+      "character": "校",
+      "level": "N5",
+      "strokeCount": 10,
+      "frequency": 294,
+      "meanings": {
+        "en": [
+          "exam",
+          "school",
+          "printing",
+          "proof",
+          "correction"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+7D19",
+      "character": "紙",
+      "level": "N5",
+      "strokeCount": 10,
+      "frequency": 559,
+      "meanings": {
+        "en": [
+          "paper"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+8A9E",
+      "character": "語",
+      "level": "N5",
+      "strokeCount": 14,
+      "frequency": 301,
+      "meanings": {
+        "en": [
+          "word",
+          "speech",
+          "language"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+70B9",
+      "character": "点",
+      "level": "N5",
+      "strokeCount": 9,
+      "frequency": 165,
+      "meanings": {
+        "en": [
+          "spot",
+          "point",
+          "mark",
+          "speck",
+          "decimal point"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+56F3",
+      "character": "図",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 539,
+      "meanings": {
+        "en": [
+          "map",
+          "drawing",
+          "plan",
+          "extraordinary",
+          "audacious"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5165",
+      "character": "入",
+      "level": "N5",
+      "strokeCount": 2,
+      "frequency": 56,
+      "meanings": {
+        "en": [
+          "enter",
+          "insert"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+51FA",
+      "character": "出",
+      "level": "N5",
+      "strokeCount": 5,
+      "frequency": 13,
+      "meanings": {
+        "en": [
+          "exit",
+          "leave",
+          "go out",
+          "come out",
+          "put out",
+          "protrude"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+4F11",
+      "character": "休",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 642,
+      "meanings": {
+        "en": [
+          "rest",
+          "day off",
+          "retire",
+          "sleep"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+7ACB",
+      "character": "立",
+      "level": "N5",
+      "strokeCount": 5,
+      "frequency": 58,
+      "meanings": {
+        "en": [
+          "stand up",
+          "rise",
+          "set up",
+          "erect"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+898B",
+      "character": "見",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 22,
+      "meanings": {
+        "en": [
+          "see",
+          "hopes",
+          "chances",
+          "idea",
+          "opinion",
+          "look at",
+          "visible"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+884C",
+      "character": "行",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 20,
+      "meanings": {
+        "en": [
+          "going",
+          "journey",
+          "carry out",
+          "conduct",
+          "act",
+          "line",
+          "row",
+          "bank"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6765",
+      "character": "来",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 102,
+      "meanings": {
+        "en": [
+          "come",
+          "due",
+          "next",
+          "cause",
+          "become"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5E30",
+      "character": "帰",
+      "level": "N5",
+      "strokeCount": 10,
+      "frequency": 504,
+      "meanings": {
+        "en": [
+          "homecoming",
+          "arrive at",
+          "lead to",
+          "result in"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6B69",
+      "character": "歩",
+      "level": "N5",
+      "strokeCount": 8,
+      "frequency": 554,
+      "meanings": {
+        "en": [
+          "walk",
+          "counter for steps"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+8A00",
+      "character": "言",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 83,
+      "meanings": {
+        "en": [
+          "say",
+          "word"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+8A71",
+      "character": "話",
+      "level": "N5",
+      "strokeCount": 13,
+      "frequency": 134,
+      "meanings": {
+        "en": [
+          "tale",
+          "talk"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+66F8",
+      "character": "書",
+      "level": "N5",
+      "strokeCount": 10,
+      "frequency": 169,
+      "meanings": {
+        "en": [
+          "write"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+8AAD",
+      "character": "読",
+      "level": "N5",
+      "strokeCount": 14,
+      "frequency": 618,
+      "meanings": {
+        "en": [
+          "read"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+805E",
+      "character": "聞",
+      "level": "N5",
+      "strokeCount": 14,
+      "frequency": 319,
+      "meanings": {
+        "en": [
+          "hear",
+          "ask",
+          "listen"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+98DF",
+      "character": "食",
+      "level": "N5",
+      "strokeCount": 9,
+      "frequency": 328,
+      "meanings": {
+        "en": [
+          "eat",
+          "food"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+98F2",
+      "character": "飲",
+      "level": "N5",
+      "strokeCount": 12,
+      "frequency": 969,
+      "meanings": {
+        "en": [
+          "drink",
+          "smoke",
+          "take"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+8CB7",
+      "character": "買",
+      "level": "N5",
+      "strokeCount": 12,
+      "frequency": 520,
+      "meanings": {
+        "en": [
+          "buy"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+58F2",
+      "character": "売",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 202,
+      "meanings": {
+        "en": [
+          "sell"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+4F1A",
+      "character": "会",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 4,
+      "meanings": {
+        "en": [
+          "meeting",
+          "meet",
+          "party",
+          "association",
+          "interview",
+          "join"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+77E5",
+      "character": "知",
+      "level": "N5",
+      "strokeCount": 8,
+      "frequency": 205,
+      "meanings": {
+        "en": [
+          "know",
+          "wisdom"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+601D",
+      "character": "思",
+      "level": "N5",
+      "strokeCount": 9,
+      "frequency": 132,
+      "meanings": {
+        "en": [
+          "think"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+4F5C",
+      "character": "作",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 103,
+      "meanings": {
+        "en": [
+          "make",
+          "production",
+          "prepare",
+          "build"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+4F4F",
+      "character": "住",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 270,
+      "meanings": {
+        "en": [
+          "dwell",
+          "reside",
+          "live",
+          "inhabit"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+4F7F",
+      "character": "使",
+      "level": "N5",
+      "strokeCount": 8,
+      "frequency": 219,
+      "meanings": {
+        "en": [
+          "use",
+          "send on a mission",
+          "order",
+          "messenger",
+          "envoy",
+          "ambassador",
+          "cause"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+8CB8",
+      "character": "貸",
+      "level": "N5",
+      "strokeCount": 12,
+      "frequency": 995,
+      "meanings": {
+        "en": [
+          "lend"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+501F",
+      "character": "借",
+      "level": "N5",
+      "strokeCount": 10,
+      "frequency": 932,
+      "meanings": {
+        "en": [
+          "borrow",
+          "rent"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5207",
+      "character": "切",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 324,
+      "meanings": {
+        "en": [
+          "cut",
+          "cutoff",
+          "be sharp"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6301",
+      "character": "持",
+      "level": "N5",
+      "strokeCount": 9,
+      "frequency": 119,
+      "meanings": {
+        "en": [
+          "hold",
+          "have"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+9001",
+      "character": "送",
+      "level": "N5",
+      "strokeCount": 9,
+      "frequency": 311,
+      "meanings": {
+        "en": [
+          "escort",
+          "send"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+7740",
+      "character": "着",
+      "level": "N5",
+      "strokeCount": 12,
+      "frequency": 376,
+      "meanings": {
+        "en": [
+          "don",
+          "arrive",
+          "wear",
+          "counter for suits of clothing"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6559",
+      "character": "教",
+      "level": "N5",
+      "strokeCount": 11,
+      "frequency": 166,
+      "meanings": {
+        "en": [
+          "teach",
+          "faith",
+          "doctrine"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+7FD2",
+      "character": "習",
+      "level": "N5",
+      "strokeCount": 11,
+      "frequency": 706,
+      "meanings": {
+        "en": [
+          "learn"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+753A",
+      "character": "町",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 292,
+      "meanings": {
+        "en": [
+          "town",
+          "village",
+          "block",
+          "street"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6751",
+      "character": "村",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 253,
+      "meanings": {
+        "en": [
+          "village",
+          "town"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+7530",
+      "character": "田",
+      "level": "N5",
+      "strokeCount": 5,
+      "frequency": 90,
+      "meanings": {
+        "en": [
+          "rice field",
+          "rice paddy"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5BB6",
+      "character": "家",
+      "level": "N5",
+      "strokeCount": 10,
+      "frequency": 133,
+      "meanings": {
+        "en": [
+          "house",
+          "home",
+          "family",
+          "professional",
+          "expert",
+          "performer"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+5E97",
+      "character": "店",
+      "level": "N5",
+      "strokeCount": 8,
+      "frequency": 378,
+      "meanings": {
+        "en": [
+          "store",
+          "shop"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+56FD",
+      "character": "国",
+      "level": "N5",
+      "strokeCount": 8,
+      "frequency": 3,
+      "meanings": {
+        "en": [
+          "country"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+9053",
+      "character": "道",
+      "level": "N5",
+      "strokeCount": 12,
+      "frequency": 207,
+      "meanings": {
+        "en": [
+          "road-way",
+          "street",
+          "district",
+          "journey",
+          "course",
+          "moral",
+          "teachings"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+793E",
+      "character": "社",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 21,
+      "meanings": {
+        "en": [
+          "company",
+          "firm",
+          "office",
+          "association",
+          "shrine"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6240",
+      "character": "所",
+      "level": "N5",
+      "strokeCount": 8,
+      "frequency": 221,
+      "meanings": {
+        "en": [
+          "place",
+          "extent"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+9662",
+      "character": "院",
+      "level": "N5",
+      "strokeCount": 10,
+      "frequency": 150,
+      "meanings": {
+        "en": [
+          "Inst.",
+          "institution",
+          "temple",
+          "mansion",
+          "school"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+9928",
+      "character": "館",
+      "level": "N5",
+      "strokeCount": 16,
+      "frequency": 613,
+      "meanings": {
+        "en": [
+          "building",
+          "mansion",
+          "large building",
+          "palace"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+99C5",
+      "character": "駅",
+      "level": "N5",
+      "strokeCount": 14,
+      "frequency": 724,
+      "meanings": {
+        "en": [
+          "station"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+8ECA",
+      "character": "車",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 333,
+      "meanings": {
+        "en": [
+          "car"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+4F55",
+      "character": "何",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 340,
+      "meanings": {
+        "en": [
+          "what"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+6BCE",
+      "character": "毎",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 436,
+      "meanings": {
+        "en": [
+          "every"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+4E0D",
+      "character": "不",
+      "level": "N5",
+      "strokeCount": 4,
+      "frequency": 101,
+      "meanings": {
+        "en": [
+          "negative",
+          "non-",
+          "bad",
+          "ugly",
+          "clumsy"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+97F3",
+      "character": "音",
+      "level": "N5",
+      "strokeCount": 9,
+      "frequency": 491,
+      "meanings": {
+        "en": [
+          "sound",
+          "noise"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+65E9",
+      "character": "早",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 402,
+      "meanings": {
+        "en": [
+          "early",
+          "fast"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+554F",
+      "character": "問",
+      "level": "N5",
+      "strokeCount": 11,
+      "frequency": 64,
+      "meanings": {
+        "en": [
+          "question",
+          "ask",
+          "problem"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+597D",
+      "character": "好",
+      "level": "N5",
+      "strokeCount": 6,
+      "frequency": 423,
+      "meanings": {
+        "en": [
+          "fond",
+          "pleasing",
+          "like something"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+96FB",
+      "character": "電",
+      "level": "N5",
+      "strokeCount": 13,
+      "frequency": 268,
+      "meanings": {
+        "en": [
+          "electricity"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+533B",
+      "character": "医",
+      "level": "N5",
+      "strokeCount": 7,
+      "frequency": 437,
+      "meanings": {
+        "en": [
+          "doctor",
+          "medicine"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+75C5",
+      "character": "病",
+      "level": "N5",
+      "strokeCount": 10,
+      "frequency": 384,
+      "meanings": {
+        "en": [
+          "ill",
+          "sick"
+        ]
+      }
+    },
+    {
+      "id": "kanji:U+85AC",
+      "character": "薬",
+      "level": "N5",
+      "strokeCount": 16,
+      "frequency": 702,
+      "meanings": {
+        "en": [
+          "medicine",
+          "chemical",
+          "enamel",
+          "gunpowder",
+          "benefit"
+        ]
+      }
+    }
+  ],
+  "readings": [
+    {
+      "kanjiId": "kanji:U+4E00",
+      "type": "on",
+      "kana": "イチ",
+      "romaji": "ichi"
+    },
+    {
+      "kanjiId": "kanji:U+4E00",
+      "type": "on",
+      "kana": "イツ",
+      "romaji": "itsu"
+    },
+    {
+      "kanjiId": "kanji:U+4E00",
+      "type": "kun",
+      "kana": "ひと-",
+      "romaji": "hito"
+    },
+    {
+      "kanjiId": "kanji:U+4E00",
+      "type": "kun",
+      "kana": "ひと.つ",
+      "romaji": "hitotsu"
+    },
+    {
+      "kanjiId": "kanji:U+4E8C",
+      "type": "on",
+      "kana": "ニ",
+      "romaji": "ni"
+    },
+    {
+      "kanjiId": "kanji:U+4E8C",
+      "type": "on",
+      "kana": "ジ",
+      "romaji": "ji"
+    },
+    {
+      "kanjiId": "kanji:U+4E8C",
+      "type": "kun",
+      "kana": "ふた",
+      "romaji": "futa"
+    },
+    {
+      "kanjiId": "kanji:U+4E8C",
+      "type": "kun",
+      "kana": "ふた.つ",
+      "romaji": "futatsu"
+    },
+    {
+      "kanjiId": "kanji:U+4E8C",
+      "type": "kun",
+      "kana": "ふたたび",
+      "romaji": "futatabi"
+    },
+    {
+      "kanjiId": "kanji:U+4E09",
+      "type": "on",
+      "kana": "サン",
+      "romaji": "san"
+    },
+    {
+      "kanjiId": "kanji:U+4E09",
+      "type": "on",
+      "kana": "ゾウ",
+      "romaji": "zou"
+    },
+    {
+      "kanjiId": "kanji:U+4E09",
+      "type": "kun",
+      "kana": "み",
+      "romaji": "mi"
+    },
+    {
+      "kanjiId": "kanji:U+4E09",
+      "type": "kun",
+      "kana": "み.つ",
+      "romaji": "mitsu"
+    },
+    {
+      "kanjiId": "kanji:U+4E09",
+      "type": "kun",
+      "kana": "みっ.つ",
+      "romaji": "mittsu"
+    },
+    {
+      "kanjiId": "kanji:U+56DB",
+      "type": "on",
+      "kana": "シ",
+      "romaji": "shi"
+    },
+    {
+      "kanjiId": "kanji:U+56DB",
+      "type": "kun",
+      "kana": "よ",
+      "romaji": "yo"
+    },
+    {
+      "kanjiId": "kanji:U+56DB",
+      "type": "kun",
+      "kana": "よ.つ",
+      "romaji": "yotsu"
+    },
+    {
+      "kanjiId": "kanji:U+56DB",
+      "type": "kun",
+      "kana": "よっ.つ",
+      "romaji": "yottsu"
+    },
+    {
+      "kanjiId": "kanji:U+56DB",
+      "type": "kun",
+      "kana": "よん",
+      "romaji": "yon"
+    },
+    {
+      "kanjiId": "kanji:U+4E94",
+      "type": "on",
+      "kana": "ゴ",
+      "romaji": "go"
+    },
+    {
+      "kanjiId": "kanji:U+4E94",
+      "type": "kun",
+      "kana": "いつ",
+      "romaji": "itsu"
+    },
+    {
+      "kanjiId": "kanji:U+4E94",
+      "type": "kun",
+      "kana": "いつ.つ",
+      "romaji": "itsutsu"
+    },
+    {
+      "kanjiId": "kanji:U+516D",
+      "type": "on",
+      "kana": "ロク",
+      "romaji": "roku"
+    },
+    {
+      "kanjiId": "kanji:U+516D",
+      "type": "on",
+      "kana": "リク",
+      "romaji": "riku"
+    },
+    {
+      "kanjiId": "kanji:U+516D",
+      "type": "kun",
+      "kana": "む",
+      "romaji": "mu"
+    },
+    {
+      "kanjiId": "kanji:U+516D",
+      "type": "kun",
+      "kana": "む.つ",
+      "romaji": "mutsu"
+    },
+    {
+      "kanjiId": "kanji:U+516D",
+      "type": "kun",
+      "kana": "むっ.つ",
+      "romaji": "muttsu"
+    },
+    {
+      "kanjiId": "kanji:U+516D",
+      "type": "kun",
+      "kana": "むい",
+      "romaji": "mui"
+    },
+    {
+      "kanjiId": "kanji:U+4E03",
+      "type": "on",
+      "kana": "シチ",
+      "romaji": "shichi"
+    },
+    {
+      "kanjiId": "kanji:U+4E03",
+      "type": "kun",
+      "kana": "なな",
+      "romaji": "nana"
+    },
+    {
+      "kanjiId": "kanji:U+4E03",
+      "type": "kun",
+      "kana": "なな.つ",
+      "romaji": "nanatsu"
+    },
+    {
+      "kanjiId": "kanji:U+4E03",
+      "type": "kun",
+      "kana": "なの",
+      "romaji": "nano"
+    },
+    {
+      "kanjiId": "kanji:U+516B",
+      "type": "on",
+      "kana": "ハチ",
+      "romaji": "hachi"
+    },
+    {
+      "kanjiId": "kanji:U+516B",
+      "type": "on",
+      "kana": "ハツ",
+      "romaji": "hatsu"
+    },
+    {
+      "kanjiId": "kanji:U+516B",
+      "type": "kun",
+      "kana": "や",
+      "romaji": "ya"
+    },
+    {
+      "kanjiId": "kanji:U+516B",
+      "type": "kun",
+      "kana": "や.つ",
+      "romaji": "yatsu"
+    },
+    {
+      "kanjiId": "kanji:U+516B",
+      "type": "kun",
+      "kana": "やっ.つ",
+      "romaji": "yattsu"
+    },
+    {
+      "kanjiId": "kanji:U+516B",
+      "type": "kun",
+      "kana": "よう",
+      "romaji": "you"
+    },
+    {
+      "kanjiId": "kanji:U+4E5D",
+      "type": "on",
+      "kana": "キュウ",
+      "romaji": "kyuu"
+    },
+    {
+      "kanjiId": "kanji:U+4E5D",
+      "type": "on",
+      "kana": "ク",
+      "romaji": "ku"
+    },
+    {
+      "kanjiId": "kanji:U+4E5D",
+      "type": "kun",
+      "kana": "ここの",
+      "romaji": "kokono"
+    },
+    {
+      "kanjiId": "kanji:U+4E5D",
+      "type": "kun",
+      "kana": "ここの.つ",
+      "romaji": "kokonotsu"
+    },
+    {
+      "kanjiId": "kanji:U+5341",
+      "type": "on",
+      "kana": "ジュウ",
+      "romaji": "juu"
+    },
+    {
+      "kanjiId": "kanji:U+5341",
+      "type": "on",
+      "kana": "ジッ",
+      "romaji": "jit"
+    },
+    {
+      "kanjiId": "kanji:U+5341",
+      "type": "on",
+      "kana": "ジュッ",
+      "romaji": "jut"
+    },
+    {
+      "kanjiId": "kanji:U+5341",
+      "type": "kun",
+      "kana": "とお",
+      "romaji": "too"
+    },
+    {
+      "kanjiId": "kanji:U+5341",
+      "type": "kun",
+      "kana": "と",
+      "romaji": "to"
+    },
+    {
+      "kanjiId": "kanji:U+5341",
+      "type": "kun",
+      "kana": "そ",
+      "romaji": "so"
+    },
+    {
+      "kanjiId": "kanji:U+767E",
+      "type": "on",
+      "kana": "ヒャク",
+      "romaji": "hyaku"
+    },
+    {
+      "kanjiId": "kanji:U+767E",
+      "type": "on",
+      "kana": "ビャク",
+      "romaji": "byaku"
+    },
+    {
+      "kanjiId": "kanji:U+767E",
+      "type": "kun",
+      "kana": "もも",
+      "romaji": "momo"
+    },
+    {
+      "kanjiId": "kanji:U+5343",
+      "type": "on",
+      "kana": "セン",
+      "romaji": "sen"
+    },
+    {
+      "kanjiId": "kanji:U+5343",
+      "type": "kun",
+      "kana": "ち",
+      "romaji": "chi"
+    },
+    {
+      "kanjiId": "kanji:U+4E07",
+      "type": "on",
+      "kana": "マン",
+      "romaji": "man"
+    },
+    {
+      "kanjiId": "kanji:U+4E07",
+      "type": "on",
+      "kana": "バン",
+      "romaji": "ban"
+    },
+    {
+      "kanjiId": "kanji:U+4E07",
+      "type": "kun",
+      "kana": "よろず",
+      "romaji": "yorozu"
+    },
+    {
+      "kanjiId": "kanji:U+5186",
+      "type": "on",
+      "kana": "エン",
+      "romaji": "en"
+    },
+    {
+      "kanjiId": "kanji:U+5186",
+      "type": "kun",
+      "kana": "まる.い",
+      "romaji": "marui"
+    },
+    {
+      "kanjiId": "kanji:U+5186",
+      "type": "kun",
+      "kana": "まる",
+      "romaji": "maru"
+    },
+    {
+      "kanjiId": "kanji:U+5186",
+      "type": "kun",
+      "kana": "まど",
+      "romaji": "mado"
+    },
+    {
+      "kanjiId": "kanji:U+5186",
+      "type": "kun",
+      "kana": "まど.か",
+      "romaji": "madoka"
+    },
+    {
+      "kanjiId": "kanji:U+5186",
+      "type": "kun",
+      "kana": "まろ.やか",
+      "romaji": "maroyaka"
+    },
+    {
+      "kanjiId": "kanji:U+65E5",
+      "type": "on",
+      "kana": "ニチ",
+      "romaji": "nichi"
+    },
+    {
+      "kanjiId": "kanji:U+65E5",
+      "type": "on",
+      "kana": "ジツ",
+      "romaji": "jitsu"
+    },
+    {
+      "kanjiId": "kanji:U+65E5",
+      "type": "kun",
+      "kana": "ひ",
+      "romaji": "hi"
+    },
+    {
+      "kanjiId": "kanji:U+65E5",
+      "type": "kun",
+      "kana": "-び",
+      "romaji": "bi"
+    },
+    {
+      "kanjiId": "kanji:U+65E5",
+      "type": "kun",
+      "kana": "-か",
+      "romaji": "ka"
+    },
+    {
+      "kanjiId": "kanji:U+6708",
+      "type": "on",
+      "kana": "ゲツ",
+      "romaji": "getsu"
+    },
+    {
+      "kanjiId": "kanji:U+6708",
+      "type": "on",
+      "kana": "ガツ",
+      "romaji": "gatsu"
+    },
+    {
+      "kanjiId": "kanji:U+6708",
+      "type": "kun",
+      "kana": "つき",
+      "romaji": "tsuki"
+    },
+    {
+      "kanjiId": "kanji:U+706B",
+      "type": "on",
+      "kana": "カ",
+      "romaji": "ka"
+    },
+    {
+      "kanjiId": "kanji:U+706B",
+      "type": "kun",
+      "kana": "ひ",
+      "romaji": "hi"
+    },
+    {
+      "kanjiId": "kanji:U+706B",
+      "type": "kun",
+      "kana": "-び",
+      "romaji": "bi"
+    },
+    {
+      "kanjiId": "kanji:U+706B",
+      "type": "kun",
+      "kana": "ほ-",
+      "romaji": "ho"
+    },
+    {
+      "kanjiId": "kanji:U+6C34",
+      "type": "on",
+      "kana": "スイ",
+      "romaji": "sui"
+    },
+    {
+      "kanjiId": "kanji:U+6C34",
+      "type": "kun",
+      "kana": "みず",
+      "romaji": "mizu"
+    },
+    {
+      "kanjiId": "kanji:U+6C34",
+      "type": "kun",
+      "kana": "みず-",
+      "romaji": "mizu"
+    },
+    {
+      "kanjiId": "kanji:U+6728",
+      "type": "on",
+      "kana": "ボク",
+      "romaji": "boku"
+    },
+    {
+      "kanjiId": "kanji:U+6728",
+      "type": "on",
+      "kana": "モク",
+      "romaji": "moku"
+    },
+    {
+      "kanjiId": "kanji:U+6728",
+      "type": "kun",
+      "kana": "き",
+      "romaji": "ki"
+    },
+    {
+      "kanjiId": "kanji:U+6728",
+      "type": "kun",
+      "kana": "こ-",
+      "romaji": "ko"
+    },
+    {
+      "kanjiId": "kanji:U+91D1",
+      "type": "on",
+      "kana": "キン",
+      "romaji": "kin"
+    },
+    {
+      "kanjiId": "kanji:U+91D1",
+      "type": "on",
+      "kana": "コン",
+      "romaji": "kon"
+    },
+    {
+      "kanjiId": "kanji:U+91D1",
+      "type": "on",
+      "kana": "ゴン",
+      "romaji": "gon"
+    },
+    {
+      "kanjiId": "kanji:U+91D1",
+      "type": "kun",
+      "kana": "かね",
+      "romaji": "kane"
+    },
+    {
+      "kanjiId": "kanji:U+91D1",
+      "type": "kun",
+      "kana": "かな-",
+      "romaji": "kana"
+    },
+    {
+      "kanjiId": "kanji:U+91D1",
+      "type": "kun",
+      "kana": "-がね",
+      "romaji": "gane"
+    },
+    {
+      "kanjiId": "kanji:U+571F",
+      "type": "on",
+      "kana": "ド",
+      "romaji": "do"
+    },
+    {
+      "kanjiId": "kanji:U+571F",
+      "type": "on",
+      "kana": "ト",
+      "romaji": "to"
+    },
+    {
+      "kanjiId": "kanji:U+571F",
+      "type": "kun",
+      "kana": "つち",
+      "romaji": "tsuchi"
+    },
+    {
+      "kanjiId": "kanji:U+5348",
+      "type": "on",
+      "kana": "ゴ",
+      "romaji": "go"
+    },
+    {
+      "kanjiId": "kanji:U+5348",
+      "type": "kun",
+      "kana": "うま",
+      "romaji": "uma"
+    },
+    {
+      "kanjiId": "kanji:U+5E74",
+      "type": "on",
+      "kana": "ネン",
+      "romaji": "nen"
+    },
+    {
+      "kanjiId": "kanji:U+5E74",
+      "type": "kun",
+      "kana": "とし",
+      "romaji": "toshi"
+    },
+    {
+      "kanjiId": "kanji:U+6642",
+      "type": "on",
+      "kana": "ジ",
+      "romaji": "ji"
+    },
+    {
+      "kanjiId": "kanji:U+6642",
+      "type": "kun",
+      "kana": "とき",
+      "romaji": "toki"
+    },
+    {
+      "kanjiId": "kanji:U+6642",
+      "type": "kun",
+      "kana": "-どき",
+      "romaji": "doki"
+    },
+    {
+      "kanjiId": "kanji:U+5206",
+      "type": "on",
+      "kana": "ブン",
+      "romaji": "bun"
+    },
+    {
+      "kanjiId": "kanji:U+5206",
+      "type": "on",
+      "kana": "フン",
+      "romaji": "fun"
+    },
+    {
+      "kanjiId": "kanji:U+5206",
+      "type": "on",
+      "kana": "ブ",
+      "romaji": "bu"
+    },
+    {
+      "kanjiId": "kanji:U+5206",
+      "type": "kun",
+      "kana": "わ.ける",
+      "romaji": "wakeru"
+    },
+    {
+      "kanjiId": "kanji:U+5206",
+      "type": "kun",
+      "kana": "わ.け",
+      "romaji": "wake"
+    },
+    {
+      "kanjiId": "kanji:U+5206",
+      "type": "kun",
+      "kana": "わ.かれる",
+      "romaji": "wakareru"
+    },
+    {
+      "kanjiId": "kanji:U+5206",
+      "type": "kun",
+      "kana": "わ.かる",
+      "romaji": "wakaru"
+    },
+    {
+      "kanjiId": "kanji:U+5206",
+      "type": "kun",
+      "kana": "わ.かつ",
+      "romaji": "wakatsu"
+    },
+    {
+      "kanjiId": "kanji:U+4ECA",
+      "type": "on",
+      "kana": "コン",
+      "romaji": "kon"
+    },
+    {
+      "kanjiId": "kanji:U+4ECA",
+      "type": "on",
+      "kana": "キン",
+      "romaji": "kin"
+    },
+    {
+      "kanjiId": "kanji:U+4ECA",
+      "type": "kun",
+      "kana": "いま",
+      "romaji": "ima"
+    },
+    {
+      "kanjiId": "kanji:U+534A",
+      "type": "on",
+      "kana": "ハン",
+      "romaji": "han"
+    },
+    {
+      "kanjiId": "kanji:U+534A",
+      "type": "kun",
+      "kana": "なか.ば",
+      "romaji": "nakaba"
+    },
+    {
+      "kanjiId": "kanji:U+9031",
+      "type": "on",
+      "kana": "シュウ",
+      "romaji": "shuu"
+    },
+    {
+      "kanjiId": "kanji:U+671D",
+      "type": "on",
+      "kana": "チョウ",
+      "romaji": "chou"
+    },
+    {
+      "kanjiId": "kanji:U+671D",
+      "type": "kun",
+      "kana": "あさ",
+      "romaji": "asa"
+    },
+    {
+      "kanjiId": "kanji:U+663C",
+      "type": "on",
+      "kana": "チュウ",
+      "romaji": "chuu"
+    },
+    {
+      "kanjiId": "kanji:U+663C",
+      "type": "kun",
+      "kana": "ひる",
+      "romaji": "hiru"
+    },
+    {
+      "kanjiId": "kanji:U+591C",
+      "type": "on",
+      "kana": "ヤ",
+      "romaji": "ya"
+    },
+    {
+      "kanjiId": "kanji:U+591C",
+      "type": "kun",
+      "kana": "よ",
+      "romaji": "yo"
+    },
+    {
+      "kanjiId": "kanji:U+591C",
+      "type": "kun",
+      "kana": "よる",
+      "romaji": "yoru"
+    },
+    {
+      "kanjiId": "kanji:U+9593",
+      "type": "on",
+      "kana": "カン",
+      "romaji": "kan"
+    },
+    {
+      "kanjiId": "kanji:U+9593",
+      "type": "on",
+      "kana": "ケン",
+      "romaji": "ken"
+    },
+    {
+      "kanjiId": "kanji:U+9593",
+      "type": "kun",
+      "kana": "あいだ",
+      "romaji": "aida"
+    },
+    {
+      "kanjiId": "kanji:U+9593",
+      "type": "kun",
+      "kana": "ま",
+      "romaji": "ma"
+    },
+    {
+      "kanjiId": "kanji:U+9593",
+      "type": "kun",
+      "kana": "あい",
+      "romaji": "ai"
+    },
+    {
+      "kanjiId": "kanji:U+6625",
+      "type": "on",
+      "kana": "シュン",
+      "romaji": "shun"
+    },
+    {
+      "kanjiId": "kanji:U+6625",
+      "type": "kun",
+      "kana": "はる",
+      "romaji": "haru"
+    },
+    {
+      "kanjiId": "kanji:U+590F",
+      "type": "on",
+      "kana": "カ",
+      "romaji": "ka"
+    },
+    {
+      "kanjiId": "kanji:U+590F",
+      "type": "on",
+      "kana": "ガ",
+      "romaji": "ga"
+    },
+    {
+      "kanjiId": "kanji:U+590F",
+      "type": "on",
+      "kana": "ゲ",
+      "romaji": "ge"
+    },
+    {
+      "kanjiId": "kanji:U+590F",
+      "type": "kun",
+      "kana": "なつ",
+      "romaji": "natsu"
+    },
+    {
+      "kanjiId": "kanji:U+79CB",
+      "type": "on",
+      "kana": "シュウ",
+      "romaji": "shuu"
+    },
+    {
+      "kanjiId": "kanji:U+79CB",
+      "type": "kun",
+      "kana": "あき",
+      "romaji": "aki"
+    },
+    {
+      "kanjiId": "kanji:U+79CB",
+      "type": "kun",
+      "kana": "とき",
+      "romaji": "toki"
+    },
+    {
+      "kanjiId": "kanji:U+51AC",
+      "type": "on",
+      "kana": "トウ",
+      "romaji": "tou"
+    },
+    {
+      "kanjiId": "kanji:U+51AC",
+      "type": "kun",
+      "kana": "ふゆ",
+      "romaji": "fuyu"
+    },
+    {
+      "kanjiId": "kanji:U+624B",
+      "type": "on",
+      "kana": "シュ",
+      "romaji": "shu"
+    },
+    {
+      "kanjiId": "kanji:U+624B",
+      "type": "on",
+      "kana": "ズ",
+      "romaji": "zu"
+    },
+    {
+      "kanjiId": "kanji:U+624B",
+      "type": "kun",
+      "kana": "て",
+      "romaji": "te"
+    },
+    {
+      "kanjiId": "kanji:U+624B",
+      "type": "kun",
+      "kana": "て-",
+      "romaji": "te"
+    },
+    {
+      "kanjiId": "kanji:U+624B",
+      "type": "kun",
+      "kana": "-て",
+      "romaji": "te"
+    },
+    {
+      "kanjiId": "kanji:U+624B",
+      "type": "kun",
+      "kana": "た-",
+      "romaji": "ta"
+    },
+    {
+      "kanjiId": "kanji:U+8DB3",
+      "type": "on",
+      "kana": "ソク",
+      "romaji": "soku"
+    },
+    {
+      "kanjiId": "kanji:U+8DB3",
+      "type": "kun",
+      "kana": "あし",
+      "romaji": "ashi"
+    },
+    {
+      "kanjiId": "kanji:U+8DB3",
+      "type": "kun",
+      "kana": "た.りる",
+      "romaji": "tariru"
+    },
+    {
+      "kanjiId": "kanji:U+8DB3",
+      "type": "kun",
+      "kana": "た.る",
+      "romaji": "taru"
+    },
+    {
+      "kanjiId": "kanji:U+8DB3",
+      "type": "kun",
+      "kana": "た.す",
+      "romaji": "tasu"
+    },
+    {
+      "kanjiId": "kanji:U+529B",
+      "type": "on",
+      "kana": "リョク",
+      "romaji": "ryoku"
+    },
+    {
+      "kanjiId": "kanji:U+529B",
+      "type": "on",
+      "kana": "リキ",
+      "romaji": "riki"
+    },
+    {
+      "kanjiId": "kanji:U+529B",
+      "type": "on",
+      "kana": "リイ",
+      "romaji": "rii"
+    },
+    {
+      "kanjiId": "kanji:U+529B",
+      "type": "kun",
+      "kana": "ちから",
+      "romaji": "chikara"
+    },
+    {
+      "kanjiId": "kanji:U+53E3",
+      "type": "on",
+      "kana": "コウ",
+      "romaji": "kou"
+    },
+    {
+      "kanjiId": "kanji:U+53E3",
+      "type": "on",
+      "kana": "ク",
+      "romaji": "ku"
+    },
+    {
+      "kanjiId": "kanji:U+53E3",
+      "type": "kun",
+      "kana": "くち",
+      "romaji": "kuchi"
+    },
+    {
+      "kanjiId": "kanji:U+9996",
+      "type": "on",
+      "kana": "シュ",
+      "romaji": "shu"
+    },
+    {
+      "kanjiId": "kanji:U+9996",
+      "type": "kun",
+      "kana": "くび",
+      "romaji": "kubi"
+    },
+    {
+      "kanjiId": "kanji:U+58F0",
+      "type": "on",
+      "kana": "セイ",
+      "romaji": "sei"
+    },
+    {
+      "kanjiId": "kanji:U+58F0",
+      "type": "on",
+      "kana": "ショウ",
+      "romaji": "shou"
+    },
+    {
+      "kanjiId": "kanji:U+58F0",
+      "type": "kun",
+      "kana": "こえ",
+      "romaji": "koe"
+    },
+    {
+      "kanjiId": "kanji:U+58F0",
+      "type": "kun",
+      "kana": "こわ-",
+      "romaji": "kowa"
+    },
+    {
+      "kanjiId": "kanji:U+8033",
+      "type": "on",
+      "kana": "ジ",
+      "romaji": "ji"
+    },
+    {
+      "kanjiId": "kanji:U+8033",
+      "type": "kun",
+      "kana": "みみ",
+      "romaji": "mimi"
+    },
+    {
+      "kanjiId": "kanji:U+76EE",
+      "type": "on",
+      "kana": "モク",
+      "romaji": "moku"
+    },
+    {
+      "kanjiId": "kanji:U+76EE",
+      "type": "on",
+      "kana": "ボク",
+      "romaji": "boku"
+    },
+    {
+      "kanjiId": "kanji:U+76EE",
+      "type": "kun",
+      "kana": "め",
+      "romaji": "me"
+    },
+    {
+      "kanjiId": "kanji:U+76EE",
+      "type": "kun",
+      "kana": "-め",
+      "romaji": "me"
+    },
+    {
+      "kanjiId": "kanji:U+76EE",
+      "type": "kun",
+      "kana": "ま-",
+      "romaji": "ma"
+    },
+    {
+      "kanjiId": "kanji:U+4F53",
+      "type": "on",
+      "kana": "タイ",
+      "romaji": "tai"
+    },
+    {
+      "kanjiId": "kanji:U+4F53",
+      "type": "on",
+      "kana": "テイ",
+      "romaji": "tei"
+    },
+    {
+      "kanjiId": "kanji:U+4F53",
+      "type": "kun",
+      "kana": "からだ",
+      "romaji": "karada"
+    },
+    {
+      "kanjiId": "kanji:U+4F53",
+      "type": "kun",
+      "kana": "かたち",
+      "romaji": "katachi"
+    },
+    {
+      "kanjiId": "kanji:U+5FC3",
+      "type": "on",
+      "kana": "シン",
+      "romaji": "shin"
+    },
+    {
+      "kanjiId": "kanji:U+5FC3",
+      "type": "kun",
+      "kana": "こころ",
+      "romaji": "kokoro"
+    },
+    {
+      "kanjiId": "kanji:U+5FC3",
+      "type": "kun",
+      "kana": "-ごころ",
+      "romaji": "gokoro"
+    },
+    {
+      "kanjiId": "kanji:U+5927",
+      "type": "on",
+      "kana": "ダイ",
+      "romaji": "dai"
+    },
+    {
+      "kanjiId": "kanji:U+5927",
+      "type": "on",
+      "kana": "タイ",
+      "romaji": "tai"
+    },
+    {
+      "kanjiId": "kanji:U+5927",
+      "type": "kun",
+      "kana": "おお-",
+      "romaji": "oo"
+    },
+    {
+      "kanjiId": "kanji:U+5927",
+      "type": "kun",
+      "kana": "おお.きい",
+      "romaji": "ookii"
+    },
+    {
+      "kanjiId": "kanji:U+5927",
+      "type": "kun",
+      "kana": "-おお.いに",
+      "romaji": "ooini"
+    },
+    {
+      "kanjiId": "kanji:U+5C0F",
+      "type": "on",
+      "kana": "ショウ",
+      "romaji": "shou"
+    },
+    {
+      "kanjiId": "kanji:U+5C0F",
+      "type": "kun",
+      "kana": "ちい.さい",
+      "romaji": "chiisai"
+    },
+    {
+      "kanjiId": "kanji:U+5C0F",
+      "type": "kun",
+      "kana": "こ-",
+      "romaji": "ko"
+    },
+    {
+      "kanjiId": "kanji:U+5C0F",
+      "type": "kun",
+      "kana": "お-",
+      "romaji": "o"
+    },
+    {
+      "kanjiId": "kanji:U+5C0F",
+      "type": "kun",
+      "kana": "さ-",
+      "romaji": "sa"
+    },
+    {
+      "kanjiId": "kanji:U+591A",
+      "type": "on",
+      "kana": "タ",
+      "romaji": "ta"
+    },
+    {
+      "kanjiId": "kanji:U+591A",
+      "type": "kun",
+      "kana": "おお.い",
+      "romaji": "ooi"
+    },
+    {
+      "kanjiId": "kanji:U+591A",
+      "type": "kun",
+      "kana": "まさ.に",
+      "romaji": "masani"
+    },
+    {
+      "kanjiId": "kanji:U+591A",
+      "type": "kun",
+      "kana": "まさ.る",
+      "romaji": "masaru"
+    },
+    {
+      "kanjiId": "kanji:U+5C11",
+      "type": "on",
+      "kana": "ショウ",
+      "romaji": "shou"
+    },
+    {
+      "kanjiId": "kanji:U+5C11",
+      "type": "kun",
+      "kana": "すく.ない",
+      "romaji": "sukunai"
+    },
+    {
+      "kanjiId": "kanji:U+5C11",
+      "type": "kun",
+      "kana": "すこ.し",
+      "romaji": "sukoshi"
+    },
+    {
+      "kanjiId": "kanji:U+9577",
+      "type": "on",
+      "kana": "チョウ",
+      "romaji": "chou"
+    },
+    {
+      "kanjiId": "kanji:U+9577",
+      "type": "kun",
+      "kana": "なが.い",
+      "romaji": "nagai"
+    },
+    {
+      "kanjiId": "kanji:U+9577",
+      "type": "kun",
+      "kana": "おさ",
+      "romaji": "osa"
+    },
+    {
+      "kanjiId": "kanji:U+77ED",
+      "type": "on",
+      "kana": "タン",
+      "romaji": "tan"
+    },
+    {
+      "kanjiId": "kanji:U+77ED",
+      "type": "kun",
+      "kana": "みじか.い",
+      "romaji": "mijikai"
+    },
+    {
+      "kanjiId": "kanji:U+9AD8",
+      "type": "on",
+      "kana": "コウ",
+      "romaji": "kou"
+    },
+    {
+      "kanjiId": "kanji:U+9AD8",
+      "type": "kun",
+      "kana": "たか.い",
+      "romaji": "takai"
+    },
+    {
+      "kanjiId": "kanji:U+9AD8",
+      "type": "kun",
+      "kana": "たか",
+      "romaji": "taka"
+    },
+    {
+      "kanjiId": "kanji:U+9AD8",
+      "type": "kun",
+      "kana": "-だか",
+      "romaji": "daka"
+    },
+    {
+      "kanjiId": "kanji:U+9AD8",
+      "type": "kun",
+      "kana": "たか.まる",
+      "romaji": "takamaru"
+    },
+    {
+      "kanjiId": "kanji:U+9AD8",
+      "type": "kun",
+      "kana": "たか.める",
+      "romaji": "takameru"
+    },
+    {
+      "kanjiId": "kanji:U+5B89",
+      "type": "on",
+      "kana": "アン",
+      "romaji": "an"
+    },
+    {
+      "kanjiId": "kanji:U+5B89",
+      "type": "kun",
+      "kana": "やす.い",
+      "romaji": "yasui"
+    },
+    {
+      "kanjiId": "kanji:U+5B89",
+      "type": "kun",
+      "kana": "やす.まる",
+      "romaji": "yasumaru"
+    },
+    {
+      "kanjiId": "kanji:U+5B89",
+      "type": "kun",
+      "kana": "やす",
+      "romaji": "yasu"
+    },
+    {
+      "kanjiId": "kanji:U+5B89",
+      "type": "kun",
+      "kana": "やす.らか",
+      "romaji": "yasuraka"
+    },
+    {
+      "kanjiId": "kanji:U+65B0",
+      "type": "on",
+      "kana": "シン",
+      "romaji": "shin"
+    },
+    {
+      "kanjiId": "kanji:U+65B0",
+      "type": "kun",
+      "kana": "あたら.しい",
+      "romaji": "atarashii"
+    },
+    {
+      "kanjiId": "kanji:U+65B0",
+      "type": "kun",
+      "kana": "あら.た",
+      "romaji": "arata"
+    },
+    {
+      "kanjiId": "kanji:U+65B0",
+      "type": "kun",
+      "kana": "あら-",
+      "romaji": "ara"
+    },
+    {
+      "kanjiId": "kanji:U+65B0",
+      "type": "kun",
+      "kana": "にい-",
+      "romaji": "nii"
+    },
+    {
+      "kanjiId": "kanji:U+53E4",
+      "type": "on",
+      "kana": "コ",
+      "romaji": "ko"
+    },
+    {
+      "kanjiId": "kanji:U+53E4",
+      "type": "kun",
+      "kana": "ふる.い",
+      "romaji": "furui"
+    },
+    {
+      "kanjiId": "kanji:U+53E4",
+      "type": "kun",
+      "kana": "ふる-",
+      "romaji": "furu"
+    },
+    {
+      "kanjiId": "kanji:U+53E4",
+      "type": "kun",
+      "kana": "-ふる.す",
+      "romaji": "furusu"
+    },
+    {
+      "kanjiId": "kanji:U+660E",
+      "type": "on",
+      "kana": "メイ",
+      "romaji": "mei"
+    },
+    {
+      "kanjiId": "kanji:U+660E",
+      "type": "on",
+      "kana": "ミョウ",
+      "romaji": "myou"
+    },
+    {
+      "kanjiId": "kanji:U+660E",
+      "type": "on",
+      "kana": "ミン",
+      "romaji": "min"
+    },
+    {
+      "kanjiId": "kanji:U+660E",
+      "type": "kun",
+      "kana": "あ.かり",
+      "romaji": "akari"
+    },
+    {
+      "kanjiId": "kanji:U+660E",
+      "type": "kun",
+      "kana": "あか.るい",
+      "romaji": "akarui"
+    },
+    {
+      "kanjiId": "kanji:U+660E",
+      "type": "kun",
+      "kana": "あか.るむ",
+      "romaji": "akarumu"
+    },
+    {
+      "kanjiId": "kanji:U+660E",
+      "type": "kun",
+      "kana": "あか.らむ",
+      "romaji": "akaramu"
+    },
+    {
+      "kanjiId": "kanji:U+660E",
+      "type": "kun",
+      "kana": "あき.らか",
+      "romaji": "akiraka"
+    },
+    {
+      "kanjiId": "kanji:U+660E",
+      "type": "kun",
+      "kana": "あ.ける",
+      "romaji": "akeru"
+    },
+    {
+      "kanjiId": "kanji:U+660E",
+      "type": "kun",
+      "kana": "-あ.け",
+      "romaji": "ake"
+    },
+    {
+      "kanjiId": "kanji:U+660E",
+      "type": "kun",
+      "kana": "あ.く",
+      "romaji": "aku"
+    },
+    {
+      "kanjiId": "kanji:U+660E",
+      "type": "kun",
+      "kana": "あ.くる",
+      "romaji": "akuru"
+    },
+    {
+      "kanjiId": "kanji:U+660E",
+      "type": "kun",
+      "kana": "あ.かす",
+      "romaji": "akasu"
+    },
+    {
+      "kanjiId": "kanji:U+6697",
+      "type": "on",
+      "kana": "アン",
+      "romaji": "an"
+    },
+    {
+      "kanjiId": "kanji:U+6697",
+      "type": "kun",
+      "kana": "くら.い",
+      "romaji": "kurai"
+    },
+    {
+      "kanjiId": "kanji:U+6697",
+      "type": "kun",
+      "kana": "くら.む",
+      "romaji": "kuramu"
+    },
+    {
+      "kanjiId": "kanji:U+6697",
+      "type": "kun",
+      "kana": "くれ.る",
+      "romaji": "kureru"
+    },
+    {
+      "kanjiId": "kanji:U+6691",
+      "type": "on",
+      "kana": "ショ",
+      "romaji": "sho"
+    },
+    {
+      "kanjiId": "kanji:U+6691",
+      "type": "kun",
+      "kana": "あつ.い",
+      "romaji": "atsui"
+    },
+    {
+      "kanjiId": "kanji:U+5BD2",
+      "type": "on",
+      "kana": "カン",
+      "romaji": "kan"
+    },
+    {
+      "kanjiId": "kanji:U+5BD2",
+      "type": "kun",
+      "kana": "さむ.い",
+      "romaji": "samui"
+    },
+    {
+      "kanjiId": "kanji:U+5F37",
+      "type": "on",
+      "kana": "キョウ",
+      "romaji": "kyou"
+    },
+    {
+      "kanjiId": "kanji:U+5F37",
+      "type": "on",
+      "kana": "ゴウ",
+      "romaji": "gou"
+    },
+    {
+      "kanjiId": "kanji:U+5F37",
+      "type": "kun",
+      "kana": "つよ.い",
+      "romaji": "tsuyoi"
+    },
+    {
+      "kanjiId": "kanji:U+5F37",
+      "type": "kun",
+      "kana": "つよ.まる",
+      "romaji": "tsuyomaru"
+    },
+    {
+      "kanjiId": "kanji:U+5F37",
+      "type": "kun",
+      "kana": "つよ.める",
+      "romaji": "tsuyomeru"
+    },
+    {
+      "kanjiId": "kanji:U+5F37",
+      "type": "kun",
+      "kana": "し.いる",
+      "romaji": "shiiru"
+    },
+    {
+      "kanjiId": "kanji:U+5F37",
+      "type": "kun",
+      "kana": "こわ.い",
+      "romaji": "kowai"
+    },
+    {
+      "kanjiId": "kanji:U+5F31",
+      "type": "on",
+      "kana": "ジャク",
+      "romaji": "jaku"
+    },
+    {
+      "kanjiId": "kanji:U+5F31",
+      "type": "kun",
+      "kana": "よわ.い",
+      "romaji": "yowai"
+    },
+    {
+      "kanjiId": "kanji:U+5F31",
+      "type": "kun",
+      "kana": "よわ.る",
+      "romaji": "yowaru"
+    },
+    {
+      "kanjiId": "kanji:U+5F31",
+      "type": "kun",
+      "kana": "よわ.まる",
+      "romaji": "yowamaru"
+    },
+    {
+      "kanjiId": "kanji:U+5F31",
+      "type": "kun",
+      "kana": "よわ.める",
+      "romaji": "yowameru"
+    },
+    {
+      "kanjiId": "kanji:U+8FD1",
+      "type": "on",
+      "kana": "キン",
+      "romaji": "kin"
+    },
+    {
+      "kanjiId": "kanji:U+8FD1",
+      "type": "on",
+      "kana": "コン",
+      "romaji": "kon"
+    },
+    {
+      "kanjiId": "kanji:U+8FD1",
+      "type": "kun",
+      "kana": "ちか.い",
+      "romaji": "chikai"
+    },
+    {
+      "kanjiId": "kanji:U+9060",
+      "type": "on",
+      "kana": "エン",
+      "romaji": "en"
+    },
+    {
+      "kanjiId": "kanji:U+9060",
+      "type": "on",
+      "kana": "オン",
+      "romaji": "on"
+    },
+    {
+      "kanjiId": "kanji:U+9060",
+      "type": "kun",
+      "kana": "とお.い",
+      "romaji": "tooi"
+    },
+    {
+      "kanjiId": "kanji:U+592A",
+      "type": "on",
+      "kana": "タイ",
+      "romaji": "tai"
+    },
+    {
+      "kanjiId": "kanji:U+592A",
+      "type": "on",
+      "kana": "タ",
+      "romaji": "ta"
+    },
+    {
+      "kanjiId": "kanji:U+592A",
+      "type": "kun",
+      "kana": "ふと.い",
+      "romaji": "futoi"
+    },
+    {
+      "kanjiId": "kanji:U+592A",
+      "type": "kun",
+      "kana": "ふと.る",
+      "romaji": "futoru"
+    },
+    {
+      "kanjiId": "kanji:U+5E83",
+      "type": "on",
+      "kana": "コウ",
+      "romaji": "kou"
+    },
+    {
+      "kanjiId": "kanji:U+5E83",
+      "type": "kun",
+      "kana": "ひろ.い",
+      "romaji": "hiroi"
+    },
+    {
+      "kanjiId": "kanji:U+5E83",
+      "type": "kun",
+      "kana": "ひろ.まる",
+      "romaji": "hiromaru"
+    },
+    {
+      "kanjiId": "kanji:U+5E83",
+      "type": "kun",
+      "kana": "ひろ.める",
+      "romaji": "hiromeru"
+    },
+    {
+      "kanjiId": "kanji:U+5E83",
+      "type": "kun",
+      "kana": "ひろ.がる",
+      "romaji": "hirogaru"
+    },
+    {
+      "kanjiId": "kanji:U+5E83",
+      "type": "kun",
+      "kana": "ひろ.げる",
+      "romaji": "hirogeru"
+    },
+    {
+      "kanjiId": "kanji:U+8D64",
+      "type": "on",
+      "kana": "セキ",
+      "romaji": "seki"
+    },
+    {
+      "kanjiId": "kanji:U+8D64",
+      "type": "on",
+      "kana": "シャク",
+      "romaji": "shaku"
+    },
+    {
+      "kanjiId": "kanji:U+8D64",
+      "type": "kun",
+      "kana": "あか",
+      "romaji": "aka"
+    },
+    {
+      "kanjiId": "kanji:U+8D64",
+      "type": "kun",
+      "kana": "あか-",
+      "romaji": "aka"
+    },
+    {
+      "kanjiId": "kanji:U+8D64",
+      "type": "kun",
+      "kana": "あか.い",
+      "romaji": "akai"
+    },
+    {
+      "kanjiId": "kanji:U+8D64",
+      "type": "kun",
+      "kana": "あか.らむ",
+      "romaji": "akaramu"
+    },
+    {
+      "kanjiId": "kanji:U+8D64",
+      "type": "kun",
+      "kana": "あか.らめる",
+      "romaji": "akarameru"
+    },
+    {
+      "kanjiId": "kanji:U+767D",
+      "type": "on",
+      "kana": "ハク",
+      "romaji": "haku"
+    },
+    {
+      "kanjiId": "kanji:U+767D",
+      "type": "on",
+      "kana": "ビャク",
+      "romaji": "byaku"
+    },
+    {
+      "kanjiId": "kanji:U+767D",
+      "type": "kun",
+      "kana": "しろ",
+      "romaji": "shiro"
+    },
+    {
+      "kanjiId": "kanji:U+767D",
+      "type": "kun",
+      "kana": "しら-",
+      "romaji": "shira"
+    },
+    {
+      "kanjiId": "kanji:U+767D",
+      "type": "kun",
+      "kana": "しろ.い",
+      "romaji": "shiroi"
+    },
+    {
+      "kanjiId": "kanji:U+9752",
+      "type": "on",
+      "kana": "セイ",
+      "romaji": "sei"
+    },
+    {
+      "kanjiId": "kanji:U+9752",
+      "type": "on",
+      "kana": "ショウ",
+      "romaji": "shou"
+    },
+    {
+      "kanjiId": "kanji:U+9752",
+      "type": "kun",
+      "kana": "あお",
+      "romaji": "ao"
+    },
+    {
+      "kanjiId": "kanji:U+9752",
+      "type": "kun",
+      "kana": "あお-",
+      "romaji": "ao"
+    },
+    {
+      "kanjiId": "kanji:U+9752",
+      "type": "kun",
+      "kana": "あお.い",
+      "romaji": "aoi"
+    },
+    {
+      "kanjiId": "kanji:U+9ED2",
+      "type": "on",
+      "kana": "コク",
+      "romaji": "koku"
+    },
+    {
+      "kanjiId": "kanji:U+9ED2",
+      "type": "kun",
+      "kana": "くろ",
+      "romaji": "kuro"
+    },
+    {
+      "kanjiId": "kanji:U+9ED2",
+      "type": "kun",
+      "kana": "くろ.ずむ",
+      "romaji": "kurozumu"
+    },
+    {
+      "kanjiId": "kanji:U+9ED2",
+      "type": "kun",
+      "kana": "くろ.い",
+      "romaji": "kuroi"
+    },
+    {
+      "kanjiId": "kanji:U+9EC4",
+      "type": "on",
+      "kana": "コウ",
+      "romaji": "kou"
+    },
+    {
+      "kanjiId": "kanji:U+9EC4",
+      "type": "on",
+      "kana": "オウ",
+      "romaji": "ou"
+    },
+    {
+      "kanjiId": "kanji:U+9EC4",
+      "type": "kun",
+      "kana": "き",
+      "romaji": "ki"
+    },
+    {
+      "kanjiId": "kanji:U+9EC4",
+      "type": "kun",
+      "kana": "こ-",
+      "romaji": "ko"
+    },
+    {
+      "kanjiId": "kanji:U+8272",
+      "type": "on",
+      "kana": "ショク",
+      "romaji": "shoku"
+    },
+    {
+      "kanjiId": "kanji:U+8272",
+      "type": "on",
+      "kana": "シキ",
+      "romaji": "shiki"
+    },
+    {
+      "kanjiId": "kanji:U+8272",
+      "type": "kun",
+      "kana": "いろ",
+      "romaji": "iro"
+    },
+    {
+      "kanjiId": "kanji:U+53F3",
+      "type": "on",
+      "kana": "ウ",
+      "romaji": "u"
+    },
+    {
+      "kanjiId": "kanji:U+53F3",
+      "type": "on",
+      "kana": "ユウ",
+      "romaji": "yuu"
+    },
+    {
+      "kanjiId": "kanji:U+53F3",
+      "type": "kun",
+      "kana": "みぎ",
+      "romaji": "migi"
+    },
+    {
+      "kanjiId": "kanji:U+5DE6",
+      "type": "on",
+      "kana": "サ",
+      "romaji": "sa"
+    },
+    {
+      "kanjiId": "kanji:U+5DE6",
+      "type": "on",
+      "kana": "シャ",
+      "romaji": "sha"
+    },
+    {
+      "kanjiId": "kanji:U+5DE6",
+      "type": "kun",
+      "kana": "ひだり",
+      "romaji": "hidari"
+    },
+    {
+      "kanjiId": "kanji:U+4E0A",
+      "type": "on",
+      "kana": "ジョウ",
+      "romaji": "jou"
+    },
+    {
+      "kanjiId": "kanji:U+4E0A",
+      "type": "on",
+      "kana": "ショウ",
+      "romaji": "shou"
+    },
+    {
+      "kanjiId": "kanji:U+4E0A",
+      "type": "on",
+      "kana": "シャン",
+      "romaji": "shan"
+    },
+    {
+      "kanjiId": "kanji:U+4E0A",
+      "type": "kun",
+      "kana": "うえ",
+      "romaji": "ue"
+    },
+    {
+      "kanjiId": "kanji:U+4E0A",
+      "type": "kun",
+      "kana": "-うえ",
+      "romaji": "ue"
+    },
+    {
+      "kanjiId": "kanji:U+4E0A",
+      "type": "kun",
+      "kana": "うわ-",
+      "romaji": "uwa"
+    },
+    {
+      "kanjiId": "kanji:U+4E0A",
+      "type": "kun",
+      "kana": "かみ",
+      "romaji": "kami"
+    },
+    {
+      "kanjiId": "kanji:U+4E0A",
+      "type": "kun",
+      "kana": "あ.げる",
+      "romaji": "ageru"
+    },
+    {
+      "kanjiId": "kanji:U+4E0A",
+      "type": "kun",
+      "kana": "-あ.げる",
+      "romaji": "ageru"
+    },
+    {
+      "kanjiId": "kanji:U+4E0A",
+      "type": "kun",
+      "kana": "あ.がる",
+      "romaji": "agaru"
+    },
+    {
+      "kanjiId": "kanji:U+4E0A",
+      "type": "kun",
+      "kana": "-あ.がる",
+      "romaji": "agaru"
+    },
+    {
+      "kanjiId": "kanji:U+4E0A",
+      "type": "kun",
+      "kana": "あ.がり",
+      "romaji": "agari"
+    },
+    {
+      "kanjiId": "kanji:U+4E0A",
+      "type": "kun",
+      "kana": "-あ.がり",
+      "romaji": "agari"
+    },
+    {
+      "kanjiId": "kanji:U+4E0A",
+      "type": "kun",
+      "kana": "のぼ.る",
+      "romaji": "noboru"
+    },
+    {
+      "kanjiId": "kanji:U+4E0A",
+      "type": "kun",
+      "kana": "のぼ.り",
+      "romaji": "nobori"
+    },
+    {
+      "kanjiId": "kanji:U+4E0A",
+      "type": "kun",
+      "kana": "のぼ.せる",
+      "romaji": "noboseru"
+    },
+    {
+      "kanjiId": "kanji:U+4E0A",
+      "type": "kun",
+      "kana": "のぼ.す",
+      "romaji": "nobosu"
+    },
+    {
+      "kanjiId": "kanji:U+4E0A",
+      "type": "kun",
+      "kana": "たてまつ.る",
+      "romaji": "tatematsuru"
+    },
+    {
+      "kanjiId": "kanji:U+4E0B",
+      "type": "on",
+      "kana": "カ",
+      "romaji": "ka"
+    },
+    {
+      "kanjiId": "kanji:U+4E0B",
+      "type": "on",
+      "kana": "ゲ",
+      "romaji": "ge"
+    },
+    {
+      "kanjiId": "kanji:U+4E0B",
+      "type": "kun",
+      "kana": "した",
+      "romaji": "shita"
+    },
+    {
+      "kanjiId": "kanji:U+4E0B",
+      "type": "kun",
+      "kana": "しも",
+      "romaji": "shimo"
+    },
+    {
+      "kanjiId": "kanji:U+4E0B",
+      "type": "kun",
+      "kana": "もと",
+      "romaji": "moto"
+    },
+    {
+      "kanjiId": "kanji:U+4E0B",
+      "type": "kun",
+      "kana": "さ.げる",
+      "romaji": "sageru"
+    },
+    {
+      "kanjiId": "kanji:U+4E0B",
+      "type": "kun",
+      "kana": "さ.がる",
+      "romaji": "sagaru"
+    },
+    {
+      "kanjiId": "kanji:U+4E0B",
+      "type": "kun",
+      "kana": "くだ.る",
+      "romaji": "kudaru"
+    },
+    {
+      "kanjiId": "kanji:U+4E0B",
+      "type": "kun",
+      "kana": "くだ.り",
+      "romaji": "kudari"
+    },
+    {
+      "kanjiId": "kanji:U+4E0B",
+      "type": "kun",
+      "kana": "くだ.す",
+      "romaji": "kudasu"
+    },
+    {
+      "kanjiId": "kanji:U+4E0B",
+      "type": "kun",
+      "kana": "-くだ.す",
+      "romaji": "kudasu"
+    },
+    {
+      "kanjiId": "kanji:U+4E0B",
+      "type": "kun",
+      "kana": "くだ.さる",
+      "romaji": "kudasaru"
+    },
+    {
+      "kanjiId": "kanji:U+4E0B",
+      "type": "kun",
+      "kana": "お.ろす",
+      "romaji": "orosu"
+    },
+    {
+      "kanjiId": "kanji:U+4E0B",
+      "type": "kun",
+      "kana": "お.りる",
+      "romaji": "oriru"
+    },
+    {
+      "kanjiId": "kanji:U+4E2D",
+      "type": "on",
+      "kana": "チュウ",
+      "romaji": "chuu"
+    },
+    {
+      "kanjiId": "kanji:U+4E2D",
+      "type": "kun",
+      "kana": "なか",
+      "romaji": "naka"
+    },
+    {
+      "kanjiId": "kanji:U+4E2D",
+      "type": "kun",
+      "kana": "うち",
+      "romaji": "uchi"
+    },
+    {
+      "kanjiId": "kanji:U+4E2D",
+      "type": "kun",
+      "kana": "あた.る",
+      "romaji": "ataru"
+    },
+    {
+      "kanjiId": "kanji:U+5916",
+      "type": "on",
+      "kana": "ガイ",
+      "romaji": "gai"
+    },
+    {
+      "kanjiId": "kanji:U+5916",
+      "type": "on",
+      "kana": "ゲ",
+      "romaji": "ge"
+    },
+    {
+      "kanjiId": "kanji:U+5916",
+      "type": "kun",
+      "kana": "そと",
+      "romaji": "soto"
+    },
+    {
+      "kanjiId": "kanji:U+5916",
+      "type": "kun",
+      "kana": "ほか",
+      "romaji": "hoka"
+    },
+    {
+      "kanjiId": "kanji:U+5916",
+      "type": "kun",
+      "kana": "はず.す",
+      "romaji": "hazusu"
+    },
+    {
+      "kanjiId": "kanji:U+5916",
+      "type": "kun",
+      "kana": "はず.れる",
+      "romaji": "hazureru"
+    },
+    {
+      "kanjiId": "kanji:U+5916",
+      "type": "kun",
+      "kana": "と-",
+      "romaji": "to"
+    },
+    {
+      "kanjiId": "kanji:U+524D",
+      "type": "on",
+      "kana": "ゼン",
+      "romaji": "zen"
+    },
+    {
+      "kanjiId": "kanji:U+524D",
+      "type": "kun",
+      "kana": "まえ",
+      "romaji": "mae"
+    },
+    {
+      "kanjiId": "kanji:U+524D",
+      "type": "kun",
+      "kana": "-まえ",
+      "romaji": "mae"
+    },
+    {
+      "kanjiId": "kanji:U+5F8C",
+      "type": "on",
+      "kana": "ゴ",
+      "romaji": "go"
+    },
+    {
+      "kanjiId": "kanji:U+5F8C",
+      "type": "on",
+      "kana": "コウ",
+      "romaji": "kou"
+    },
+    {
+      "kanjiId": "kanji:U+5F8C",
+      "type": "kun",
+      "kana": "のち",
+      "romaji": "nochi"
+    },
+    {
+      "kanjiId": "kanji:U+5F8C",
+      "type": "kun",
+      "kana": "うし.ろ",
+      "romaji": "ushiro"
+    },
+    {
+      "kanjiId": "kanji:U+5F8C",
+      "type": "kun",
+      "kana": "うしろ",
+      "romaji": "ushiro"
+    },
+    {
+      "kanjiId": "kanji:U+5F8C",
+      "type": "kun",
+      "kana": "あと",
+      "romaji": "ato"
+    },
+    {
+      "kanjiId": "kanji:U+5F8C",
+      "type": "kun",
+      "kana": "おく.れる",
+      "romaji": "okureru"
+    },
+    {
+      "kanjiId": "kanji:U+5317",
+      "type": "on",
+      "kana": "ホク",
+      "romaji": "hoku"
+    },
+    {
+      "kanjiId": "kanji:U+5317",
+      "type": "kun",
+      "kana": "きた",
+      "romaji": "kita"
+    },
+    {
+      "kanjiId": "kanji:U+5357",
+      "type": "on",
+      "kana": "ナン",
+      "romaji": "nan"
+    },
+    {
+      "kanjiId": "kanji:U+5357",
+      "type": "on",
+      "kana": "ナ",
+      "romaji": "na"
+    },
+    {
+      "kanjiId": "kanji:U+5357",
+      "type": "kun",
+      "kana": "みなみ",
+      "romaji": "minami"
+    },
+    {
+      "kanjiId": "kanji:U+6771",
+      "type": "on",
+      "kana": "トウ",
+      "romaji": "tou"
+    },
+    {
+      "kanjiId": "kanji:U+6771",
+      "type": "kun",
+      "kana": "ひがし",
+      "romaji": "higashi"
+    },
+    {
+      "kanjiId": "kanji:U+897F",
+      "type": "on",
+      "kana": "セイ",
+      "romaji": "sei"
+    },
+    {
+      "kanjiId": "kanji:U+897F",
+      "type": "on",
+      "kana": "サイ",
+      "romaji": "sai"
+    },
+    {
+      "kanjiId": "kanji:U+897F",
+      "type": "on",
+      "kana": "ス",
+      "romaji": "su"
+    },
+    {
+      "kanjiId": "kanji:U+897F",
+      "type": "kun",
+      "kana": "にし",
+      "romaji": "nishi"
+    },
+    {
+      "kanjiId": "kanji:U+6797",
+      "type": "on",
+      "kana": "リン",
+      "romaji": "rin"
+    },
+    {
+      "kanjiId": "kanji:U+6797",
+      "type": "kun",
+      "kana": "はやし",
+      "romaji": "hayashi"
+    },
+    {
+      "kanjiId": "kanji:U+68EE",
+      "type": "on",
+      "kana": "シン",
+      "romaji": "shin"
+    },
+    {
+      "kanjiId": "kanji:U+68EE",
+      "type": "kun",
+      "kana": "もり",
+      "romaji": "mori"
+    },
+    {
+      "kanjiId": "kanji:U+5C71",
+      "type": "on",
+      "kana": "サン",
+      "romaji": "san"
+    },
+    {
+      "kanjiId": "kanji:U+5C71",
+      "type": "on",
+      "kana": "セン",
+      "romaji": "sen"
+    },
+    {
+      "kanjiId": "kanji:U+5C71",
+      "type": "kun",
+      "kana": "やま",
+      "romaji": "yama"
+    },
+    {
+      "kanjiId": "kanji:U+5DDD",
+      "type": "on",
+      "kana": "セン",
+      "romaji": "sen"
+    },
+    {
+      "kanjiId": "kanji:U+5DDD",
+      "type": "kun",
+      "kana": "かわ",
+      "romaji": "kawa"
+    },
+    {
+      "kanjiId": "kanji:U+77F3",
+      "type": "on",
+      "kana": "セキ",
+      "romaji": "seki"
+    },
+    {
+      "kanjiId": "kanji:U+77F3",
+      "type": "on",
+      "kana": "シャク",
+      "romaji": "shaku"
+    },
+    {
+      "kanjiId": "kanji:U+77F3",
+      "type": "on",
+      "kana": "コク",
+      "romaji": "koku"
+    },
+    {
+      "kanjiId": "kanji:U+77F3",
+      "type": "kun",
+      "kana": "いし",
+      "romaji": "ishi"
+    },
+    {
+      "kanjiId": "kanji:U+5929",
+      "type": "on",
+      "kana": "テン",
+      "romaji": "ten"
+    },
+    {
+      "kanjiId": "kanji:U+5929",
+      "type": "kun",
+      "kana": "あまつ",
+      "romaji": "amatsu"
+    },
+    {
+      "kanjiId": "kanji:U+5929",
+      "type": "kun",
+      "kana": "あめ",
+      "romaji": "ame"
+    },
+    {
+      "kanjiId": "kanji:U+5929",
+      "type": "kun",
+      "kana": "あま-",
+      "romaji": "ama"
+    },
+    {
+      "kanjiId": "kanji:U+6C17",
+      "type": "on",
+      "kana": "キ",
+      "romaji": "ki"
+    },
+    {
+      "kanjiId": "kanji:U+6C17",
+      "type": "on",
+      "kana": "ケ",
+      "romaji": "ke"
+    },
+    {
+      "kanjiId": "kanji:U+6C17",
+      "type": "kun",
+      "kana": "いき",
+      "romaji": "iki"
+    },
+    {
+      "kanjiId": "kanji:U+6C17",
+      "type": "kun",
+      "kana": "き",
+      "romaji": "ki"
+    },
+    {
+      "kanjiId": "kanji:U+96E8",
+      "type": "on",
+      "kana": "ウ",
+      "romaji": "u"
+    },
+    {
+      "kanjiId": "kanji:U+96E8",
+      "type": "kun",
+      "kana": "あめ",
+      "romaji": "ame"
+    },
+    {
+      "kanjiId": "kanji:U+96E8",
+      "type": "kun",
+      "kana": "あま-",
+      "romaji": "ama"
+    },
+    {
+      "kanjiId": "kanji:U+96E8",
+      "type": "kun",
+      "kana": "-さめ",
+      "romaji": "same"
+    },
+    {
+      "kanjiId": "kanji:U+5915",
+      "type": "on",
+      "kana": "セキ",
+      "romaji": "seki"
+    },
+    {
+      "kanjiId": "kanji:U+5915",
+      "type": "kun",
+      "kana": "ゆう",
+      "romaji": "yuu"
+    },
+    {
+      "kanjiId": "kanji:U+7A7A",
+      "type": "on",
+      "kana": "クウ",
+      "romaji": "kuu"
+    },
+    {
+      "kanjiId": "kanji:U+7A7A",
+      "type": "kun",
+      "kana": "そら",
+      "romaji": "sora"
+    },
+    {
+      "kanjiId": "kanji:U+7A7A",
+      "type": "kun",
+      "kana": "あ.く",
+      "romaji": "aku"
+    },
+    {
+      "kanjiId": "kanji:U+7A7A",
+      "type": "kun",
+      "kana": "あ.き",
+      "romaji": "aki"
+    },
+    {
+      "kanjiId": "kanji:U+7A7A",
+      "type": "kun",
+      "kana": "あ.ける",
+      "romaji": "akeru"
+    },
+    {
+      "kanjiId": "kanji:U+7A7A",
+      "type": "kun",
+      "kana": "から",
+      "romaji": "kara"
+    },
+    {
+      "kanjiId": "kanji:U+7A7A",
+      "type": "kun",
+      "kana": "す.く",
+      "romaji": "suku"
+    },
+    {
+      "kanjiId": "kanji:U+7A7A",
+      "type": "kun",
+      "kana": "す.かす",
+      "romaji": "sukasu"
+    },
+    {
+      "kanjiId": "kanji:U+7A7A",
+      "type": "kun",
+      "kana": "むな.しい",
+      "romaji": "munashii"
+    },
+    {
+      "kanjiId": "kanji:U+96F2",
+      "type": "on",
+      "kana": "ウン",
+      "romaji": "un"
+    },
+    {
+      "kanjiId": "kanji:U+96F2",
+      "type": "kun",
+      "kana": "くも",
+      "romaji": "kumo"
+    },
+    {
+      "kanjiId": "kanji:U+96F2",
+      "type": "kun",
+      "kana": "-ぐも",
+      "romaji": "gumo"
+    },
+    {
+      "kanjiId": "kanji:U+96EA",
+      "type": "on",
+      "kana": "セツ",
+      "romaji": "setsu"
+    },
+    {
+      "kanjiId": "kanji:U+96EA",
+      "type": "kun",
+      "kana": "ゆき",
+      "romaji": "yuki"
+    },
+    {
+      "kanjiId": "kanji:U+6D77",
+      "type": "on",
+      "kana": "カイ",
+      "romaji": "kai"
+    },
+    {
+      "kanjiId": "kanji:U+6D77",
+      "type": "kun",
+      "kana": "うみ",
+      "romaji": "umi"
+    },
+    {
+      "kanjiId": "kanji:U+5730",
+      "type": "on",
+      "kana": "チ",
+      "romaji": "chi"
+    },
+    {
+      "kanjiId": "kanji:U+5730",
+      "type": "on",
+      "kana": "ジ",
+      "romaji": "ji"
+    },
+    {
+      "kanjiId": "kanji:U+6C60",
+      "type": "on",
+      "kana": "チ",
+      "romaji": "chi"
+    },
+    {
+      "kanjiId": "kanji:U+6C60",
+      "type": "kun",
+      "kana": "いけ",
+      "romaji": "ike"
+    },
+    {
+      "kanjiId": "kanji:U+98A8",
+      "type": "on",
+      "kana": "フウ",
+      "romaji": "fuu"
+    },
+    {
+      "kanjiId": "kanji:U+98A8",
+      "type": "on",
+      "kana": "フ",
+      "romaji": "fu"
+    },
+    {
+      "kanjiId": "kanji:U+98A8",
+      "type": "kun",
+      "kana": "かぜ",
+      "romaji": "kaze"
+    },
+    {
+      "kanjiId": "kanji:U+98A8",
+      "type": "kun",
+      "kana": "かざ-",
+      "romaji": "kaza"
+    },
+    {
+      "kanjiId": "kanji:U+7537",
+      "type": "on",
+      "kana": "ダン",
+      "romaji": "dan"
+    },
+    {
+      "kanjiId": "kanji:U+7537",
+      "type": "on",
+      "kana": "ナン",
+      "romaji": "nan"
+    },
+    {
+      "kanjiId": "kanji:U+7537",
+      "type": "kun",
+      "kana": "おとこ",
+      "romaji": "otoko"
+    },
+    {
+      "kanjiId": "kanji:U+7537",
+      "type": "kun",
+      "kana": "お",
+      "romaji": "o"
+    },
+    {
+      "kanjiId": "kanji:U+5973",
+      "type": "on",
+      "kana": "ジョ",
+      "romaji": "jo"
+    },
+    {
+      "kanjiId": "kanji:U+5973",
+      "type": "on",
+      "kana": "ニョ",
+      "romaji": "nyo"
+    },
+    {
+      "kanjiId": "kanji:U+5973",
+      "type": "on",
+      "kana": "ニョウ",
+      "romaji": "nyou"
+    },
+    {
+      "kanjiId": "kanji:U+5973",
+      "type": "kun",
+      "kana": "おんな",
+      "romaji": "onna"
+    },
+    {
+      "kanjiId": "kanji:U+5973",
+      "type": "kun",
+      "kana": "め",
+      "romaji": "me"
+    },
+    {
+      "kanjiId": "kanji:U+4EBA",
+      "type": "on",
+      "kana": "ジン",
+      "romaji": "jin"
+    },
+    {
+      "kanjiId": "kanji:U+4EBA",
+      "type": "on",
+      "kana": "ニン",
+      "romaji": "nin"
+    },
+    {
+      "kanjiId": "kanji:U+4EBA",
+      "type": "kun",
+      "kana": "ひと",
+      "romaji": "hito"
+    },
+    {
+      "kanjiId": "kanji:U+4EBA",
+      "type": "kun",
+      "kana": "-り",
+      "romaji": "ri"
+    },
+    {
+      "kanjiId": "kanji:U+4EBA",
+      "type": "kun",
+      "kana": "-と",
+      "romaji": "to"
+    },
+    {
+      "kanjiId": "kanji:U+738B",
+      "type": "on",
+      "kana": "オウ",
+      "romaji": "ou"
+    },
+    {
+      "kanjiId": "kanji:U+738B",
+      "type": "on",
+      "kana": "-ノウ",
+      "romaji": "nou"
+    },
+    {
+      "kanjiId": "kanji:U+5B50",
+      "type": "on",
+      "kana": "シ",
+      "romaji": "shi"
+    },
+    {
+      "kanjiId": "kanji:U+5B50",
+      "type": "on",
+      "kana": "ス",
+      "romaji": "su"
+    },
+    {
+      "kanjiId": "kanji:U+5B50",
+      "type": "on",
+      "kana": "ツ",
+      "romaji": "tsu"
+    },
+    {
+      "kanjiId": "kanji:U+5B50",
+      "type": "kun",
+      "kana": "こ",
+      "romaji": "ko"
+    },
+    {
+      "kanjiId": "kanji:U+5B50",
+      "type": "kun",
+      "kana": "-こ",
+      "romaji": "ko"
+    },
+    {
+      "kanjiId": "kanji:U+5B50",
+      "type": "kun",
+      "kana": "ね",
+      "romaji": "ne"
+    },
+    {
+      "kanjiId": "kanji:U+7236",
+      "type": "on",
+      "kana": "フ",
+      "romaji": "fu"
+    },
+    {
+      "kanjiId": "kanji:U+7236",
+      "type": "kun",
+      "kana": "ちち",
+      "romaji": "chichi"
+    },
+    {
+      "kanjiId": "kanji:U+6BCD",
+      "type": "on",
+      "kana": "ボ",
+      "romaji": "bo"
+    },
+    {
+      "kanjiId": "kanji:U+6BCD",
+      "type": "kun",
+      "kana": "はは",
+      "romaji": "haha"
+    },
+    {
+      "kanjiId": "kanji:U+6BCD",
+      "type": "kun",
+      "kana": "も",
+      "romaji": "mo"
+    },
+    {
+      "kanjiId": "kanji:U+5144",
+      "type": "on",
+      "kana": "ケイ",
+      "romaji": "kei"
+    },
+    {
+      "kanjiId": "kanji:U+5144",
+      "type": "on",
+      "kana": "キョウ",
+      "romaji": "kyou"
+    },
+    {
+      "kanjiId": "kanji:U+5144",
+      "type": "kun",
+      "kana": "あに",
+      "romaji": "ani"
+    },
+    {
+      "kanjiId": "kanji:U+5F1F",
+      "type": "on",
+      "kana": "テイ",
+      "romaji": "tei"
+    },
+    {
+      "kanjiId": "kanji:U+5F1F",
+      "type": "on",
+      "kana": "ダイ",
+      "romaji": "dai"
+    },
+    {
+      "kanjiId": "kanji:U+5F1F",
+      "type": "on",
+      "kana": "デ",
+      "romaji": "de"
+    },
+    {
+      "kanjiId": "kanji:U+5F1F",
+      "type": "kun",
+      "kana": "おとうと",
+      "romaji": "otouto"
+    },
+    {
+      "kanjiId": "kanji:U+59C9",
+      "type": "on",
+      "kana": "シ",
+      "romaji": "shi"
+    },
+    {
+      "kanjiId": "kanji:U+59C9",
+      "type": "kun",
+      "kana": "あね",
+      "romaji": "ane"
+    },
+    {
+      "kanjiId": "kanji:U+59C9",
+      "type": "kun",
+      "kana": "はは",
+      "romaji": "haha"
+    },
+    {
+      "kanjiId": "kanji:U+59B9",
+      "type": "on",
+      "kana": "マイ",
+      "romaji": "mai"
+    },
+    {
+      "kanjiId": "kanji:U+59B9",
+      "type": "kun",
+      "kana": "いもうと",
+      "romaji": "imouto"
+    },
+    {
+      "kanjiId": "kanji:U+540D",
+      "type": "on",
+      "kana": "メイ",
+      "romaji": "mei"
+    },
+    {
+      "kanjiId": "kanji:U+540D",
+      "type": "on",
+      "kana": "ミョウ",
+      "romaji": "myou"
+    },
+    {
+      "kanjiId": "kanji:U+540D",
+      "type": "kun",
+      "kana": "な",
+      "romaji": "na"
+    },
+    {
+      "kanjiId": "kanji:U+540D",
+      "type": "kun",
+      "kana": "-な",
+      "romaji": "na"
+    },
+    {
+      "kanjiId": "kanji:U+53CB",
+      "type": "on",
+      "kana": "ユウ",
+      "romaji": "yuu"
+    },
+    {
+      "kanjiId": "kanji:U+53CB",
+      "type": "kun",
+      "kana": "とも",
+      "romaji": "tomo"
+    },
+    {
+      "kanjiId": "kanji:U+89AA",
+      "type": "on",
+      "kana": "シン",
+      "romaji": "shin"
+    },
+    {
+      "kanjiId": "kanji:U+89AA",
+      "type": "kun",
+      "kana": "おや",
+      "romaji": "oya"
+    },
+    {
+      "kanjiId": "kanji:U+89AA",
+      "type": "kun",
+      "kana": "おや-",
+      "romaji": "oya"
+    },
+    {
+      "kanjiId": "kanji:U+89AA",
+      "type": "kun",
+      "kana": "した.しい",
+      "romaji": "shitashii"
+    },
+    {
+      "kanjiId": "kanji:U+89AA",
+      "type": "kun",
+      "kana": "した.しむ",
+      "romaji": "shitashimu"
+    },
+    {
+      "kanjiId": "kanji:U+72AC",
+      "type": "on",
+      "kana": "ケン",
+      "romaji": "ken"
+    },
+    {
+      "kanjiId": "kanji:U+72AC",
+      "type": "kun",
+      "kana": "いぬ",
+      "romaji": "inu"
+    },
+    {
+      "kanjiId": "kanji:U+72AC",
+      "type": "kun",
+      "kana": "いぬ-",
+      "romaji": "inu"
+    },
+    {
+      "kanjiId": "kanji:U+866B",
+      "type": "on",
+      "kana": "チュウ",
+      "romaji": "chuu"
+    },
+    {
+      "kanjiId": "kanji:U+866B",
+      "type": "on",
+      "kana": "キ",
+      "romaji": "ki"
+    },
+    {
+      "kanjiId": "kanji:U+866B",
+      "type": "kun",
+      "kana": "むし",
+      "romaji": "mushi"
+    },
+    {
+      "kanjiId": "kanji:U+8C9D",
+      "type": "on",
+      "kana": "バイ",
+      "romaji": "bai"
+    },
+    {
+      "kanjiId": "kanji:U+8C9D",
+      "type": "kun",
+      "kana": "かい",
+      "romaji": "kai"
+    },
+    {
+      "kanjiId": "kanji:U+725B",
+      "type": "on",
+      "kana": "ギュウ",
+      "romaji": "gyuu"
+    },
+    {
+      "kanjiId": "kanji:U+725B",
+      "type": "kun",
+      "kana": "うし",
+      "romaji": "ushi"
+    },
+    {
+      "kanjiId": "kanji:U+8089",
+      "type": "on",
+      "kana": "ニク",
+      "romaji": "niku"
+    },
+    {
+      "kanjiId": "kanji:U+8089",
+      "type": "kun",
+      "kana": "しし",
+      "romaji": "shishi"
+    },
+    {
+      "kanjiId": "kanji:U+9B5A",
+      "type": "on",
+      "kana": "ギョ",
+      "romaji": "gyo"
+    },
+    {
+      "kanjiId": "kanji:U+9B5A",
+      "type": "kun",
+      "kana": "うお",
+      "romaji": "uo"
+    },
+    {
+      "kanjiId": "kanji:U+9B5A",
+      "type": "kun",
+      "kana": "さかな",
+      "romaji": "sakana"
+    },
+    {
+      "kanjiId": "kanji:U+9B5A",
+      "type": "kun",
+      "kana": "-ざかな",
+      "romaji": "zakana"
+    },
+    {
+      "kanjiId": "kanji:U+99AC",
+      "type": "on",
+      "kana": "バ",
+      "romaji": "ba"
+    },
+    {
+      "kanjiId": "kanji:U+99AC",
+      "type": "on",
+      "kana": "メ",
+      "romaji": "me"
+    },
+    {
+      "kanjiId": "kanji:U+99AC",
+      "type": "on",
+      "kana": "マ",
+      "romaji": "ma"
+    },
+    {
+      "kanjiId": "kanji:U+99AC",
+      "type": "on",
+      "kana": "ボ",
+      "romaji": "bo"
+    },
+    {
+      "kanjiId": "kanji:U+99AC",
+      "type": "on",
+      "kana": "モ",
+      "romaji": "mo"
+    },
+    {
+      "kanjiId": "kanji:U+99AC",
+      "type": "kun",
+      "kana": "うま",
+      "romaji": "uma"
+    },
+    {
+      "kanjiId": "kanji:U+99AC",
+      "type": "kun",
+      "kana": "ま",
+      "romaji": "ma"
+    },
+    {
+      "kanjiId": "kanji:U+9CE5",
+      "type": "on",
+      "kana": "チョウ",
+      "romaji": "chou"
+    },
+    {
+      "kanjiId": "kanji:U+9CE5",
+      "type": "kun",
+      "kana": "とり",
+      "romaji": "tori"
+    },
+    {
+      "kanjiId": "kanji:U+82B1",
+      "type": "on",
+      "kana": "カ",
+      "romaji": "ka"
+    },
+    {
+      "kanjiId": "kanji:U+82B1",
+      "type": "on",
+      "kana": "ケ",
+      "romaji": "ke"
+    },
+    {
+      "kanjiId": "kanji:U+82B1",
+      "type": "kun",
+      "kana": "はな",
+      "romaji": "hana"
+    },
+    {
+      "kanjiId": "kanji:U+8349",
+      "type": "on",
+      "kana": "ソウ",
+      "romaji": "sou"
+    },
+    {
+      "kanjiId": "kanji:U+8349",
+      "type": "kun",
+      "kana": "くさ",
+      "romaji": "kusa"
+    },
+    {
+      "kanjiId": "kanji:U+8349",
+      "type": "kun",
+      "kana": "くさ-",
+      "romaji": "kusa"
+    },
+    {
+      "kanjiId": "kanji:U+8349",
+      "type": "kun",
+      "kana": "-ぐさ",
+      "romaji": "gusa"
+    },
+    {
+      "kanjiId": "kanji:U+7AF9",
+      "type": "on",
+      "kana": "チク",
+      "romaji": "chiku"
+    },
+    {
+      "kanjiId": "kanji:U+7AF9",
+      "type": "kun",
+      "kana": "たけ",
+      "romaji": "take"
+    },
+    {
+      "kanjiId": "kanji:U+7C73",
+      "type": "on",
+      "kana": "ベイ",
+      "romaji": "bei"
+    },
+    {
+      "kanjiId": "kanji:U+7C73",
+      "type": "on",
+      "kana": "マイ",
+      "romaji": "mai"
+    },
+    {
+      "kanjiId": "kanji:U+7C73",
+      "type": "on",
+      "kana": "メエトル",
+      "romaji": "meetoru"
+    },
+    {
+      "kanjiId": "kanji:U+7C73",
+      "type": "kun",
+      "kana": "こめ",
+      "romaji": "kome"
+    },
+    {
+      "kanjiId": "kanji:U+7C73",
+      "type": "kun",
+      "kana": "よね",
+      "romaji": "yone"
+    },
+    {
+      "kanjiId": "kanji:U+8336",
+      "type": "on",
+      "kana": "チャ",
+      "romaji": "cha"
+    },
+    {
+      "kanjiId": "kanji:U+8336",
+      "type": "on",
+      "kana": "サ",
+      "romaji": "sa"
+    },
+    {
+      "kanjiId": "kanji:U+98EF",
+      "type": "on",
+      "kana": "ハン",
+      "romaji": "han"
+    },
+    {
+      "kanjiId": "kanji:U+98EF",
+      "type": "kun",
+      "kana": "めし",
+      "romaji": "meshi"
+    },
+    {
+      "kanjiId": "kanji:U+5148",
+      "type": "on",
+      "kana": "セン",
+      "romaji": "sen"
+    },
+    {
+      "kanjiId": "kanji:U+5148",
+      "type": "kun",
+      "kana": "さき",
+      "romaji": "saki"
+    },
+    {
+      "kanjiId": "kanji:U+5148",
+      "type": "kun",
+      "kana": "ま.ず",
+      "romaji": "mazu"
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "type": "on",
+      "kana": "セイ",
+      "romaji": "sei"
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "type": "on",
+      "kana": "ショウ",
+      "romaji": "shou"
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "type": "kun",
+      "kana": "い.きる",
+      "romaji": "ikiru"
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "type": "kun",
+      "kana": "い.かす",
+      "romaji": "ikasu"
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "type": "kun",
+      "kana": "い.ける",
+      "romaji": "ikeru"
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "type": "kun",
+      "kana": "う.まれる",
+      "romaji": "umareru"
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "type": "kun",
+      "kana": "うま.れる",
+      "romaji": "umareru"
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "type": "kun",
+      "kana": "う.まれ",
+      "romaji": "umare"
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "type": "kun",
+      "kana": "うまれ",
+      "romaji": "umare"
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "type": "kun",
+      "kana": "う.む",
+      "romaji": "umu"
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "type": "kun",
+      "kana": "お.う",
+      "romaji": "ou"
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "type": "kun",
+      "kana": "は.える",
+      "romaji": "haeru"
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "type": "kun",
+      "kana": "は.やす",
+      "romaji": "hayasu"
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "type": "kun",
+      "kana": "き",
+      "romaji": "ki"
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "type": "kun",
+      "kana": "なま",
+      "romaji": "nama"
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "type": "kun",
+      "kana": "なま-",
+      "romaji": "nama"
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "type": "kun",
+      "kana": "な.る",
+      "romaji": "naru"
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "type": "kun",
+      "kana": "な.す",
+      "romaji": "nasu"
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "type": "kun",
+      "kana": "む.す",
+      "romaji": "musu"
+    },
+    {
+      "kanjiId": "kanji:U+751F",
+      "type": "kun",
+      "kana": "-う",
+      "romaji": "u"
+    },
+    {
+      "kanjiId": "kanji:U+672C",
+      "type": "on",
+      "kana": "ホン",
+      "romaji": "hon"
+    },
+    {
+      "kanjiId": "kanji:U+672C",
+      "type": "kun",
+      "kana": "もと",
+      "romaji": "moto"
+    },
+    {
+      "kanjiId": "kanji:U+6587",
+      "type": "on",
+      "kana": "ブン",
+      "romaji": "bun"
+    },
+    {
+      "kanjiId": "kanji:U+6587",
+      "type": "on",
+      "kana": "モン",
+      "romaji": "mon"
+    },
+    {
+      "kanjiId": "kanji:U+6587",
+      "type": "kun",
+      "kana": "ふみ",
+      "romaji": "fumi"
+    },
+    {
+      "kanjiId": "kanji:U+6587",
+      "type": "kun",
+      "kana": "あや",
+      "romaji": "aya"
+    },
+    {
+      "kanjiId": "kanji:U+5B57",
+      "type": "on",
+      "kana": "ジ",
+      "romaji": "ji"
+    },
+    {
+      "kanjiId": "kanji:U+5B57",
+      "type": "kun",
+      "kana": "あざ",
+      "romaji": "aza"
+    },
+    {
+      "kanjiId": "kanji:U+5B57",
+      "type": "kun",
+      "kana": "あざな",
+      "romaji": "azana"
+    },
+    {
+      "kanjiId": "kanji:U+5B57",
+      "type": "kun",
+      "kana": "-な",
+      "romaji": "na"
+    },
+    {
+      "kanjiId": "kanji:U+6B63",
+      "type": "on",
+      "kana": "セイ",
+      "romaji": "sei"
+    },
+    {
+      "kanjiId": "kanji:U+6B63",
+      "type": "on",
+      "kana": "ショウ",
+      "romaji": "shou"
+    },
+    {
+      "kanjiId": "kanji:U+6B63",
+      "type": "kun",
+      "kana": "ただ.しい",
+      "romaji": "tadashii"
+    },
+    {
+      "kanjiId": "kanji:U+6B63",
+      "type": "kun",
+      "kana": "ただ.す",
+      "romaji": "tadasu"
+    },
+    {
+      "kanjiId": "kanji:U+6B63",
+      "type": "kun",
+      "kana": "まさ",
+      "romaji": "masa"
+    },
+    {
+      "kanjiId": "kanji:U+6B63",
+      "type": "kun",
+      "kana": "まさ.に",
+      "romaji": "masani"
+    },
+    {
+      "kanjiId": "kanji:U+5B66",
+      "type": "on",
+      "kana": "ガク",
+      "romaji": "gaku"
+    },
+    {
+      "kanjiId": "kanji:U+5B66",
+      "type": "kun",
+      "kana": "まな.ぶ",
+      "romaji": "manabu"
+    },
+    {
+      "kanjiId": "kanji:U+6821",
+      "type": "on",
+      "kana": "コウ",
+      "romaji": "kou"
+    },
+    {
+      "kanjiId": "kanji:U+6821",
+      "type": "on",
+      "kana": "キョウ",
+      "romaji": "kyou"
+    },
+    {
+      "kanjiId": "kanji:U+7D19",
+      "type": "on",
+      "kana": "シ",
+      "romaji": "shi"
+    },
+    {
+      "kanjiId": "kanji:U+7D19",
+      "type": "kun",
+      "kana": "かみ",
+      "romaji": "kami"
+    },
+    {
+      "kanjiId": "kanji:U+8A9E",
+      "type": "on",
+      "kana": "ゴ",
+      "romaji": "go"
+    },
+    {
+      "kanjiId": "kanji:U+8A9E",
+      "type": "kun",
+      "kana": "かた.る",
+      "romaji": "kataru"
+    },
+    {
+      "kanjiId": "kanji:U+8A9E",
+      "type": "kun",
+      "kana": "かた.らう",
+      "romaji": "katarau"
+    },
+    {
+      "kanjiId": "kanji:U+70B9",
+      "type": "on",
+      "kana": "テン",
+      "romaji": "ten"
+    },
+    {
+      "kanjiId": "kanji:U+70B9",
+      "type": "kun",
+      "kana": "つ.ける",
+      "romaji": "tsukeru"
+    },
+    {
+      "kanjiId": "kanji:U+70B9",
+      "type": "kun",
+      "kana": "つ.く",
+      "romaji": "tsuku"
+    },
+    {
+      "kanjiId": "kanji:U+70B9",
+      "type": "kun",
+      "kana": "た.てる",
+      "romaji": "tateru"
+    },
+    {
+      "kanjiId": "kanji:U+70B9",
+      "type": "kun",
+      "kana": "さ.す",
+      "romaji": "sasu"
+    },
+    {
+      "kanjiId": "kanji:U+70B9",
+      "type": "kun",
+      "kana": "とぼ.す",
+      "romaji": "tobosu"
+    },
+    {
+      "kanjiId": "kanji:U+70B9",
+      "type": "kun",
+      "kana": "とも.す",
+      "romaji": "tomosu"
+    },
+    {
+      "kanjiId": "kanji:U+70B9",
+      "type": "kun",
+      "kana": "ぼち",
+      "romaji": "bochi"
+    },
+    {
+      "kanjiId": "kanji:U+56F3",
+      "type": "on",
+      "kana": "ズ",
+      "romaji": "zu"
+    },
+    {
+      "kanjiId": "kanji:U+56F3",
+      "type": "on",
+      "kana": "ト",
+      "romaji": "to"
+    },
+    {
+      "kanjiId": "kanji:U+56F3",
+      "type": "kun",
+      "kana": "え",
+      "romaji": "e"
+    },
+    {
+      "kanjiId": "kanji:U+56F3",
+      "type": "kun",
+      "kana": "はか.る",
+      "romaji": "hakaru"
+    },
+    {
+      "kanjiId": "kanji:U+5165",
+      "type": "on",
+      "kana": "ニュウ",
+      "romaji": "nyuu"
+    },
+    {
+      "kanjiId": "kanji:U+5165",
+      "type": "on",
+      "kana": "ジュ",
+      "romaji": "ju"
+    },
+    {
+      "kanjiId": "kanji:U+5165",
+      "type": "kun",
+      "kana": "い.る",
+      "romaji": "iru"
+    },
+    {
+      "kanjiId": "kanji:U+5165",
+      "type": "kun",
+      "kana": "-い.る",
+      "romaji": "iru"
+    },
+    {
+      "kanjiId": "kanji:U+5165",
+      "type": "kun",
+      "kana": "-い.り",
+      "romaji": "iri"
+    },
+    {
+      "kanjiId": "kanji:U+5165",
+      "type": "kun",
+      "kana": "い.れる",
+      "romaji": "ireru"
+    },
+    {
+      "kanjiId": "kanji:U+5165",
+      "type": "kun",
+      "kana": "-い.れ",
+      "romaji": "ire"
+    },
+    {
+      "kanjiId": "kanji:U+5165",
+      "type": "kun",
+      "kana": "はい.る",
+      "romaji": "hairu"
+    },
+    {
+      "kanjiId": "kanji:U+51FA",
+      "type": "on",
+      "kana": "シュツ",
+      "romaji": "shutsu"
+    },
+    {
+      "kanjiId": "kanji:U+51FA",
+      "type": "on",
+      "kana": "スイ",
+      "romaji": "sui"
+    },
+    {
+      "kanjiId": "kanji:U+51FA",
+      "type": "kun",
+      "kana": "で.る",
+      "romaji": "deru"
+    },
+    {
+      "kanjiId": "kanji:U+51FA",
+      "type": "kun",
+      "kana": "-で",
+      "romaji": "de"
+    },
+    {
+      "kanjiId": "kanji:U+51FA",
+      "type": "kun",
+      "kana": "だ.す",
+      "romaji": "dasu"
+    },
+    {
+      "kanjiId": "kanji:U+51FA",
+      "type": "kun",
+      "kana": "-だ.す",
+      "romaji": "dasu"
+    },
+    {
+      "kanjiId": "kanji:U+51FA",
+      "type": "kun",
+      "kana": "い.でる",
+      "romaji": "ideru"
+    },
+    {
+      "kanjiId": "kanji:U+51FA",
+      "type": "kun",
+      "kana": "い.だす",
+      "romaji": "idasu"
+    },
+    {
+      "kanjiId": "kanji:U+4F11",
+      "type": "on",
+      "kana": "キュウ",
+      "romaji": "kyuu"
+    },
+    {
+      "kanjiId": "kanji:U+4F11",
+      "type": "kun",
+      "kana": "やす.む",
+      "romaji": "yasumu"
+    },
+    {
+      "kanjiId": "kanji:U+4F11",
+      "type": "kun",
+      "kana": "やす.まる",
+      "romaji": "yasumaru"
+    },
+    {
+      "kanjiId": "kanji:U+4F11",
+      "type": "kun",
+      "kana": "やす.める",
+      "romaji": "yasumeru"
+    },
+    {
+      "kanjiId": "kanji:U+7ACB",
+      "type": "on",
+      "kana": "リツ",
+      "romaji": "ritsu"
+    },
+    {
+      "kanjiId": "kanji:U+7ACB",
+      "type": "on",
+      "kana": "リュウ",
+      "romaji": "ryuu"
+    },
+    {
+      "kanjiId": "kanji:U+7ACB",
+      "type": "on",
+      "kana": "リットル",
+      "romaji": "rittoru"
+    },
+    {
+      "kanjiId": "kanji:U+7ACB",
+      "type": "kun",
+      "kana": "た.つ",
+      "romaji": "tatsu"
+    },
+    {
+      "kanjiId": "kanji:U+7ACB",
+      "type": "kun",
+      "kana": "-た.つ",
+      "romaji": "tatsu"
+    },
+    {
+      "kanjiId": "kanji:U+7ACB",
+      "type": "kun",
+      "kana": "た.ち-",
+      "romaji": "tachi"
+    },
+    {
+      "kanjiId": "kanji:U+7ACB",
+      "type": "kun",
+      "kana": "た.てる",
+      "romaji": "tateru"
+    },
+    {
+      "kanjiId": "kanji:U+7ACB",
+      "type": "kun",
+      "kana": "-た.てる",
+      "romaji": "tateru"
+    },
+    {
+      "kanjiId": "kanji:U+7ACB",
+      "type": "kun",
+      "kana": "た.て-",
+      "romaji": "tate"
+    },
+    {
+      "kanjiId": "kanji:U+7ACB",
+      "type": "kun",
+      "kana": "たて-",
+      "romaji": "tate"
+    },
+    {
+      "kanjiId": "kanji:U+7ACB",
+      "type": "kun",
+      "kana": "-た.て",
+      "romaji": "tate"
+    },
+    {
+      "kanjiId": "kanji:U+7ACB",
+      "type": "kun",
+      "kana": "-だ.て",
+      "romaji": "date"
+    },
+    {
+      "kanjiId": "kanji:U+7ACB",
+      "type": "kun",
+      "kana": "-だ.てる",
+      "romaji": "dateru"
+    },
+    {
+      "kanjiId": "kanji:U+898B",
+      "type": "on",
+      "kana": "ケン",
+      "romaji": "ken"
+    },
+    {
+      "kanjiId": "kanji:U+898B",
+      "type": "kun",
+      "kana": "み.る",
+      "romaji": "miru"
+    },
+    {
+      "kanjiId": "kanji:U+898B",
+      "type": "kun",
+      "kana": "み.える",
+      "romaji": "mieru"
+    },
+    {
+      "kanjiId": "kanji:U+898B",
+      "type": "kun",
+      "kana": "み.せる",
+      "romaji": "miseru"
+    },
+    {
+      "kanjiId": "kanji:U+884C",
+      "type": "on",
+      "kana": "コウ",
+      "romaji": "kou"
+    },
+    {
+      "kanjiId": "kanji:U+884C",
+      "type": "on",
+      "kana": "ギョウ",
+      "romaji": "gyou"
+    },
+    {
+      "kanjiId": "kanji:U+884C",
+      "type": "on",
+      "kana": "アン",
+      "romaji": "an"
+    },
+    {
+      "kanjiId": "kanji:U+884C",
+      "type": "kun",
+      "kana": "い.く",
+      "romaji": "iku"
+    },
+    {
+      "kanjiId": "kanji:U+884C",
+      "type": "kun",
+      "kana": "ゆ.く",
+      "romaji": "yuku"
+    },
+    {
+      "kanjiId": "kanji:U+884C",
+      "type": "kun",
+      "kana": "-ゆ.き",
+      "romaji": "yuki"
+    },
+    {
+      "kanjiId": "kanji:U+884C",
+      "type": "kun",
+      "kana": "-ゆき",
+      "romaji": "yuki"
+    },
+    {
+      "kanjiId": "kanji:U+884C",
+      "type": "kun",
+      "kana": "-い.き",
+      "romaji": "iki"
+    },
+    {
+      "kanjiId": "kanji:U+884C",
+      "type": "kun",
+      "kana": "-いき",
+      "romaji": "iki"
+    },
+    {
+      "kanjiId": "kanji:U+884C",
+      "type": "kun",
+      "kana": "おこな.う",
+      "romaji": "okonau"
+    },
+    {
+      "kanjiId": "kanji:U+884C",
+      "type": "kun",
+      "kana": "おこ.なう",
+      "romaji": "okonau"
+    },
+    {
+      "kanjiId": "kanji:U+6765",
+      "type": "on",
+      "kana": "ライ",
+      "romaji": "rai"
+    },
+    {
+      "kanjiId": "kanji:U+6765",
+      "type": "on",
+      "kana": "タイ",
+      "romaji": "tai"
+    },
+    {
+      "kanjiId": "kanji:U+6765",
+      "type": "kun",
+      "kana": "く.る",
+      "romaji": "kuru"
+    },
+    {
+      "kanjiId": "kanji:U+6765",
+      "type": "kun",
+      "kana": "きた.る",
+      "romaji": "kitaru"
+    },
+    {
+      "kanjiId": "kanji:U+6765",
+      "type": "kun",
+      "kana": "きた.す",
+      "romaji": "kitasu"
+    },
+    {
+      "kanjiId": "kanji:U+6765",
+      "type": "kun",
+      "kana": "き.たす",
+      "romaji": "kitasu"
+    },
+    {
+      "kanjiId": "kanji:U+6765",
+      "type": "kun",
+      "kana": "き.たる",
+      "romaji": "kitaru"
+    },
+    {
+      "kanjiId": "kanji:U+6765",
+      "type": "kun",
+      "kana": "き",
+      "romaji": "ki"
+    },
+    {
+      "kanjiId": "kanji:U+6765",
+      "type": "kun",
+      "kana": "こ",
+      "romaji": "ko"
+    },
+    {
+      "kanjiId": "kanji:U+5E30",
+      "type": "on",
+      "kana": "キ",
+      "romaji": "ki"
+    },
+    {
+      "kanjiId": "kanji:U+5E30",
+      "type": "kun",
+      "kana": "かえ.る",
+      "romaji": "kaeru"
+    },
+    {
+      "kanjiId": "kanji:U+5E30",
+      "type": "kun",
+      "kana": "かえ.す",
+      "romaji": "kaesu"
+    },
+    {
+      "kanjiId": "kanji:U+5E30",
+      "type": "kun",
+      "kana": "おく.る",
+      "romaji": "okuru"
+    },
+    {
+      "kanjiId": "kanji:U+5E30",
+      "type": "kun",
+      "kana": "とつ.ぐ",
+      "romaji": "totsugu"
+    },
+    {
+      "kanjiId": "kanji:U+6B69",
+      "type": "on",
+      "kana": "ホ",
+      "romaji": "ho"
+    },
+    {
+      "kanjiId": "kanji:U+6B69",
+      "type": "on",
+      "kana": "ブ",
+      "romaji": "bu"
+    },
+    {
+      "kanjiId": "kanji:U+6B69",
+      "type": "on",
+      "kana": "フ",
+      "romaji": "fu"
+    },
+    {
+      "kanjiId": "kanji:U+6B69",
+      "type": "kun",
+      "kana": "ある.く",
+      "romaji": "aruku"
+    },
+    {
+      "kanjiId": "kanji:U+6B69",
+      "type": "kun",
+      "kana": "あゆ.む",
+      "romaji": "ayumu"
+    },
+    {
+      "kanjiId": "kanji:U+8A00",
+      "type": "on",
+      "kana": "ゲン",
+      "romaji": "gen"
+    },
+    {
+      "kanjiId": "kanji:U+8A00",
+      "type": "on",
+      "kana": "ゴン",
+      "romaji": "gon"
+    },
+    {
+      "kanjiId": "kanji:U+8A00",
+      "type": "kun",
+      "kana": "い.う",
+      "romaji": "iu"
+    },
+    {
+      "kanjiId": "kanji:U+8A00",
+      "type": "kun",
+      "kana": "こと",
+      "romaji": "koto"
+    },
+    {
+      "kanjiId": "kanji:U+8A71",
+      "type": "on",
+      "kana": "ワ",
+      "romaji": "wa"
+    },
+    {
+      "kanjiId": "kanji:U+8A71",
+      "type": "kun",
+      "kana": "はな.す",
+      "romaji": "hanasu"
+    },
+    {
+      "kanjiId": "kanji:U+8A71",
+      "type": "kun",
+      "kana": "はなし",
+      "romaji": "hanashi"
+    },
+    {
+      "kanjiId": "kanji:U+66F8",
+      "type": "on",
+      "kana": "ショ",
+      "romaji": "sho"
+    },
+    {
+      "kanjiId": "kanji:U+66F8",
+      "type": "kun",
+      "kana": "か.く",
+      "romaji": "kaku"
+    },
+    {
+      "kanjiId": "kanji:U+66F8",
+      "type": "kun",
+      "kana": "-が.き",
+      "romaji": "gaki"
+    },
+    {
+      "kanjiId": "kanji:U+66F8",
+      "type": "kun",
+      "kana": "-がき",
+      "romaji": "gaki"
+    },
+    {
+      "kanjiId": "kanji:U+8AAD",
+      "type": "on",
+      "kana": "ドク",
+      "romaji": "doku"
+    },
+    {
+      "kanjiId": "kanji:U+8AAD",
+      "type": "on",
+      "kana": "トク",
+      "romaji": "toku"
+    },
+    {
+      "kanjiId": "kanji:U+8AAD",
+      "type": "on",
+      "kana": "トウ",
+      "romaji": "tou"
+    },
+    {
+      "kanjiId": "kanji:U+8AAD",
+      "type": "kun",
+      "kana": "よ.む",
+      "romaji": "yomu"
+    },
+    {
+      "kanjiId": "kanji:U+8AAD",
+      "type": "kun",
+      "kana": "-よ.み",
+      "romaji": "yomi"
+    },
+    {
+      "kanjiId": "kanji:U+805E",
+      "type": "on",
+      "kana": "ブン",
+      "romaji": "bun"
+    },
+    {
+      "kanjiId": "kanji:U+805E",
+      "type": "on",
+      "kana": "モン",
+      "romaji": "mon"
+    },
+    {
+      "kanjiId": "kanji:U+805E",
+      "type": "kun",
+      "kana": "き.く",
+      "romaji": "kiku"
+    },
+    {
+      "kanjiId": "kanji:U+805E",
+      "type": "kun",
+      "kana": "き.こえる",
+      "romaji": "kikoeru"
+    },
+    {
+      "kanjiId": "kanji:U+98DF",
+      "type": "on",
+      "kana": "ショク",
+      "romaji": "shoku"
+    },
+    {
+      "kanjiId": "kanji:U+98DF",
+      "type": "on",
+      "kana": "ジキ",
+      "romaji": "jiki"
+    },
+    {
+      "kanjiId": "kanji:U+98DF",
+      "type": "kun",
+      "kana": "く.う",
+      "romaji": "kuu"
+    },
+    {
+      "kanjiId": "kanji:U+98DF",
+      "type": "kun",
+      "kana": "く.らう",
+      "romaji": "kurau"
+    },
+    {
+      "kanjiId": "kanji:U+98DF",
+      "type": "kun",
+      "kana": "た.べる",
+      "romaji": "taberu"
+    },
+    {
+      "kanjiId": "kanji:U+98DF",
+      "type": "kun",
+      "kana": "は.む",
+      "romaji": "hamu"
+    },
+    {
+      "kanjiId": "kanji:U+98F2",
+      "type": "on",
+      "kana": "イン",
+      "romaji": "in"
+    },
+    {
+      "kanjiId": "kanji:U+98F2",
+      "type": "on",
+      "kana": "オン",
+      "romaji": "on"
+    },
+    {
+      "kanjiId": "kanji:U+98F2",
+      "type": "kun",
+      "kana": "の.む",
+      "romaji": "nomu"
+    },
+    {
+      "kanjiId": "kanji:U+98F2",
+      "type": "kun",
+      "kana": "-の.み",
+      "romaji": "nomi"
+    },
+    {
+      "kanjiId": "kanji:U+8CB7",
+      "type": "on",
+      "kana": "バイ",
+      "romaji": "bai"
+    },
+    {
+      "kanjiId": "kanji:U+8CB7",
+      "type": "kun",
+      "kana": "か.う",
+      "romaji": "kau"
+    },
+    {
+      "kanjiId": "kanji:U+58F2",
+      "type": "on",
+      "kana": "バイ",
+      "romaji": "bai"
+    },
+    {
+      "kanjiId": "kanji:U+58F2",
+      "type": "kun",
+      "kana": "う.る",
+      "romaji": "uru"
+    },
+    {
+      "kanjiId": "kanji:U+58F2",
+      "type": "kun",
+      "kana": "う.れる",
+      "romaji": "ureru"
+    },
+    {
+      "kanjiId": "kanji:U+4F1A",
+      "type": "on",
+      "kana": "カイ",
+      "romaji": "kai"
+    },
+    {
+      "kanjiId": "kanji:U+4F1A",
+      "type": "on",
+      "kana": "エ",
+      "romaji": "e"
+    },
+    {
+      "kanjiId": "kanji:U+4F1A",
+      "type": "kun",
+      "kana": "あ.う",
+      "romaji": "au"
+    },
+    {
+      "kanjiId": "kanji:U+4F1A",
+      "type": "kun",
+      "kana": "あ.わせる",
+      "romaji": "awaseru"
+    },
+    {
+      "kanjiId": "kanji:U+4F1A",
+      "type": "kun",
+      "kana": "あつ.まる",
+      "romaji": "atsumaru"
+    },
+    {
+      "kanjiId": "kanji:U+77E5",
+      "type": "on",
+      "kana": "チ",
+      "romaji": "chi"
+    },
+    {
+      "kanjiId": "kanji:U+77E5",
+      "type": "kun",
+      "kana": "し.る",
+      "romaji": "shiru"
+    },
+    {
+      "kanjiId": "kanji:U+77E5",
+      "type": "kun",
+      "kana": "し.らせる",
+      "romaji": "shiraseru"
+    },
+    {
+      "kanjiId": "kanji:U+601D",
+      "type": "on",
+      "kana": "シ",
+      "romaji": "shi"
+    },
+    {
+      "kanjiId": "kanji:U+601D",
+      "type": "kun",
+      "kana": "おも.う",
+      "romaji": "omou"
+    },
+    {
+      "kanjiId": "kanji:U+601D",
+      "type": "kun",
+      "kana": "おもえら.く",
+      "romaji": "omoeraku"
+    },
+    {
+      "kanjiId": "kanji:U+601D",
+      "type": "kun",
+      "kana": "おぼ.す",
+      "romaji": "obosu"
+    },
+    {
+      "kanjiId": "kanji:U+4F5C",
+      "type": "on",
+      "kana": "サク",
+      "romaji": "saku"
+    },
+    {
+      "kanjiId": "kanji:U+4F5C",
+      "type": "on",
+      "kana": "サ",
+      "romaji": "sa"
+    },
+    {
+      "kanjiId": "kanji:U+4F5C",
+      "type": "kun",
+      "kana": "つく.る",
+      "romaji": "tsukuru"
+    },
+    {
+      "kanjiId": "kanji:U+4F5C",
+      "type": "kun",
+      "kana": "つく.り",
+      "romaji": "tsukuri"
+    },
+    {
+      "kanjiId": "kanji:U+4F5C",
+      "type": "kun",
+      "kana": "-づく.り",
+      "romaji": "zukuri"
+    },
+    {
+      "kanjiId": "kanji:U+4F4F",
+      "type": "on",
+      "kana": "ジュウ",
+      "romaji": "juu"
+    },
+    {
+      "kanjiId": "kanji:U+4F4F",
+      "type": "on",
+      "kana": "ヂュウ",
+      "romaji": "juu"
+    },
+    {
+      "kanjiId": "kanji:U+4F4F",
+      "type": "on",
+      "kana": "チュウ",
+      "romaji": "chuu"
+    },
+    {
+      "kanjiId": "kanji:U+4F4F",
+      "type": "kun",
+      "kana": "す.む",
+      "romaji": "sumu"
+    },
+    {
+      "kanjiId": "kanji:U+4F4F",
+      "type": "kun",
+      "kana": "す.まう",
+      "romaji": "sumau"
+    },
+    {
+      "kanjiId": "kanji:U+4F4F",
+      "type": "kun",
+      "kana": "-ず.まい",
+      "romaji": "zumai"
+    },
+    {
+      "kanjiId": "kanji:U+4F7F",
+      "type": "on",
+      "kana": "シ",
+      "romaji": "shi"
+    },
+    {
+      "kanjiId": "kanji:U+4F7F",
+      "type": "kun",
+      "kana": "つか.う",
+      "romaji": "tsukau"
+    },
+    {
+      "kanjiId": "kanji:U+4F7F",
+      "type": "kun",
+      "kana": "つか.い",
+      "romaji": "tsukai"
+    },
+    {
+      "kanjiId": "kanji:U+4F7F",
+      "type": "kun",
+      "kana": "-つか.い",
+      "romaji": "tsukai"
+    },
+    {
+      "kanjiId": "kanji:U+4F7F",
+      "type": "kun",
+      "kana": "-づか.い",
+      "romaji": "zukai"
+    },
+    {
+      "kanjiId": "kanji:U+8CB8",
+      "type": "on",
+      "kana": "タイ",
+      "romaji": "tai"
+    },
+    {
+      "kanjiId": "kanji:U+8CB8",
+      "type": "kun",
+      "kana": "か.す",
+      "romaji": "kasu"
+    },
+    {
+      "kanjiId": "kanji:U+8CB8",
+      "type": "kun",
+      "kana": "か.し-",
+      "romaji": "kashi"
+    },
+    {
+      "kanjiId": "kanji:U+8CB8",
+      "type": "kun",
+      "kana": "かし-",
+      "romaji": "kashi"
+    },
+    {
+      "kanjiId": "kanji:U+501F",
+      "type": "on",
+      "kana": "シャク",
+      "romaji": "shaku"
+    },
+    {
+      "kanjiId": "kanji:U+501F",
+      "type": "kun",
+      "kana": "か.りる",
+      "romaji": "kariru"
+    },
+    {
+      "kanjiId": "kanji:U+5207",
+      "type": "on",
+      "kana": "セツ",
+      "romaji": "setsu"
+    },
+    {
+      "kanjiId": "kanji:U+5207",
+      "type": "on",
+      "kana": "サイ",
+      "romaji": "sai"
+    },
+    {
+      "kanjiId": "kanji:U+5207",
+      "type": "kun",
+      "kana": "き.る",
+      "romaji": "kiru"
+    },
+    {
+      "kanjiId": "kanji:U+5207",
+      "type": "kun",
+      "kana": "-き.る",
+      "romaji": "kiru"
+    },
+    {
+      "kanjiId": "kanji:U+5207",
+      "type": "kun",
+      "kana": "き.り",
+      "romaji": "kiri"
+    },
+    {
+      "kanjiId": "kanji:U+5207",
+      "type": "kun",
+      "kana": "-き.り",
+      "romaji": "kiri"
+    },
+    {
+      "kanjiId": "kanji:U+5207",
+      "type": "kun",
+      "kana": "-ぎ.り",
+      "romaji": "giri"
+    },
+    {
+      "kanjiId": "kanji:U+5207",
+      "type": "kun",
+      "kana": "き.れる",
+      "romaji": "kireru"
+    },
+    {
+      "kanjiId": "kanji:U+5207",
+      "type": "kun",
+      "kana": "-き.れる",
+      "romaji": "kireru"
+    },
+    {
+      "kanjiId": "kanji:U+5207",
+      "type": "kun",
+      "kana": "き.れ",
+      "romaji": "kire"
+    },
+    {
+      "kanjiId": "kanji:U+5207",
+      "type": "kun",
+      "kana": "-き.れ",
+      "romaji": "kire"
+    },
+    {
+      "kanjiId": "kanji:U+5207",
+      "type": "kun",
+      "kana": "-ぎ.れ",
+      "romaji": "gire"
+    },
+    {
+      "kanjiId": "kanji:U+6301",
+      "type": "on",
+      "kana": "ジ",
+      "romaji": "ji"
+    },
+    {
+      "kanjiId": "kanji:U+6301",
+      "type": "kun",
+      "kana": "も.つ",
+      "romaji": "motsu"
+    },
+    {
+      "kanjiId": "kanji:U+6301",
+      "type": "kun",
+      "kana": "-も.ち",
+      "romaji": "mochi"
+    },
+    {
+      "kanjiId": "kanji:U+6301",
+      "type": "kun",
+      "kana": "も.てる",
+      "romaji": "moteru"
+    },
+    {
+      "kanjiId": "kanji:U+9001",
+      "type": "on",
+      "kana": "ソウ",
+      "romaji": "sou"
+    },
+    {
+      "kanjiId": "kanji:U+9001",
+      "type": "kun",
+      "kana": "おく.る",
+      "romaji": "okuru"
+    },
+    {
+      "kanjiId": "kanji:U+7740",
+      "type": "on",
+      "kana": "チャク",
+      "romaji": "chaku"
+    },
+    {
+      "kanjiId": "kanji:U+7740",
+      "type": "on",
+      "kana": "ジャク",
+      "romaji": "jaku"
+    },
+    {
+      "kanjiId": "kanji:U+7740",
+      "type": "kun",
+      "kana": "き.る",
+      "romaji": "kiru"
+    },
+    {
+      "kanjiId": "kanji:U+7740",
+      "type": "kun",
+      "kana": "き.せる",
+      "romaji": "kiseru"
+    },
+    {
+      "kanjiId": "kanji:U+7740",
+      "type": "kun",
+      "kana": "つ.く",
+      "romaji": "tsuku"
+    },
+    {
+      "kanjiId": "kanji:U+7740",
+      "type": "kun",
+      "kana": "つ.ける",
+      "romaji": "tsukeru"
+    },
+    {
+      "kanjiId": "kanji:U+6559",
+      "type": "on",
+      "kana": "キョウ",
+      "romaji": "kyou"
+    },
+    {
+      "kanjiId": "kanji:U+6559",
+      "type": "kun",
+      "kana": "おし.える",
+      "romaji": "oshieru"
+    },
+    {
+      "kanjiId": "kanji:U+6559",
+      "type": "kun",
+      "kana": "おそ.わる",
+      "romaji": "osowaru"
+    },
+    {
+      "kanjiId": "kanji:U+7FD2",
+      "type": "on",
+      "kana": "シュウ",
+      "romaji": "shuu"
+    },
+    {
+      "kanjiId": "kanji:U+7FD2",
+      "type": "on",
+      "kana": "ジュ",
+      "romaji": "ju"
+    },
+    {
+      "kanjiId": "kanji:U+7FD2",
+      "type": "kun",
+      "kana": "なら.う",
+      "romaji": "narau"
+    },
+    {
+      "kanjiId": "kanji:U+7FD2",
+      "type": "kun",
+      "kana": "なら.い",
+      "romaji": "narai"
+    },
+    {
+      "kanjiId": "kanji:U+753A",
+      "type": "on",
+      "kana": "チョウ",
+      "romaji": "chou"
+    },
+    {
+      "kanjiId": "kanji:U+753A",
+      "type": "kun",
+      "kana": "まち",
+      "romaji": "machi"
+    },
+    {
+      "kanjiId": "kanji:U+6751",
+      "type": "on",
+      "kana": "ソン",
+      "romaji": "son"
+    },
+    {
+      "kanjiId": "kanji:U+6751",
+      "type": "kun",
+      "kana": "むら",
+      "romaji": "mura"
+    },
+    {
+      "kanjiId": "kanji:U+7530",
+      "type": "on",
+      "kana": "デン",
+      "romaji": "den"
+    },
+    {
+      "kanjiId": "kanji:U+7530",
+      "type": "kun",
+      "kana": "た",
+      "romaji": "ta"
+    },
+    {
+      "kanjiId": "kanji:U+5BB6",
+      "type": "on",
+      "kana": "カ",
+      "romaji": "ka"
+    },
+    {
+      "kanjiId": "kanji:U+5BB6",
+      "type": "on",
+      "kana": "ケ",
+      "romaji": "ke"
+    },
+    {
+      "kanjiId": "kanji:U+5BB6",
+      "type": "kun",
+      "kana": "いえ",
+      "romaji": "ie"
+    },
+    {
+      "kanjiId": "kanji:U+5BB6",
+      "type": "kun",
+      "kana": "や",
+      "romaji": "ya"
+    },
+    {
+      "kanjiId": "kanji:U+5BB6",
+      "type": "kun",
+      "kana": "うち",
+      "romaji": "uchi"
+    },
+    {
+      "kanjiId": "kanji:U+5E97",
+      "type": "on",
+      "kana": "テン",
+      "romaji": "ten"
+    },
+    {
+      "kanjiId": "kanji:U+5E97",
+      "type": "kun",
+      "kana": "みせ",
+      "romaji": "mise"
+    },
+    {
+      "kanjiId": "kanji:U+5E97",
+      "type": "kun",
+      "kana": "たな",
+      "romaji": "tana"
+    },
+    {
+      "kanjiId": "kanji:U+56FD",
+      "type": "on",
+      "kana": "コク",
+      "romaji": "koku"
+    },
+    {
+      "kanjiId": "kanji:U+56FD",
+      "type": "kun",
+      "kana": "くに",
+      "romaji": "kuni"
+    },
+    {
+      "kanjiId": "kanji:U+9053",
+      "type": "on",
+      "kana": "ドウ",
+      "romaji": "dou"
+    },
+    {
+      "kanjiId": "kanji:U+9053",
+      "type": "on",
+      "kana": "トウ",
+      "romaji": "tou"
+    },
+    {
+      "kanjiId": "kanji:U+9053",
+      "type": "kun",
+      "kana": "みち",
+      "romaji": "michi"
+    },
+    {
+      "kanjiId": "kanji:U+9053",
+      "type": "kun",
+      "kana": "いう",
+      "romaji": "iu"
+    },
+    {
+      "kanjiId": "kanji:U+793E",
+      "type": "on",
+      "kana": "シャ",
+      "romaji": "sha"
+    },
+    {
+      "kanjiId": "kanji:U+793E",
+      "type": "kun",
+      "kana": "やしろ",
+      "romaji": "yashiro"
+    },
+    {
+      "kanjiId": "kanji:U+6240",
+      "type": "on",
+      "kana": "ショ",
+      "romaji": "sho"
+    },
+    {
+      "kanjiId": "kanji:U+6240",
+      "type": "kun",
+      "kana": "ところ",
+      "romaji": "tokoro"
+    },
+    {
+      "kanjiId": "kanji:U+6240",
+      "type": "kun",
+      "kana": "-ところ",
+      "romaji": "tokoro"
+    },
+    {
+      "kanjiId": "kanji:U+6240",
+      "type": "kun",
+      "kana": "どころ",
+      "romaji": "dokoro"
+    },
+    {
+      "kanjiId": "kanji:U+6240",
+      "type": "kun",
+      "kana": "とこ",
+      "romaji": "toko"
+    },
+    {
+      "kanjiId": "kanji:U+9662",
+      "type": "on",
+      "kana": "イン",
+      "romaji": "in"
+    },
+    {
+      "kanjiId": "kanji:U+9928",
+      "type": "on",
+      "kana": "カン",
+      "romaji": "kan"
+    },
+    {
+      "kanjiId": "kanji:U+9928",
+      "type": "kun",
+      "kana": "やかた",
+      "romaji": "yakata"
+    },
+    {
+      "kanjiId": "kanji:U+9928",
+      "type": "kun",
+      "kana": "たて",
+      "romaji": "tate"
+    },
+    {
+      "kanjiId": "kanji:U+99C5",
+      "type": "on",
+      "kana": "エキ",
+      "romaji": "eki"
+    },
+    {
+      "kanjiId": "kanji:U+8ECA",
+      "type": "on",
+      "kana": "シャ",
+      "romaji": "sha"
+    },
+    {
+      "kanjiId": "kanji:U+8ECA",
+      "type": "kun",
+      "kana": "くるま",
+      "romaji": "kuruma"
+    },
+    {
+      "kanjiId": "kanji:U+4F55",
+      "type": "on",
+      "kana": "カ",
+      "romaji": "ka"
+    },
+    {
+      "kanjiId": "kanji:U+4F55",
+      "type": "kun",
+      "kana": "なに",
+      "romaji": "nani"
+    },
+    {
+      "kanjiId": "kanji:U+4F55",
+      "type": "kun",
+      "kana": "なん",
+      "romaji": "nan"
+    },
+    {
+      "kanjiId": "kanji:U+4F55",
+      "type": "kun",
+      "kana": "なに-",
+      "romaji": "nani"
+    },
+    {
+      "kanjiId": "kanji:U+4F55",
+      "type": "kun",
+      "kana": "なん-",
+      "romaji": "nan"
+    },
+    {
+      "kanjiId": "kanji:U+6BCE",
+      "type": "on",
+      "kana": "マイ",
+      "romaji": "mai"
+    },
+    {
+      "kanjiId": "kanji:U+6BCE",
+      "type": "kun",
+      "kana": "ごと",
+      "romaji": "goto"
+    },
+    {
+      "kanjiId": "kanji:U+6BCE",
+      "type": "kun",
+      "kana": "-ごと.に",
+      "romaji": "gotoni"
+    },
+    {
+      "kanjiId": "kanji:U+4E0D",
+      "type": "on",
+      "kana": "フ",
+      "romaji": "fu"
+    },
+    {
+      "kanjiId": "kanji:U+4E0D",
+      "type": "on",
+      "kana": "ブ",
+      "romaji": "bu"
+    },
+    {
+      "kanjiId": "kanji:U+97F3",
+      "type": "on",
+      "kana": "オン",
+      "romaji": "on"
+    },
+    {
+      "kanjiId": "kanji:U+97F3",
+      "type": "on",
+      "kana": "イン",
+      "romaji": "in"
+    },
+    {
+      "kanjiId": "kanji:U+97F3",
+      "type": "on",
+      "kana": "-ノン",
+      "romaji": "non"
+    },
+    {
+      "kanjiId": "kanji:U+97F3",
+      "type": "kun",
+      "kana": "おと",
+      "romaji": "oto"
+    },
+    {
+      "kanjiId": "kanji:U+97F3",
+      "type": "kun",
+      "kana": "ね",
+      "romaji": "ne"
+    },
+    {
+      "kanjiId": "kanji:U+65E9",
+      "type": "on",
+      "kana": "ソウ",
+      "romaji": "sou"
+    },
+    {
+      "kanjiId": "kanji:U+65E9",
+      "type": "on",
+      "kana": "サッ",
+      "romaji": "sat"
+    },
+    {
+      "kanjiId": "kanji:U+65E9",
+      "type": "kun",
+      "kana": "はや.い",
+      "romaji": "hayai"
+    },
+    {
+      "kanjiId": "kanji:U+65E9",
+      "type": "kun",
+      "kana": "はや",
+      "romaji": "haya"
+    },
+    {
+      "kanjiId": "kanji:U+65E9",
+      "type": "kun",
+      "kana": "はや-",
+      "romaji": "haya"
+    },
+    {
+      "kanjiId": "kanji:U+65E9",
+      "type": "kun",
+      "kana": "はや.まる",
+      "romaji": "hayamaru"
+    },
+    {
+      "kanjiId": "kanji:U+65E9",
+      "type": "kun",
+      "kana": "はや.める",
+      "romaji": "hayameru"
+    },
+    {
+      "kanjiId": "kanji:U+65E9",
+      "type": "kun",
+      "kana": "さ-",
+      "romaji": "sa"
+    },
+    {
+      "kanjiId": "kanji:U+554F",
+      "type": "on",
+      "kana": "モン",
+      "romaji": "mon"
+    },
+    {
+      "kanjiId": "kanji:U+554F",
+      "type": "kun",
+      "kana": "と.う",
+      "romaji": "tou"
+    },
+    {
+      "kanjiId": "kanji:U+554F",
+      "type": "kun",
+      "kana": "と.い",
+      "romaji": "toi"
+    },
+    {
+      "kanjiId": "kanji:U+554F",
+      "type": "kun",
+      "kana": "とん",
+      "romaji": "ton"
+    },
+    {
+      "kanjiId": "kanji:U+597D",
+      "type": "on",
+      "kana": "コウ",
+      "romaji": "kou"
+    },
+    {
+      "kanjiId": "kanji:U+597D",
+      "type": "kun",
+      "kana": "この.む",
+      "romaji": "konomu"
+    },
+    {
+      "kanjiId": "kanji:U+597D",
+      "type": "kun",
+      "kana": "す.く",
+      "romaji": "suku"
+    },
+    {
+      "kanjiId": "kanji:U+597D",
+      "type": "kun",
+      "kana": "よ.い",
+      "romaji": "yoi"
+    },
+    {
+      "kanjiId": "kanji:U+597D",
+      "type": "kun",
+      "kana": "い.い",
+      "romaji": "ii"
+    },
+    {
+      "kanjiId": "kanji:U+96FB",
+      "type": "on",
+      "kana": "デン",
+      "romaji": "den"
+    },
+    {
+      "kanjiId": "kanji:U+533B",
+      "type": "on",
+      "kana": "イ",
+      "romaji": "i"
+    },
+    {
+      "kanjiId": "kanji:U+533B",
+      "type": "kun",
+      "kana": "い.やす",
+      "romaji": "iyasu"
+    },
+    {
+      "kanjiId": "kanji:U+533B",
+      "type": "kun",
+      "kana": "い.する",
+      "romaji": "isuru"
+    },
+    {
+      "kanjiId": "kanji:U+533B",
+      "type": "kun",
+      "kana": "くすし",
+      "romaji": "kusushi"
+    },
+    {
+      "kanjiId": "kanji:U+75C5",
+      "type": "on",
+      "kana": "ビョウ",
+      "romaji": "byou"
+    },
+    {
+      "kanjiId": "kanji:U+75C5",
+      "type": "on",
+      "kana": "ヘイ",
+      "romaji": "hei"
+    },
+    {
+      "kanjiId": "kanji:U+75C5",
+      "type": "kun",
+      "kana": "や.む",
+      "romaji": "yamu"
+    },
+    {
+      "kanjiId": "kanji:U+75C5",
+      "type": "kun",
+      "kana": "-や.み",
+      "romaji": "yami"
+    },
+    {
+      "kanjiId": "kanji:U+75C5",
+      "type": "kun",
+      "kana": "やまい",
+      "romaji": "yamai"
+    },
+    {
+      "kanjiId": "kanji:U+85AC",
+      "type": "on",
+      "kana": "ヤク",
+      "romaji": "yaku"
+    },
+    {
+      "kanjiId": "kanji:U+85AC",
+      "type": "kun",
+      "kana": "くすり",
+      "romaji": "kusuri"
+    }
+  ]
+}

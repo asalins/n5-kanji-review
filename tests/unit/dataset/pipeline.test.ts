@@ -27,7 +27,7 @@ describe('romaji', () => {
     expect(kanaToRomaji('ニチ')).toBe('nichi');
     expect(kanaToRomaji('ショウ')).toBe('shou');
     expect(kanaToRomaji('ジツ')).toBe('jitsu');
-    expect(kanaToRomaji('ガッ')).toBeNull(); // trailing small tsu is not convertible
+    expect(kanaToRomaji('ジッ')).toBe('jit'); // final small tsu -> 't' (convention, reported as ambiguous)
     expect(kanaToRomaji('はっぴ')).toBe('happi');
     expect(kanaToRomaji('いっち')).toBe('itchi');
     expect(kanaToRomaji('きょ')).toBe('kyo');

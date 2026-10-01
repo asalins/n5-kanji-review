@@ -10,7 +10,7 @@ import { checkIntegrity } from '../../src/services/content/integrity';
 import type { KanjiReading } from '../../src/types/entities';
 import { makeKanjiId } from '../../src/utils/kanjiId';
 import type { ParsedKanjidic } from './kanjidic2';
-import { kanaToRomaji } from './romaji';
+import { endsWithSokuon, kanaToRomaji } from './romaji';
 import type { LevelList } from './schemas';
 import { checkAgainstList } from './validateAgainstList';
 
@@ -104,6 +104,7 @@ export function buildDataset(input: BuildInput): BuildOutput {
           convertible = false;
           unconvertibleReading.push(`${character}:${kana}`);
         } else {
+          if (endsWithSokuon(kana)) ambiguous.push(`${character}:${kana}:romaji`);
           kanjiReadings.push({ kanjiId: id, type, kana, romaji });
         }
       }

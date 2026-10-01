@@ -34,6 +34,11 @@ function katakanaToHiragana(text: string): string {
     .join('');
 }
 
+/** True when the reading ends in a small tsu, whose romaji is a convention (see kanaToRomaji). */
+export function endsWithSokuon(input: string): boolean {
+  return katakanaToHiragana(input.replace(/[.\-]/g, '')).endsWith('っ');
+}
+
 export function kanaToRomaji(input: string): string | null {
   const kana = katakanaToHiragana(input.replace(/[.\-]/g, ''));
   if (kana.length === 0) return null;
@@ -44,7 +49,12 @@ export function kanaToRomaji(input: string): string | null {
   for (let i = 0; i < chars.length; i += 1) {
     const ch = chars[i] as string;
     if (ch === 'っ') {
-      if (i === chars.length - 1) return null;
+      // Final small tsu (found in real KANJIDIC2 readings such as ジッ): the doubled consonant is
+      // unknown outside a compound, so it is written as 't'. buildDataset reports these as ambiguous.
+      if (i === chars.length - 1) {
+        out += 't';
+        continue;
+      }
       doubleNext = true;
       continue;
     }
