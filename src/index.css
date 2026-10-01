@@ -1,0 +1,4 @@
+@import 'tailwindcss';
+
+/* Class-based dark mode so Phase 9 can offer Light / Dark / System. */
+@custom-variant dark (&:where(.dark, .dark *));

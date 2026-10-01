@@ -1,0 +1,12 @@
+node_modules
+dist
+dev-dev-dist
+coverage
+playwright-report
+test-results
+.env
+.env.*
+!.env.example
+# raw external datasets are never committed (see DATA_SOURCES.md in Phase 3)
+data-sources/*
+!data-sources/.gitkeep
