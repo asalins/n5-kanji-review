@@ -2,3 +2,25 @@
 
 /* Class-based dark mode so Phase 9 can offer Light / Dark / System. */
 @custom-variant dark (&:where(.dark, .dark *));
+
+/* Japanese text: system fonts only, so the app works offline with no font download. */
+.font-jp {
+  font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Noto Sans CJK JP', 'Yu Gothic', 'Meiryo', sans-serif;
+}
+
+/* Gentle reveal (about 250 ms). Removed entirely when the user prefers reduced motion. */
+@keyframes card-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .card-reveal {
+    animation: card-reveal 250ms ease-out;
+  }
+}

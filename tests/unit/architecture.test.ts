@@ -69,4 +69,24 @@ describe('architecture boundaries', () => {
       .map((f) => f.rel);
     expect(offenders).toEqual([]);
   });
+  it('only the composition root (src/app) and the storage layers touch IndexedDB implementations or the bundled dataset', () => {
+    const offenders = files
+      .filter((f) => !/^(app|repositories|services\/storage|services\/content)\//.test(f.rel))
+      .filter((f) => /(repositories\/indexeddb|services\/storage|bundledDataset)/.test(f.text))
+      .map((f) => f.rel);
+    expect(offenders).toEqual([]);
+  });
+
+  it('UI layers only depend on repository interfaces', () => {
+    const offenders = files
+      .filter((f) => /^(pages|components|hooks|features)\//.test(f.rel))
+      .filter((f) => /from ['"][^'"]*repositories\/(?!interfaces)[^'"]*['"]/.test(f.text))
+      .map((f) => f.rel);
+    expect(offenders).toEqual([]);
+  });
+
+  it('the review boundary carries no SRS scheduling values', () => {
+    const boundary = files.find((f) => f.rel === 'features/review/reviewBoundary.ts')?.text ?? '';
+    expect(boundary).not.toMatch(/interval|ease|dueDate|nextReview|stateAfter/i);
+  });
 });

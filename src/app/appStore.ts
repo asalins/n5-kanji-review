@@ -5,6 +5,7 @@ export type BootState = 'booting' | 'ready' | 'failed';
 interface AppState {
   readonly bootState: BootState;
   readonly bootError: string | null;
+  markBooting: () => void;
   markReady: () => void;
   markFailed: (message: string) => void;
 }
@@ -15,6 +16,7 @@ interface AppState {
 export const useAppStore = create<AppState>((set) => ({
   bootState: 'booting',
   bootError: null,
+  markBooting: () => set({ bootState: 'booting', bootError: null }),
   markReady: () => set({ bootState: 'ready', bootError: null }),
   markFailed: (message) => set({ bootState: 'failed', bootError: message }),
 }));
