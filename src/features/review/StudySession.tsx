@@ -18,7 +18,17 @@ interface StudySessionProps {
 
 const INTERACTIVE_TAGS = new Set(['BUTTON', 'A', 'INPUT', 'TEXTAREA', 'SELECT']);
 
-function SessionSummary({ ratings, onAgain, onExit }: { ratings: readonly ReviewRating[]; onAgain: () => void; onExit: () => void }) {
+function SessionSummary({
+  ratings,
+  saved,
+  onAgain,
+  onExit,
+}: {
+  ratings: readonly ReviewRating[];
+  saved: boolean;
+  onAgain: () => void;
+  onExit: () => void;
+}) {
   return (
     <StateMessage tone="empty" title="จบรอบนี้แล้ว" description={`ทบทวน ${ratings.length} ใบ`}>
       <ul className="grid grid-cols-2 gap-2 text-left">
@@ -28,7 +38,9 @@ function SessionSummary({ ratings, onAgain, onExit }: { ratings: readonly Review
           </li>
         ))}
       </ul>
-      <p className="text-sm text-stone-500 dark:text-neutral-400">ยังไม่บันทึกผลการประเมิน (ระบบทบทวนอัตโนมัติจะมาในขั้นถัดไป)</p>
+      <p className="text-sm text-stone-500 dark:text-neutral-400">
+        {saved ? 'บันทึกผลการประเมินแล้ว' : 'ยังไม่บันทึกผลการประเมิน (โหมดฝึก)'}
+      </p>
       <button type="button" onClick={onAgain} className={PRIMARY_BUTTON}>
         เรียนอีกรอบ
       </button>
@@ -40,7 +52,7 @@ function SessionSummary({ ratings, onAgain, onExit }: { ratings: readonly Review
 }
 
 export function StudySession({ mode, onExit, orchestrator, size, createSeed }: StudySessionProps) {
-  const { state, reveal, rate, restart } = useStudySession({ mode, orchestrator, size, createSeed });
+  const { state, reveal, rate, restart, savesReviews } = useStudySession({ mode, orchestrator, size, createSeed });
   const answerRef = useRef<HTMLDivElement>(null);
 
   // Keyboard: Space/Enter reveals, 1-4 rate. Native button activation is left alone (no double handling).
@@ -113,7 +125,7 @@ export function StudySession({ mode, onExit, orchestrator, size, createSeed }: S
     );
   }
   if (state.status === 'complete') {
-    return <>{header}<SessionSummary ratings={state.ratings} onAgain={restart} onExit={onExit} /></>;
+    return <>{header}<SessionSummary ratings={state.ratings} saved={savesReviews} onAgain={restart} onExit={onExit} /></>;
   }
 
   const card = state.cards[state.index];

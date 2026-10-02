@@ -4,10 +4,8 @@ import { srsV1, type SrsAlgorithm } from '../../services/srs';
 import type { ReviewOrchestrator, ReviewRequest } from './reviewBoundary';
 
 /**
- * What the orchestrator needs from persistence. `recordReview` MUST store the card and the log atomically
- * (both or neither). The current ReviewRepository has no such method (saveCard and appendLog are separate
- * writes), so this port is deliberately NOT satisfied by it yet: see ARCHITECTURE CHANGE REQUIRED in the
- * Phase 5 report. Nothing wires this orchestrator into the app until that is approved.
+ * What the orchestrator needs from persistence: ReviewRepository satisfies it. `recordReview` stores the
+ * card and the log atomically (one IndexedDB transaction), so a review is never half-saved.
  */
 export interface ReviewRecorder {
   getCard(id: string): Promise<ReviewCard | null>;

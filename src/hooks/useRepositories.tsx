@@ -1,10 +1,13 @@
 import { createContext, useContext, type ReactNode } from 'react';
+import type { ReviewOrchestrator } from '../features/review/reviewBoundary';
 import type { KanjiRepository, ReviewRepository } from '../repositories/interfaces';
 
 /** What the UI is allowed to know: repository INTERFACES only, never an implementation. */
 export interface AppRepositories {
   readonly kanji: KanjiRepository;
   readonly review: ReviewRepository;
+  /** Production wiring that stores reviews. Absent in tests/practice: the session then stores nothing. */
+  readonly reviewOrchestrator?: ReviewOrchestrator;
 }
 
 const RepositoriesContext = createContext<AppRepositories | null>(null);

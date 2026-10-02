@@ -119,6 +119,26 @@ function withKanji(overrides: Partial<AppRepositories['kanji']>): AppRepositorie
   return { ...real, kanji: Object.assign(Object.create(real.kanji) as AppRepositories['kanji'], overrides) };
 }
 
+describe('production wiring in the session UI', () => {
+  it('uses the orchestrator from the app context and tells the user reviews are saved', async () => {
+    const requests: ReviewRequest[] = [];
+    const wired: AppRepositories = { ...real, reviewOrchestrator: { submit: (r) => { requests.push(r); return Promise.resolve(); } } };
+    renderSession(wired, 'A', { size: 1 });
+    await screen.findByText('Card 1 of 1');
+    reveal();
+    fireEvent.click(screen.getByRole('button', { name: /Good/ }));
+    expect(await screen.findByText('บันทึกผลการประเมินแล้ว')).toBeTruthy();
+    expect(requests).toHaveLength(1);
+  });
+  it('practice mode (no orchestrator) says nothing is saved', async () => {
+    renderSession(real, 'A', { size: 1 });
+    await screen.findByText('Card 1 of 1');
+    reveal();
+    fireEvent.click(screen.getByRole('button', { name: /Good/ }));
+    expect(await screen.findByText(/ยังไม่บันทึกผลการประเมิน/)).toBeTruthy();
+  });
+});
+
 describe('empty and error states', () => {
   it('shows an empty state when there are no kanji', async () => {
     renderSession(withKanji({ getByLevel: () => Promise.resolve([]) }), 'A');

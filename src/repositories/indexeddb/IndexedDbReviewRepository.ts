@@ -71,6 +71,33 @@ export class IndexedDbReviewRepository implements ReviewRepository {
     });
   }
 
+  recordReview(card: ReviewCard, log: ReviewLog): Promise<void> {
+    return runRepositoryOperation('ReviewRepository.recordReview', async () => {
+      // Validate both BEFORE opening the transaction: nothing is written if either is invalid.
+      const validCard = parseRecord(reviewCardSchema, card, 'review card');
+      const validLog = parseRecord(reviewLogSchema, log, 'review log');
+      if (validLog.cardId !== validCard.id) {
+        throw new ValidationError('review log cardId must match the review card id');
+      }
+      // One readwrite transaction over both stores; the card is written first so a failing log add proves rollback.
+      const tx = this.db.transaction([STORES.reviewCards, STORES.reviewLogs], 'readwrite');
+      const done = tx.done;
+      try {
+        await tx.objectStore(STORES.reviewCards).put(validCard);
+        await tx.objectStore(STORES.reviewLogs).add(validLog); // add, never put: an existing log is never overwritten
+        await done;
+      } catch (error) {
+        try {
+          tx.abort();
+        } catch {
+          // already finished or aborted
+        }
+        await done.catch(() => undefined);
+        throw error;
+      }
+    });
+  }
+
   getLogs(range: DateRange): Promise<readonly ReviewLog[]> {
     return runRepositoryOperation('ReviewRepository.getLogs', async () => {
       const from = toEpochMs(range.from, 'range.from');

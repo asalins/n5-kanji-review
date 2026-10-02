@@ -41,12 +41,15 @@ const LOADING: SessionState = {
 /** UI-facing orchestration: loads real cards through the repositories and walks through them. */
 export function useStudySession({
   mode,
-  orchestrator = sessionOnlyOrchestrator,
+  orchestrator: orchestratorOption,
   size = DEFAULT_SESSION_SIZE,
   createSeed = Date.now,
   now = Date.now,
 }: StudySessionOptions) {
-  const { kanji: kanjiRepository } = useRepositories();
+  const { kanji: kanjiRepository, reviewOrchestrator } = useRepositories();
+  const orchestrator = orchestratorOption ?? reviewOrchestrator ?? sessionOnlyOrchestrator;
+  /** True when ratings are really stored (false in practice mode). */
+  const savesReviews = orchestrator !== sessionOnlyOrchestrator;
   const [runId, setRunId] = useState(0);
   const [state, setState] = useState<SessionState>(LOADING);
   const stateRef = useRef(state);
@@ -132,5 +135,5 @@ export function useStudySession({
 
   const restart = useCallback(() => setRunId((id) => id + 1), []);
 
-  return { state, reveal, rate, restart };
+  return { state, reveal, rate, restart, savesReviews };
 }

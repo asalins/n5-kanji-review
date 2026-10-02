@@ -21,8 +21,8 @@ export interface ReviewOrchestrator {
 
 /**
  * Practice-only implementation: persists NOTHING and schedules nothing. The session keeps the ratings in
- * memory for its summary. It stays the default until the atomic review write (ReviewRecorder.recordReview)
- * exists in the repository layer; then the app passes createReviewOrchestrator(...) instead.
+ * memory for its summary. Used when no orchestrator is provided (tests, practice shell); the production app
+ * provides createReviewOrchestrator(...) through its composition root.
  */
 export const sessionOnlyOrchestrator: ReviewOrchestrator = {
   submit: () => Promise.resolve(),
