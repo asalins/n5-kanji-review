@@ -3,20 +3,17 @@
     "strokeCount": "The primary/default stroke count from KANJIDIC2 is used. Alternative stroke counts reported by KANJIDIC2 are not represented in the current Kanji entity model."
   },
   "datasetVersion": "n5-2026.10.01",
-  "generatedAt": "2026-10-01T23:09:48.110Z",
+  "generatedAt": "2026-10-02T00:21:11.953Z",
   "total": 196,
   "valid": 196,
   "missing": [],
   "duplicate": [],
   "ambiguous": [
-    "十:ジッ:romaji",
-    "十:ジュッ:romaji",
     "週:strokeCount",
     "近:strokeCount",
     "遠:strokeCount",
     "送:strokeCount",
-    "道:strokeCount",
-    "早:サッ:romaji"
+    "道:strokeCount"
   ],
   "missingThai": [
     "kanji:U+4E00",
@@ -219,7 +216,26 @@
   "missingReading": [],
   "missingStrokeCount": [],
   "missingEnglishMeaning": [],
-  "unconvertibleReading": [],
+  "unresolvedRomaji": [
+    {
+      "kanji": "十",
+      "kana": "ジッ",
+      "type": "on",
+      "reason": "final small tsu: the doubled consonant depends on the following syllable, which is unknown here"
+    },
+    {
+      "kanji": "十",
+      "kana": "ジュッ",
+      "type": "on",
+      "reason": "final small tsu: the doubled consonant depends on the following syllable, which is unknown here"
+    },
+    {
+      "kanji": "早",
+      "kana": "サッ",
+      "type": "on",
+      "reason": "final small tsu: the doubled consonant depends on the following syllable, which is unknown here"
+    }
+  ],
   "integrity": [],
   "unknownThai": [],
   "blockers": []

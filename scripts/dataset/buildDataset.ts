@@ -10,7 +10,7 @@ import { checkIntegrity } from '../../src/services/content/integrity';
 import type { KanjiReading } from '../../src/types/entities';
 import { makeKanjiId } from '../../src/utils/kanjiId';
 import type { ParsedKanjidic } from './kanjidic2';
-import { endsWithSokuon, kanaToRomaji } from './romaji';
+import { explainUnresolvedRomaji, kanaToRomaji } from './romaji';
 import type { LevelList } from './schemas';
 import { checkAgainstList } from './validateAgainstList';
 
@@ -31,6 +31,13 @@ export const REPORT_DOCUMENTATION = {
     'KANJIDIC2 are not represented in the current Kanji entity model.',
 } as const;
 
+export interface UnresolvedRomaji {
+  readonly kanji: string;
+  readonly kana: string;
+  readonly type: 'on' | 'kun';
+  readonly reason: string;
+}
+
 export interface DatasetReport {
   readonly documentation: typeof REPORT_DOCUMENTATION;
   readonly datasetVersion: string;
@@ -44,7 +51,8 @@ export interface DatasetReport {
   readonly missingReading: readonly string[];
   readonly missingStrokeCount: readonly string[];
   readonly missingEnglishMeaning: readonly string[];
-  readonly unconvertibleReading: readonly string[];
+  /** Readings kept with romaji = null because no reliable romaji could be derived from the kana. */
+  readonly unresolvedRomaji: readonly UnresolvedRomaji[];
   readonly integrity: readonly { code: string; subject: string }[];
   readonly unknownThai: readonly string[];
   /** Problems that prevent writing the dataset. Thai gaps alone are warnings, not blockers. */
@@ -81,7 +89,7 @@ export function buildDataset(input: BuildInput): BuildOutput {
   const missingReading: string[] = [];
   const missingStrokeCount: string[] = [];
   const missingEnglishMeaning: string[] = [];
-  const unconvertibleReading: string[] = [];
+  const unresolvedRomaji: UnresolvedRomaji[] = [];
   const ambiguous: string[] = [];
   const kanji: DatasetKanji[] = [];
   const readings: KanjiReading[] = [];
@@ -104,24 +112,20 @@ export function buildDataset(input: BuildInput): BuildOutput {
 
     const id = makeKanjiId(character);
     const kanjiReadings: KanjiReading[] = [];
-    let convertible = true;
     for (const [type, kanaList] of [['on', raw.onReadings], ['kun', raw.kunReadings]] as const) {
       for (const kana of kanaList) {
         const romaji = kanaToRomaji(kana);
         if (romaji === null) {
-          convertible = false;
-          unconvertibleReading.push(`${character}:${kana}`);
-        } else {
-          if (endsWithSokuon(kana)) ambiguous.push(`${character}:${kana}:romaji`);
-          kanjiReadings.push({ kanjiId: id, type, kana, romaji });
+          unresolvedRomaji.push({ kanji: character, kana, type, reason: explainUnresolvedRomaji(kana) });
         }
+        // kana is source data and is always kept; romaji is derived and may be null
+        kanjiReadings.push({ kanjiId: id, type, kana, romaji });
       }
     }
     if (raw.onReadings.length + raw.kunReadings.length === 0) {
       missingReading.push(character);
       continue;
     }
-    if (!convertible) continue;
     if (raw.meaningsEn.length === 0) missingEnglishMeaning.push(character);
 
     kanji.push({
@@ -161,7 +165,6 @@ export function buildDataset(input: BuildInput): BuildOutput {
     ['duplicate', duplicate],
     ['missing reading', missingReading],
     ['missing stroke count', missingStrokeCount],
-    ['unconvertible reading', unconvertibleReading],
     ['integrity issue', integrity],
     ['record not in list', listCheck.notInList],
     ['unknown Thai entry', merge.thai.unknownThai],
@@ -183,7 +186,7 @@ export function buildDataset(input: BuildInput): BuildOutput {
     missingReading,
     missingStrokeCount,
     missingEnglishMeaning,
-    unconvertibleReading,
+    unresolvedRomaji,
     integrity: integrity.map((i) => ({ code: i.code, subject: i.subject })),
     unknownThai: merge.thai.unknownThai,
     blockers,

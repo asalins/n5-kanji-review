@@ -20,7 +20,8 @@ export interface KanjiReading {
   readonly kanjiId: string;
   readonly type: ReadingType;
   readonly kana: string;
-  readonly romaji: string;
+  /** Derived from kana. null = the source kana exists but no reliable romaji could be derived. */
+  readonly romaji: string | null;
 }
 
 export interface Vocabulary {

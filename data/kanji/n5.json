@@ -1,6 +1,6 @@
 {
   "datasetVersion": "n5-2026.10.01",
-  "generatedAt": "2026-10-01T23:09:48.110Z",
+  "generatedAt": "2026-10-02T00:21:11.953Z",
   "level": "N5",
   "sources": [
     {
@@ -2956,13 +2956,13 @@
       "kanjiId": "kanji:U+5341",
       "type": "on",
       "kana": "ジッ",
-      "romaji": "jit"
+      "romaji": null
     },
     {
       "kanjiId": "kanji:U+5341",
       "type": "on",
       "kana": "ジュッ",
-      "romaji": "jut"
+      "romaji": null
     },
     {
       "kanjiId": "kanji:U+5341",
@@ -7390,7 +7390,7 @@
       "kanjiId": "kanji:U+65E9",
       "type": "on",
       "kana": "サッ",
-      "romaji": "sat"
+      "romaji": null
     },
     {
       "kanjiId": "kanji:U+65E9",

@@ -27,7 +27,10 @@ describe('romaji', () => {
     expect(kanaToRomaji('ニチ')).toBe('nichi');
     expect(kanaToRomaji('ショウ')).toBe('shou');
     expect(kanaToRomaji('ジツ')).toBe('jitsu');
-    expect(kanaToRomaji('ジッ')).toBe('jit'); // final small tsu -> 't' (convention, reported as ambiguous)
+    // final small tsu: the doubled consonant is unknown without context, so nothing is derived
+    expect(kanaToRomaji('ジッ')).toBeNull();
+    expect(kanaToRomaji('ジュッ')).toBeNull();
+    expect(kanaToRomaji('サッ')).toBeNull();
     expect(kanaToRomaji('はっぴ')).toBe('happi');
     expect(kanaToRomaji('いっち')).toBe('itchi');
     expect(kanaToRomaji('きょ')).toBe('kyo');

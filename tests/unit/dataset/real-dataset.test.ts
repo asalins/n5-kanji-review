@@ -38,8 +38,12 @@ describe('real n5.json', () => {
     expect(dataset.sources.map((s) => s.name)).toEqual(['KANJIDIC2', 'Project Owner Provided N5 Kanji List']);
   });
 
-  it('only contains Japanese readings with non-empty romaji', () => {
-    expect(dataset.readings.every((r) => (r.type === 'on' || r.type === 'kun') && r.romaji.length > 0)).toBe(true);
+  it('only contains Japanese readings; romaji is a non-empty string or an explicit null', () => {
+    expect(
+      dataset.readings.every(
+        (r) => (r.type === 'on' || r.type === 'kun') && (r.romaji === null || r.romaji.length > 0),
+      ),
+    ).toBe(true);
   });
 
   it('matches values verified by hand against the real KANJIDIC2 file', () => {

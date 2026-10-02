@@ -39,7 +39,7 @@ export const kanjiSchema = conform<Kanji>(
 );
 
 export const kanjiReadingSchema = conform<KanjiReading>(
-  z.object({ kanjiId: id, type: z.enum(READING_TYPES), kana: text, romaji: text }),
+  z.object({ kanjiId: id, type: z.enum(READING_TYPES), kana: text, romaji: text.nullable() }),
 );
 
 export const vocabularySchema = conform<Vocabulary>(

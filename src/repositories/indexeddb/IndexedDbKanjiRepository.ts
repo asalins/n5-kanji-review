@@ -71,7 +71,7 @@ export class IndexedDbKanjiRepository implements KanjiRepository {
 
       const matchedIds = new Set<string>();
       for (const reading of readings) {
-        if (anyIncludes([reading.kana, reading.romaji], needle)) matchedIds.add(reading.kanjiId);
+        if (anyIncludes(reading.romaji === null ? [reading.kana] : [reading.kana, reading.romaji], needle)) matchedIds.add(reading.kanjiId);
       }
       for (const word of vocabulary) {
         const texts = [word.word, word.reading, ...word.meaningEn, ...word.meaningTh];

@@ -1,6 +1,7 @@
 /**
  * Kana -> romaji (modified Hepburn, no macrons: long vowels are written out, e.g. ショウ -> shou).
- * Returns null for anything it cannot convert with certainty; callers must report, not guess.
+ * Returns null for anything it cannot convert with certainty (e.g. a final small tsu); callers
+ * keep the source kana, store romaji as null and report it. Never guess.
  * KANJIDIC2 notation markers ('.' okurigana boundary, '-' prefix/suffix) are ignored for romaji.
  */
 
@@ -34,9 +35,13 @@ function katakanaToHiragana(text: string): string {
     .join('');
 }
 
-/** True when the reading ends in a small tsu, whose romaji is a convention (see kanaToRomaji). */
-export function endsWithSokuon(input: string): boolean {
-  return katakanaToHiragana(input.replace(/[.\-]/g, '')).endsWith('っ');
+const FINAL_SOKUON_REASON =
+  'final small tsu: the doubled consonant depends on the following syllable, which is unknown here';
+
+/** Why kanaToRomaji returned null for this kana (for the build report). */
+export function explainUnresolvedRomaji(input: string): string {
+  const kana = katakanaToHiragana(input.replace(/[.\-]/g, ''));
+  return kana.endsWith('っ') ? FINAL_SOKUON_REASON : 'contains kana this converter does not support';
 }
 
 export function kanaToRomaji(input: string): string | null {
@@ -49,12 +54,9 @@ export function kanaToRomaji(input: string): string | null {
   for (let i = 0; i < chars.length; i += 1) {
     const ch = chars[i] as string;
     if (ch === 'っ') {
-      // Final small tsu (found in real KANJIDIC2 readings such as ジッ): the doubled consonant is
-      // unknown outside a compound, so it is written as 't'. buildDataset reports these as ambiguous.
-      if (i === chars.length - 1) {
-        out += 't';
-        continue;
-      }
+      // Final small tsu (real KANJIDIC2 readings such as ジッ): the doubled consonant is unknown
+      // without the following syllable, so no romaji is derived (never guessed).
+      if (i === chars.length - 1) return null;
       doubleNext = true;
       continue;
     }
