@@ -48,3 +48,7 @@ UI -> features/hooks -> services -> repository interfaces -> repository implemen
 - **Content vs user data.** Content stores (kanji, kanjiReadings, vocabulary, exampleSentences, contentMeta) come from the dataset and are replaced as a whole by `ContentWriter.replaceContent` in one transaction. User stores (reviewCards, reviewLogs, studySessions, userSettings, streakState) are never part of that transaction.
 - **Version.** `datasetVersion` in `n5.json` is the single source of truth; the loaded version is stored in `contentMeta` (DB v2) and read via `KanjiRepository.getDatasetVersion()` for `ReviewLog.datasetVersion`. `n5.th.json` must carry the same version.
 - **Loader.** `src/services/content/loadDatasetContent` validates both files, checks integrity, skips if the version is already loaded, otherwise replaces content. Wiring it to the files at app start is Phase 4.
+
+## SRS (Phase 5)
+
+Scheduling lives only in `src/services/srs` (specification: `docs/srs-v1.md`, version `srs-v1`). `features/review/reviewOrchestrator.ts` turns a rating intent into card + log via the SRS service, but is NOT yet wired into the app: it needs an atomic `recordReview(card, log)` in the repository layer (pending approval). Until then the app uses the practice-only orchestrator and stores no reviews. Thai meanings are shown only when `reviewed: true` (see `DATA_SOURCES.md`).

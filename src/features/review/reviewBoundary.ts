@@ -5,7 +5,10 @@ export interface ReviewRequest {
   readonly item: ItemRef;
   readonly mode: StudyMode;
   readonly rating: ReviewRating;
+  /** Epoch ms when the rating was given. */
   readonly answeredAt: number;
+  /** Whole milliseconds the card was on screen, measured by the session layer (SRS never invents it). */
+  readonly durationMs: number;
 }
 
 /**
@@ -17,8 +20,9 @@ export interface ReviewOrchestrator {
 }
 
 /**
- * Phase 4 implementation: persists NOTHING and schedules nothing. The session itself keeps the
- * ratings in memory for its summary. Replaced in Phase 5.
+ * Practice-only implementation: persists NOTHING and schedules nothing. The session keeps the ratings in
+ * memory for its summary. It stays the default until the atomic review write (ReviewRecorder.recordReview)
+ * exists in the repository layer; then the app passes createReviewOrchestrator(...) instead.
  */
 export const sessionOnlyOrchestrator: ReviewOrchestrator = {
   submit: () => Promise.resolve(),

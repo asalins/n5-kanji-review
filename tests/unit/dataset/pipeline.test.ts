@@ -157,4 +157,14 @@ describe('Thai merge', () => {
     expect(report.ambiguousThai).toEqual(['kanji:U+706B']);
     expect(report.missingThai).toEqual(['kanji:U+706B', 'kanji:U+5C71']);
   });
+
+  it('withholds Thai drafts: reviewed must be true before a meaning is loaded', () => {
+    const dataset = makeDataset('v', [['水', '6C34', 'water']]);
+    const draft = { datasetVersion: 'v', entries: [{ kanjiId: 'kanji:U+6C34', meaningsTh: ['น้ำ'], reviewed: false, ambiguous: false }] };
+    const { bundle, thai: report } = buildContentBundle(dataset, draft);
+    expect(bundle.kanji[0]?.meanings.th).toEqual([]);
+    expect(report.missingThai).toEqual(['kanji:U+6C34']);
+    const approved = { ...draft, entries: [{ ...draft.entries[0]!, reviewed: true }] };
+    expect(buildContentBundle(dataset, approved).bundle.kanji[0]?.meanings.th).toEqual(['น้ำ']);
+  });
 });

@@ -55,6 +55,10 @@ export function useStudySession({
   // keep unstable option functions out of the effect dependencies
   const seedRef = useRef(createSeed);
   seedRef.current = createSeed;
+  // when the current card appeared; used for ReviewRequest.durationMs
+  const shownAtRef = useRef<number | null>(null);
+  const nowRef = useRef(now);
+  nowRef.current = now;
 
   useEffect(() => {
     let cancelled = false;
@@ -85,6 +89,10 @@ export function useStudySession({
     };
   }, [kanjiRepository, mode, size, runId]);
 
+  useEffect(() => {
+    shownAtRef.current = state.status === 'ready' ? nowRef.current() : null;
+  }, [state.status, state.index]);
+
   const reveal = useCallback(() => {
     setState((s) => (s.status === 'ready' && s.phase === 'front' ? { ...s, phase: 'revealed' } : s));
   }, []);
@@ -96,11 +104,14 @@ export function useStudySession({
       if (current.status !== 'ready' || current.phase !== 'revealed' || card === undefined || submitting.current) return;
       submitting.current = true;
       try {
+        const answeredAt = now();
+        const shownAt = shownAtRef.current ?? answeredAt;
         await orchestrator.submit({
           item: { itemType: 'kanji', itemId: card.kanji.id },
           mode,
           rating,
-          answeredAt: now(),
+          answeredAt,
+          durationMs: Math.max(0, Math.round(answeredAt - shownAt)),
         });
         setState((s) => {
           const nextIndex = s.index + 1;

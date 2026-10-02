@@ -37,5 +37,8 @@ It is **NOT** claimed to be an official JLPT N5 Kanji list.
 ## Dataset field notes
 - **strokeCount:** The primary/default stroke count from KANJIDIC2 is used. Alternative stroke counts reported by KANJIDIC2 are not represented in the current Kanji entity model. (Affected in the Project N5 list: 週 11/10, 近 7/6, 遠 13/12, 送 9/8, 道 12/11; the first value is stored. The same text is written to `data/kanji/n5.report.json` under `documentation.strokeCount`.)
 
+## Thai review policy
+Only Thai entries with `reviewed: true` (and not `ambiguous`) are loaded into the app as Thai learning content. Drafts with `reviewed: false` are withheld and reported as missing Thai until a reviewer approves them.
+
 ## Thai meanings
 - Authored and reviewed separately in `data/kanji/n5.th.json` (not generated from a source). Each entry has `reviewed` and `ambiguous` flags. Copyright of the Thai text belongs to this project's authors. If the Thai text is adapted from the English glosses, treat it as ShareAlike material as well.

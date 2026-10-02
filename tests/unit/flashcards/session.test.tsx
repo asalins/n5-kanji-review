@@ -99,7 +99,8 @@ describe('study session with the real dataset', () => {
     fireEvent.click(screen.getByRole('button', { name: /Hard/ }));
     await screen.findByText('จบรอบนี้แล้ว');
     expect(requests).toHaveLength(1);
-    expect(Object.keys(requests[0]!).sort()).toEqual(['answeredAt', 'item', 'mode', 'rating']);
+    expect(Object.keys(requests[0]!).sort()).toEqual(['answeredAt', 'durationMs', 'item', 'mode', 'rating']);
+    expect(Number.isInteger(requests[0]!.durationMs) && requests[0]!.durationMs >= 0).toBe(true);
     expect(requests[0]).toMatchObject({ item: { itemType: 'kanji' }, mode: 'B', rating: 'HARD' });
   });
 

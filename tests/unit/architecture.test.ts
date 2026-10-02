@@ -89,4 +89,12 @@ describe('architecture boundaries', () => {
     const boundary = files.find((f) => f.rel === 'features/review/reviewBoundary.ts')?.text ?? '';
     expect(boundary).not.toMatch(/interval|ease|dueDate|nextReview|stateAfter/i);
   });
+  it('only the review orchestrator may use the SRS service (UI never calculates scheduling)', () => {
+    const offenders = files
+      .filter((f) => !f.rel.startsWith('services/srs/'))
+      .filter((f) => /from ['"][^'"]*services\/srs[^'"]*['"]/.test(f.text))
+      .filter((f) => !/^features\/review\/[A-Za-z]*[Oo]rchestrator[A-Za-z]*\.ts$/.test(f.rel))
+      .map((f) => f.rel);
+    expect(offenders).toEqual([]);
+  });
 });

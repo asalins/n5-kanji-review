@@ -19,6 +19,7 @@ export interface MergeResult {
 /**
  * Merges the source dataset with the separate Thai file into the app's ContentBundle.
  * Nothing is invented: a kanji without usable Thai gets `th: []` and is reported.
+ * Usable = present, non-empty, reviewed === true and not flagged ambiguous.
  * Vocabulary and example sentences are out of Phase 3 scope and stay empty.
  */
 export function buildContentBundle(dataset: KanjiDatasetFile, thai: ThaiDatasetFile): MergeResult {
@@ -36,7 +37,8 @@ export function buildContentBundle(dataset: KanjiDatasetFile, thai: ThaiDatasetF
 
   const kanji = dataset.kanji.map((k) => {
     const entry = byId.get(k.id);
-    const usable = entry !== undefined && !entry.ambiguous && entry.meaningsTh.length > 0;
+    // Policy: only reviewed Thai is authoritative learning content. Drafts (reviewed: false) are withheld.
+    const usable = entry !== undefined && entry.reviewed && !entry.ambiguous && entry.meaningsTh.length > 0;
     if (entry?.ambiguous) ambiguousThai.push(k.id);
     if (!usable) missingThai.push(k.id);
     return { ...k, meanings: { en: k.meanings.en, th: usable ? entry.meaningsTh : [] } };
