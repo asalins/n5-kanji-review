@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 import { StateMessage } from '../components/StateMessage';
 import { RepositoriesProvider, type AppRepositories } from '../hooks/useRepositories';
 import { HomePage } from '../pages/HomePage';
+import { ReviewPage } from '../pages/ReviewPage';
 import { StudyPage } from '../pages/StudyPage';
 import { logError, toUserMessage } from '../utils/userMessage';
 import { useAppStore } from './appStore';
 import { bootstrapApp } from './bootstrap';
 import { applyThemePreference } from './theme';
 
-type Screen = 'home' | 'study';
+type Screen = 'home' | 'review' | 'practice';
 
 interface AppProps {
   /** Injectable for tests. Defaults to opening the real database and loading the bundled dataset. */
@@ -74,7 +75,9 @@ export function App({ bootstrap = bootstrapApp }: AppProps) {
   }
   return (
     <RepositoriesProvider value={repositories}>
-      {screen === 'home' ? <HomePage onStartStudy={() => setScreen('study')} /> : <StudyPage onExit={() => setScreen('home')} />}
+      {screen === 'home' && <HomePage onStartReview={() => setScreen('review')} onStartPractice={() => setScreen('practice')} />}
+      {screen === 'review' && <ReviewPage onExit={() => setScreen('home')} />}
+      {screen === 'practice' && <StudyPage onExit={() => setScreen('home')} />}
     </RepositoriesProvider>
   );
 }

@@ -2,6 +2,7 @@ import { createReviewOrchestrator } from '../features/review/reviewOrchestrator'
 import type { AppRepositories } from '../hooks/useRepositories';
 import { createIndexedDbRepositories, type Repositories } from '../repositories/indexeddb';
 import { loadBundledDataset } from '../services/content/bundledDataset';
+import { createProjectListSource } from '../services/content/projectList';
 import { openDefaultDatabase } from '../services/storage/appDatabase';
 
 /** Wires repositories and the review orchestrator (rating -> SRS -> atomic card + log write). */
@@ -9,6 +10,7 @@ export function buildAppServices(repositories: Repositories): AppRepositories {
   return {
     kanji: repositories.kanji,
     review: repositories.review,
+    newItems: createProjectListSource(),
     reviewOrchestrator: createReviewOrchestrator({
       recorder: repositories.review,
       getDatasetVersion: () => repositories.kanji.getDatasetVersion(),

@@ -93,7 +93,31 @@ describe('architecture boundaries', () => {
     const offenders = files
       .filter((f) => !f.rel.startsWith('services/srs/'))
       .filter((f) => /from ['"][^'"]*services\/srs[^'"]*['"]/.test(f.text))
-      .filter((f) => !/^features\/review\/[A-Za-z]*[Oo]rchestrator[A-Za-z]*\.ts$/.test(f.rel))
+      .filter((f) => !/^(features\/review\/[A-Za-z]*[Oo]rchestrator[A-Za-z]*\.ts|services\/session\/cardFactory\.ts)$/.test(f.rel))
+      .map((f) => f.rel);
+    expect(offenders).toEqual([]);
+  });
+  it('the session engine and review session never read the system clock or randomness directly', () => {
+    const offenders = files
+      .filter((f) => /^(services\/session\/|features\/review\/(useReviewSession|ReviewSession)\.)/.test(f.rel))
+      .filter((f) => /Date\.now\(|Math\.random\(|new Date\(\)/.test(f.text))
+      .map((f) => f.rel);
+    expect(offenders).toEqual([]);
+  });
+
+  it('only services/content reads bundled data files (the UI and engine receive ports)', () => {
+    const offenders = files
+      .filter((f) => !f.rel.startsWith('services/content/'))
+      .filter((f) => /from ['"][^'"]*\/data\/[^'"]*\.json['"]|import\(['"][^'"]*\/data\/[^'"]*['"]\)/.test(f.text))
+      .map((f) => f.rel);
+    expect(offenders).toEqual([]);
+  });
+
+  it('UI, hooks and the review feature never write persistence or compute scheduling themselves', () => {
+    const offenders = files
+      .filter((f) => /^(pages|components|hooks|features)\//.test(f.rel))
+      .filter((f) => f.rel !== 'features/review/reviewOrchestrator.ts') // the one place that applies SRS and writes the review
+      .filter((f) => /\.(saveCard|appendLog|recordReview)\(|updateCardState|createNewCard/.test(f.text))
       .map((f) => f.rel);
     expect(offenders).toEqual([]);
   });

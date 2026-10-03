@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { SECONDARY_BUTTON } from '../components/styles';
 import { StudyModeSelector } from '../features/flashcards/StudyModeSelector';
+import { sessionOnlyOrchestrator } from '../features/review/reviewBoundary';
 import { StudySession } from '../features/review/StudySession';
 import type { StudyMode } from '../types/entities';
 
+/** Practice picks random cards regardless of schedule, so it must never write SRS state (hence the session-only orchestrator). */
 export function StudyPage({ onExit }: { onExit: () => void }) {
   const [mode, setMode] = useState<StudyMode | null>(null);
   return (
@@ -17,7 +19,7 @@ export function StudyPage({ onExit }: { onExit: () => void }) {
           </button>
         </>
       ) : (
-        <StudySession mode={mode} onExit={() => setMode(null)} />
+        <StudySession mode={mode} onExit={() => setMode(null)} orchestrator={sessionOnlyOrchestrator} />
       )}
     </main>
   );

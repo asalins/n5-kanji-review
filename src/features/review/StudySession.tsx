@@ -4,6 +4,7 @@ import { PRIMARY_BUTTON, SECONDARY_BUTTON } from '../../components/styles';
 import { REVIEW_RATINGS, type ReviewRating, type StudyMode } from '../../types/entities';
 import { Flashcard } from '../flashcards/Flashcard';
 import { RatingButtons } from '../flashcards/RatingButtons';
+import { useCardKeyboard } from '../flashcards/useCardKeyboard';
 import { MODE_INFO, RATING_INFO } from '../flashcards/strings';
 import type { ReviewOrchestrator } from './reviewBoundary';
 import { useStudySession } from './useStudySession';
@@ -15,8 +16,6 @@ interface StudySessionProps {
   readonly size?: number;
   readonly createSeed?: () => number;
 }
-
-const INTERACTIVE_TAGS = new Set(['BUTTON', 'A', 'INPUT', 'TEXTAREA', 'SELECT']);
 
 function SessionSummary({
   ratings,
@@ -55,27 +54,12 @@ export function StudySession({ mode, onExit, orchestrator, size, createSeed }: S
   const { state, reveal, rate, restart, savesReviews } = useStudySession({ mode, orchestrator, size, createSeed });
   const answerRef = useRef<HTMLDivElement>(null);
 
-  // Keyboard: Space/Enter reveals, 1-4 rate. Native button activation is left alone (no double handling).
-  useEffect(() => {
-    if (state.status !== 'ready') return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      const target = event.target as HTMLElement | null;
-      if (target !== null && INTERACTIVE_TAGS.has(target.tagName)) return;
-      if (event.metaKey || event.ctrlKey || event.altKey) return;
-      if (state.phase === 'front' && (event.key === ' ' || event.key === 'Enter')) {
-        event.preventDefault();
-        reveal();
-      } else if (state.phase === 'revealed') {
-        const rating = REVIEW_RATINGS[Number(event.key) - 1];
-        if (rating !== undefined) {
-          event.preventDefault();
-          void rate(rating);
-        }
-      }
-    };
-    document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
-  }, [state.status, state.phase, reveal, rate]);
+  useCardKeyboard({
+    enabled: state.status === 'ready',
+    phase: state.phase,
+    onReveal: reveal,
+    onRate: (rating) => void rate(rating),
+  });
 
   // After revealing, move focus into the answer so keyboard and screen-reader users land on it.
   useEffect(() => {
