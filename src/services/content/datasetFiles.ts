@@ -51,7 +51,6 @@ export const thaiEntrySchema = z.object({
   /** A human flagged the meaning as unclear: AMBIGUOUS THAI MEANING. */
   ambiguous: z.boolean(),
 });
-export type ThaiEntry = z.infer<typeof thaiEntrySchema>;
 
 export const thaiDatasetFileSchema = z.object({
   datasetVersion: z.string().min(1),

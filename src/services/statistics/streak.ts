@@ -34,7 +34,7 @@ export function calculateStreak(studyDays: ReadonlySet<string>, todayKey: string
     current += 1;
     cursor -= 1;
   }
-  return { current, longest: longestRun([...days].sort((a, b) => a - b)), studiedToday };
+  return { current, longest: calculateLongestStreak(studyDays), studiedToday };
 }
 
 export function calculateLongestStreak(studyDays: ReadonlySet<string>): number {

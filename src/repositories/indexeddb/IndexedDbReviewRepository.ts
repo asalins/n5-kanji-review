@@ -7,6 +7,7 @@ import {
   studySessionSchema,
 } from '../../types/schemas';
 import { LEARNING_STATES, type LearningState, type ReviewCard, type ReviewLog, type StreakState, type StudySession } from '../../types/entities';
+import { isDueCard } from '../../utils/dueCard';
 import { ValidationError } from '../../utils/errors';
 import type { DateRange, ReviewRepository } from '../interfaces';
 import {
@@ -35,10 +36,11 @@ export class IndexedDbReviewRepository implements ReviewRepository {
       if (limit === 0) return due;
 
       const tx = this.db.transaction(STORES.reviewCards);
+      // The by-due range (due <= now) only narrows the scan; isDueCard is the single definition of "due".
       const range = IDBKeyRange.upperBound(nowMs);
       for await (const cursor of tx.store.index('by-due').iterate(range)) {
         const card = parseRecord(reviewCardSchema, cursor.value, 'review card');
-        if (card.state === 'NEW') continue;
+        if (!isDueCard(card, nowMs)) continue;
         due.push(card);
         if (due.length >= limit) break;
       }

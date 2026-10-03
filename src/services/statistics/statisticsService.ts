@@ -1,13 +1,13 @@
 import type { KanjiRepository, ReviewRepository } from '../../repositories/interfaces';
 import { LEARNING_STATES, STUDY_MODES, type LearningState } from '../../types/entities';
+import { isDueCard } from '../../utils/dueCard';
 import { localDay } from '../../utils/localDay';
 import { DatasetUnavailableError } from '../session/sessionEngine';
 import { DEFAULT_DAILY_NEW_LIMIT, DEFAULT_DAILY_REVIEW_LIMIT } from '../session/config';
 import type { DailyLimits } from '../session/allowance';
 import { calculateProgressPercentage } from './accuracy';
-import { ALL_DUE_CARDS_LIMIT, HISTORY_LONG_DAYS, HISTORY_SHORT_DAYS, STATISTICS_LEVEL } from './config';
+import { HISTORY_LONG_DAYS, HISTORY_SHORT_DAYS, STATISTICS_LEVEL } from './config';
 import { calculateDailyProgress, calculateNewAvailable, type DailyProgress } from './dailyProgress';
-import { localDateKey } from './days';
 import { aggregateReviewsByDay, keyLogs, logsInLastDays, summarizeLogs, type DayStats, type PeriodStats } from './history';
 import { calculateLearnedKanji, calculateMasteredKanji, countCardsByState } from './kanjiProgress';
 import { calculateStreak, type StreakResult } from './streak';
@@ -34,7 +34,7 @@ export interface Statistics {
   readonly generatedAt: number;
   readonly today: DailyProgress & { readonly date: string; readonly studied: boolean };
   readonly queue: {
-    /** Every card currently due, not capped by today's review quota. */
+    /** Every card currently due (non-NEW and due <= now), not capped by today's review quota. */
     readonly due: number;
     /** min(remaining new quota, cards not yet reviewed). */
     readonly newAvailable: number;
@@ -53,18 +53,17 @@ export interface Statistics {
 const ALL_TIME: { from: Date; to: Date } = { from: new Date(0), to: new Date(8.64e15) };
 
 /**
- * Reads through the repositories only: one log read (all time), one card read (all states), one due read,
- * one dataset read. No per-kanji queries. Every number is derived from these results.
+ * Reads through the repositories only: one log read (all time), one card read (all states) and one dataset
+ * read. "Due" is counted from the cards with the shared isDueCard rule (the review session's rule). No per-kanji queries. Every number is derived from these results.
  */
 export async function computeStatistics(deps: StatisticsDeps): Promise<Statistics> {
   const limits = deps.limits ?? { newCards: DEFAULT_DAILY_NEW_LIMIT, reviews: DEFAULT_DAILY_REVIEW_LIMIT };
   const generatedAt = deps.now();
   const todayKey = localDay(generatedAt).key;
 
-  const [logs, cards, dueCards, datasetKanji] = await Promise.all([
+  const [logs, cards, datasetKanji] = await Promise.all([
     deps.review.getLogs(ALL_TIME),
     deps.review.getCardsByStates(LEARNING_STATES),
-    deps.review.getDueCards(new Date(generatedAt), ALL_DUE_CARDS_LIMIT),
     deps.kanji.getByLevel(STATISTICS_LEVEL),
   ]);
 
@@ -84,7 +83,7 @@ export async function computeStatistics(deps: StatisticsDeps): Promise<Statistic
   return {
     generatedAt,
     today: { ...daily, date: todayKey, studied: streak.studiedToday },
-    queue: { due: dueCards.length, newAvailable: calculateNewAvailable(daily.remainingNewQuota, unreviewed) },
+    queue: { due: cards.filter((card) => isDueCard(card, generatedAt)).length, newAvailable: calculateNewAvailable(daily.remainingNewQuota, unreviewed) },
     kanji: {
       total,
       learned,
@@ -109,5 +108,3 @@ export async function computeStatistics(deps: StatisticsDeps): Promise<Statistic
     hasReviews: logs.length > 0,
   };
 }
-
-export { localDateKey };

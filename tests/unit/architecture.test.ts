@@ -150,4 +150,36 @@ describe('architecture boundaries', () => {
     const body = source.slice(source.indexOf('getCardsByStates('), source.indexOf('getNewCards('));
     expect(body).toMatch(/index\('by-state'\)/);
   });
+  it('Due has ONE definition (utils/dueCard.ts): statistics and the repository reuse it, nobody re-implements it', () => {
+    const comparisons = files
+      .filter((f) => f.rel !== 'utils/dueCard.ts')
+      .filter((f) => /\.due\s*(<=|>=|<(?!=)|>(?!=))|(?<![=-])(<=|>=|<|>)\s*[\w.]*\.due\b/.test(f.text))
+      .map((f) => f.rel);
+    expect(comparisons).toEqual([]);
+    const statistics = files.find((f) => f.rel === 'services/statistics/statisticsService.ts')?.text ?? '';
+    expect(statistics).toMatch(/isDueCard\(/);
+    expect(statistics).not.toMatch(/getDueCards\(/); // no second path to a "due" number
+    const repository = files.find((f) => f.rel === 'repositories/indexeddb/IndexedDbReviewRepository.ts')?.text ?? '';
+    const body = repository.slice(repository.indexOf('getDueCards('), repository.indexOf('getCardsByStates('));
+    expect(body).toMatch(/isDueCard\(/);
+    expect(body).not.toMatch(/state\s*[!=]==?\s*'NEW'/); // the NEW exclusion lives only in isDueCard
+    const session = files.find((f) => f.rel === 'services/session/sessionEngine.ts')?.text ?? '';
+    expect(session).toMatch(/getDueCards\(/); // the session selects due cards through the same repository rule
+  });
+
+  it('statistics and the dashboard never touch IndexedDB or the storage layer, directly or through an implementation', () => {
+    const offenders = files
+      .filter((f) => /^(services\/statistics\/|features\/progress\/)/.test(f.rel))
+      .filter((f) => /from ['"](idb|[^'"]*(repositories\/indexeddb|services\/storage)[^'"]*)['"]|\bindexedDB\b|\bIDBKeyRange\b/.test(f.text))
+      .map((f) => f.rel);
+    expect(offenders).toEqual([]);
+  });
+
+  it('statistics never write ReviewCard, ReviewLog, StudySession or StreakState', () => {
+    const offenders = files
+      .filter((f) => /^(services\/statistics\/|features\/progress\/)/.test(f.rel))
+      .filter((f) => /\b(saveCard|appendLog|recordReview|saveSession|saveStreakState|saveSettings)\s*\(/.test(f.text))
+      .map((f) => f.rel);
+    expect(offenders).toEqual([]);
+  });
 });

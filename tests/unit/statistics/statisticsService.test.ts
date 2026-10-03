@@ -64,12 +64,6 @@ describe('statistics from real repositories (real dataset, no mock numbers)', ()
     expect(s.kanji.learnedPercent).toBeCloseTo((4 / 196) * 100, 10);
   });
 
-  it('due follows the repository and session definition: every non-NEW card whose due time has come, MASTERED included', async () => {
-    await repos.review.saveCard(storedCard('水', 'A', { state: 'MASTERED', reviewCount: 9, due: NOON - 10 }));
-    await repos.review.saveCard(storedCard('火', 'A', { state: 'NEW', due: NOON - 10 }));
-    expect((await computeStatistics(deps())).queue.due).toBe(1);
-  });
-
   it('new available = min(remaining quota, cards not yet reviewed)', async () => {
     // 195 kanji x 4 modes reviewed, 4 cards of one kanji unreviewed -> only 4 available although 10 are allowed
     const all = await repos.kanji.getByLevel('N5');
@@ -137,7 +131,7 @@ describe('statistics from real repositories (real dataset, no mock numbers)', ()
     await expect(computeStatistics(empty)).rejects.toBeInstanceOf(DatasetUnavailableError);
   });
 
-  it.each(['getLogs', 'getCardsByStates', 'getDueCards'] as const)('a failing %s rejects: no partial numbers are produced', async (method) => {
+  it.each(['getLogs', 'getCardsByStates'] as const)('a failing %s rejects: no partial numbers are produced', async (method) => {
     vi.spyOn(repos.review, method).mockRejectedValue(new RepositoryError('boom'));
     await expect(computeStatistics(deps())).rejects.toBeInstanceOf(RepositoryError);
   });

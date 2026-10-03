@@ -57,11 +57,21 @@ Scheduling lives only in `src/services/srs` (specification: `docs/srs-v1.md`, ve
 
 `src/services/statistics/` (pure calculations + `computeStatistics`) feeds `features/progress` (hook + dashboard on the home page). Every number comes from the repositories: all ReviewLogs (`getLogs`), all cards (`getCardsByStates`), due cards (`getDueCards`) and the dataset size (`KanjiRepository.getByLevel`), read once each. Read-only; nothing is created for the sake of a statistic.
 
-- **Review** = one successfully stored ReviewLog. **Accuracy** = (HARD+GOOD+EASY) / reviews, shown as "—" when there are none. **Today** = local calendar day (runtime time zone, injectable clock).
-- **Reviews today**, **review quota** (logs with `stateBefore` not NEW, / daily review limit) and **new cards** (`stateBefore` NEW, / daily new limit) are three separate numbers.
-- **Learned Kanji** = at least one card of the kanji is not NEW. **Mastered Kanji** = all four modes have a card and all are MASTERED. Totals and percentages use the dataset count. "Review Cards by state" counts cards, not kanji.
-- **Streak** = consecutive local days with at least one ReviewLog (alive until a whole day passes without study); **longest** = best run in all history.
-- **Due** = every non-NEW card whose due time has come (the same rule as `getDueCards` and the review session, so MASTERED cards that come due are counted); **new available** = min(remaining new quota, cards not yet reviewed).
+Metric definitions (the single source of truth for the dashboard):
+
+| Metric | Definition |
+|---|---|
+| **Review Count** | Number of successfully stored ReviewLogs (a failed review transaction is not a review). Cards selected, created, opened or shown are not reviews. |
+| **Accuracy** | (HARD + GOOD + EASY) / reviews. AGAIN is incorrect. Shown as "—" when there are no reviews, never 0%. |
+| **Review Quota** | Today's ReviewLogs whose `stateBefore` is not NEW, shown against the daily review limit (the first review of a new card does not use it). |
+| **New Cards** | Today's ReviewLogs whose `stateBefore` is NEW, shown against the daily new-card limit. "New available today" = min(remaining new quota, cards not yet reviewed). |
+| **Learned Kanji** | Kanji with at least one ReviewCard whose state is not NEW, counted per `itemId` (not per card). |
+| **Mastered Kanji** | Kanji whose four modes (A-D) all have a ReviewCard and all are MASTERED. Missing cards are never created for statistics. |
+| **Due** | **All non-NEW ReviewCards whose `due <= now`** (LEARNING, REVIEW, RELEARNING and MASTERED; never NEW). **The dashboard and the Review Session use this same definition**: it lives once, in `utils/dueCard.ts` (`isDueCard`), and the repository's `getDueCards` (used by the session) and the statistics both use it. Not capped by the daily quota. |
+| **Current Streak** | Consecutive local calendar days with at least one ReviewLog, ending today, or ending yesterday if today has no review yet (alive until a whole day passes without study). |
+| **Longest Streak** | The longest run of consecutive local days with a ReviewLog in all history. |
+
+"Today" is the local calendar day of the device (injectable clock). Reviews today, Review Quota and New Cards are separate numbers (never show "12 / 20" for 12 reviews). Totals and percentages use the dataset's kanji count. "Review Cards by state" counts cards, not kanji.
 - **Data-version policy:** all stored ReviewLogs are used; `datasetVersion` is kept for audit and is not a filter. Retention is out of scope.
 - **Legacy / technical debt:** the `streakState` store and `getStreakState`/`saveStreakState` are unused (streak comes from the logs, so there is one source of truth). They are kept unchanged, without migration.
 - **Known limitation:** days are grouped with the time zone of the device at calculation time; if the user changes time zone, daily history and streaks are regrouped by the new local dates.
