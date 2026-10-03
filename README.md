@@ -52,3 +52,16 @@ UI -> features/hooks -> services -> repository interfaces -> repository implemen
 ## SRS (Phase 5)
 
 Scheduling lives only in `src/services/srs` (specification: `docs/srs-v1.md`, version `srs-v1`). `features/review/reviewOrchestrator.ts` turns a rating intent into card + log via the SRS service, but is NOT yet wired into the app: it needs an atomic `recordReview(card, log)` in the repository layer (pending approval). Until then the app uses the practice-only orchestrator and stores no reviews. Thai meanings are shown only when `reviewed: true` (see `DATA_SOURCES.md`).
+
+## Statistics (Phase 7)
+
+`src/services/statistics/` (pure calculations + `computeStatistics`) feeds `features/progress` (hook + dashboard on the home page). Every number comes from the repositories: all ReviewLogs (`getLogs`), all cards (`getCardsByStates`), due cards (`getDueCards`) and the dataset size (`KanjiRepository.getByLevel`), read once each. Read-only; nothing is created for the sake of a statistic.
+
+- **Review** = one successfully stored ReviewLog. **Accuracy** = (HARD+GOOD+EASY) / reviews, shown as "—" when there are none. **Today** = local calendar day (runtime time zone, injectable clock).
+- **Reviews today**, **review quota** (logs with `stateBefore` not NEW, / daily review limit) and **new cards** (`stateBefore` NEW, / daily new limit) are three separate numbers.
+- **Learned Kanji** = at least one card of the kanji is not NEW. **Mastered Kanji** = all four modes have a card and all are MASTERED. Totals and percentages use the dataset count. "Review Cards by state" counts cards, not kanji.
+- **Streak** = consecutive local days with at least one ReviewLog (alive until a whole day passes without study); **longest** = best run in all history.
+- **Due** = every non-NEW card whose due time has come (the same rule as `getDueCards` and the review session, so MASTERED cards that come due are counted); **new available** = min(remaining new quota, cards not yet reviewed).
+- **Data-version policy:** all stored ReviewLogs are used; `datasetVersion` is kept for audit and is not a filter. Retention is out of scope.
+- **Legacy / technical debt:** the `streakState` store and `getStreakState`/`saveStreakState` are unused (streak comes from the logs, so there is one source of truth). They are kept unchanged, without migration.
+- **Known limitation:** days are grouped with the time zone of the device at calculation time; if the user changes time zone, daily history and streaks are regrouped by the new local dates.

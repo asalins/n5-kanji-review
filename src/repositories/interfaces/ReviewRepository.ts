@@ -1,4 +1,4 @@
-import type { ReviewCard, ReviewLog, StreakState, StudySession } from '../../types/entities';
+import type { LearningState, ReviewCard, ReviewLog, StreakState, StudySession } from '../../types/entities';
 
 export interface DateRange {
   readonly from: Date;
@@ -9,6 +9,8 @@ export interface ReviewRepository {
   getCard(id: string): Promise<ReviewCard | null>;
   getDueCards(now: Date, limit: number): Promise<readonly ReviewCard[]>;
   getNewCards(limit: number): Promise<readonly ReviewCard[]>;
+  /** Every stored card whose state is one of `states`, sorted by id. One indexed read, no per-card lookups. */
+  getCardsByStates(states: readonly LearningState[]): Promise<readonly ReviewCard[]>;
   saveCard(card: ReviewCard): Promise<void>;
   appendLog(log: ReviewLog): Promise<void>;
   /**

@@ -99,7 +99,7 @@ describe('architecture boundaries', () => {
   });
   it('the session engine and review session never read the system clock or randomness directly', () => {
     const offenders = files
-      .filter((f) => /^(services\/session\/|features\/review\/(useReviewSession|ReviewSession)\.)/.test(f.rel))
+      .filter((f) => /^(services\/session\/|services\/statistics\/|features\/progress\/|features\/review\/(useReviewSession|ReviewSession)\.)/.test(f.rel))
       .filter((f) => /Date\.now\(|Math\.random\(|new Date\(\)/.test(f.text))
       .map((f) => f.rel);
     expect(offenders).toEqual([]);
@@ -120,5 +120,34 @@ describe('architecture boundaries', () => {
       .filter((f) => /\.(saveCard|appendLog|recordReview)\(|updateCardState|createNewCard/.test(f.text))
       .map((f) => f.rel);
     expect(offenders).toEqual([]);
+  });
+  it('statistics never use the legacy StreakState: streak is calculated from ReviewLogs only', () => {
+    const offenders = files
+      .filter((f) => /^(services\/statistics\/|features\/progress\/)/.test(f.rel))
+      .filter((f) => /StreakState|getStreakState|saveStreakState/.test(f.text))
+      .map((f) => f.rel);
+    expect(offenders).toEqual([]);
+  });
+
+  it('statistics and the dashboard never hard-code the kanji total (it comes from the dataset)', () => {
+    const offenders = files
+      .filter((f) => /^(services\/statistics\/|features\/progress\/)/.test(f.rel))
+      .filter((f) => /\b196\b/.test(f.text))
+      .map((f) => f.rel);
+    expect(offenders).toEqual([]);
+  });
+
+  it('statistics and the dashboard are read-only: they never write persistence', () => {
+    const offenders = files
+      .filter((f) => /^(services\/statistics\/|features\/progress\/)/.test(f.rel))
+      .filter((f) => /\.(saveCard|appendLog|recordReview|saveSession|saveContent|replaceContent)\(/.test(f.text))
+      .map((f) => f.rel);
+    expect(offenders).toEqual([]);
+  });
+
+  it('getCardsByStates reads through the existing by-state index', () => {
+    const source = files.find((f) => f.rel === 'repositories/indexeddb/IndexedDbReviewRepository.ts')?.text ?? '';
+    const body = source.slice(source.indexOf('getCardsByStates('), source.indexOf('getNewCards('));
+    expect(body).toMatch(/index\('by-state'\)/);
   });
 });

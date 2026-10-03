@@ -6,7 +6,7 @@ import {
   streakStateSchema,
   studySessionSchema,
 } from '../../types/schemas';
-import type { ReviewCard, ReviewLog, StreakState, StudySession } from '../../types/entities';
+import { LEARNING_STATES, type LearningState, type ReviewCard, type ReviewLog, type StreakState, type StudySession } from '../../types/entities';
 import { ValidationError } from '../../utils/errors';
 import type { DateRange, ReviewRepository } from '../interfaces';
 import {
@@ -44,6 +44,21 @@ export class IndexedDbReviewRepository implements ReviewRepository {
       }
       await tx.done;
       return due;
+    });
+  }
+
+  getCardsByStates(states: readonly LearningState[]): Promise<readonly ReviewCard[]> {
+    return runRepositoryOperation('ReviewRepository.getCardsByStates', async () => {
+      for (const state of states) {
+        if (!LEARNING_STATES.includes(state)) throw new ValidationError(`Unknown learning state: ${String(state)}`);
+      }
+      const unique = [...new Set(states)];
+      if (unique.length === 0) return [];
+      const tx = this.db.transaction(STORES.reviewCards);
+      const index = tx.store.index('by-state');
+      const batches = await Promise.all(unique.map((state) => index.getAll(state)));
+      await tx.done;
+      return parseRecords(reviewCardSchema, batches.flat(), 'review card').sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
     });
   }
 
