@@ -1,5 +1,6 @@
 import type { KanjiRepository, ReviewRepository } from '../../repositories/interfaces';
 import { AppError } from '../../utils/errors';
+import { spreadNewCards } from './spreadNewCards';
 import type { ItemRef, ReviewCard, StudySession } from '../../types/entities';
 import { buildReviewCardId } from '../../utils/reviewCardId';
 import { localDay } from '../../utils/localDay';
@@ -94,7 +95,8 @@ export async function planSession(deps: SessionEngineDeps): Promise<SessionPlan>
     fresh.push({ card, kind: 'new' });
   }
 
-  const cards = [...due, ...fresh];
+  // Same new cards, spread so one kanji's modes are not back to back (due cards keep their due order).
+  const cards = [...due, ...spreadNewCards(fresh)];
   let emptyReason: EmptyReason | null = null;
   if (cards.length === 0) {
     const dueBlocked = allowance.remainingReviews === 0 && (await deps.review.getDueCards(new Date(startedAt), 1)).length > 0;

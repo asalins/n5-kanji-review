@@ -1,0 +1,100 @@
+import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { App } from '../../src/app/App';
+import { buildAppServices } from '../../src/app/bootstrap';
+import type { PwaUpdate } from '../../src/app/pwaUpdate';
+import type { Repositories } from '../../src/repositories/indexeddb';
+import { openRealRepositories } from '../helpers/realData';
+
+const noUpdate = (): PwaUpdate => ({ updateReady: false, applyUpdate: () => undefined, dismiss: () => undefined });
+let repos: Repositories;
+let dispose: () => Promise<void>;
+let pushes: MockInstance;
+let backs: MockInstance;
+beforeEach(async () => {
+  window.history.replaceState(null, '');
+  pushes = vi.spyOn(window.history, 'pushState');
+  backs = vi.spyOn(window.history, 'back');
+  const opened = await openRealRepositories();
+  repos = opened.repos;
+  dispose = opened.dispose;
+});
+afterEach(async () => {
+  vi.restoreAllMocks();
+  await dispose();
+});
+
+const home = () => screen.findByRole('heading', { name: 'N5 Kanji Review' });
+const ourState = () => (window.history.state as { n5Screen?: string } | null)?.n5Screen ?? null;
+// jsdom shares one history across tests (forward entries linger), so entries are counted by the calls made.
+async function start() {
+  render(<App bootstrap={() => Promise.resolve(buildAppServices(repos))} useUpdate={noUpdate} />);
+  await home();
+  pushes.mockClear();
+  backs.mockClear();
+}
+async function systemBack() {
+  window.history.back();
+  await home();
+  expect(ourState()).toBeNull();
+}
+
+describe('Simple Home boundary (system / browser Back)', () => {
+  it.each([
+    [/Today's review/, 'review'],
+    [/Search/, 'search'],
+    [/Settings/, 'settings'],
+    [/Practice/, 'practice'],
+  ])('Home -> %s -> Back -> Home, with exactly one history entry while away', async (button, name) => {
+    await start();
+    fireEvent.click(screen.getByRole('button', { name: button }));
+    expect(ourState()).toBe(name);
+    expect(pushes).toHaveBeenCalledTimes(1);
+    await systemBack();
+  });
+
+  it('Home -> Settings -> About replaces the entry; Back goes Home', async () => {
+    await start();
+    fireEvent.click(screen.getByRole('button', { name: /Settings/ }));
+    fireEvent.click(await screen.findByRole('button', { name: /Sources & licences/ }));
+    expect(await screen.findByRole('heading', { name: /About & Sources/ })).toBeTruthy();
+    expect(ourState()).toBe('about');
+    expect(pushes).toHaveBeenCalledTimes(1); // Settings -> About replaced the entry
+    await systemBack();
+  });
+
+  it('the in-app button on About returns to Settings without adding history', async () => {
+    await start();
+    fireEvent.click(screen.getByRole('button', { name: /Settings/ }));
+    fireEvent.click(await screen.findByRole('button', { name: /Sources & licences/ }));
+    fireEvent.click(await screen.findByRole('button', { name: /← ตั้งค่า/ }));
+    expect(await screen.findByLabelText(/New cards per day/)).toBeTruthy();
+    expect(ourState()).toBe('settings');
+    expect(pushes).toHaveBeenCalledTimes(1);
+  });
+
+  it('in-app Back buttons go Home through history, so the stack never grows', async () => {
+    await start();
+    for (let i = 0; i < 5; i += 1) {
+      fireEvent.click(screen.getByRole('button', { name: /Search/ }));
+      fireEvent.click(await screen.findByRole('button', { name: /กลับ|Back/ }));
+      await home();
+      expect(ourState()).toBeNull();
+    }
+    // every entry the app pushed was taken off again by the in-app Back: nothing piles up
+    expect(pushes).toHaveBeenCalledTimes(5);
+    expect(backs).toHaveBeenCalledTimes(5);
+  });
+
+  it('a stale marker from a previous load (reload / update) is cleared: the app starts at Home', async () => {
+    window.history.replaceState({ n5Screen: 'review' }, '');
+    await start();
+    expect(ourState()).toBeNull();
+  });
+
+  it('Back while already at Home is left to the system (nothing is pushed)', async () => {
+    await start();
+    await waitFor(() => expect(ourState()).toBeNull());
+    expect(pushes).not.toHaveBeenCalled();
+  });
+});

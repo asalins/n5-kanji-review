@@ -8,6 +8,7 @@ import { access, readFile, writeFile } from 'node:fs/promises';
 import { thaiDatasetFileSchema } from '../../src/services/content/datasetFiles';
 import { buildDataset, buildThaiSkeleton } from './buildDataset';
 import { parseKanjidic2 } from './kanjidic2';
+import { alignThaiVersion } from './thaiVersion';
 import { levelListSchema } from './schemas';
 
 const LIST_PATH = 'data/lists/n5-list.json';
@@ -46,9 +47,11 @@ async function main(): Promise<number> {
   const kanjidic = parseKanjidic2(await readFile(SOURCE_PATH, 'utf8'));
   const generatedAt = new Date().toISOString();
   const datasetVersion = argValue('--dataset-version') ?? `${list.level.toLowerCase()}-${generatedAt.slice(0, 10).replaceAll('-', '.')}`;
-  const thai = (await exists(THAI_PATH))
+  const existingThai = (await exists(THAI_PATH))
     ? thaiDatasetFileSchema.parse(JSON.parse(await readFile(THAI_PATH, 'utf8')))
     : null;
+  // A new dataset version carries the Thai file along: same entries and reviewed flags, new version only.
+  const thai = existingThai === null ? null : alignThaiVersion(existingThai, datasetVersion);
 
   const { dataset, report } = buildDataset({
     list,
@@ -73,8 +76,9 @@ async function main(): Promise<number> {
   await writeFile(DATASET_PATH, `${JSON.stringify(dataset, null, 2)}\n`);
   if (thai === null) {
     await writeFile(THAI_PATH, `${JSON.stringify(buildThaiSkeleton(dataset), null, 2)}\n`);
-  } else if (thai.datasetVersion !== datasetVersion) {
-    console.warn(`Note: ${THAI_PATH} datasetVersion differs; update it after reviewing the new dataset.`);
+  } else if (existingThai !== null && existingThai.datasetVersion !== datasetVersion) {
+    await writeFile(THAI_PATH, `${JSON.stringify(thai, null, 2)}\n`);
+    console.log(`Updated ${THAI_PATH} to ${datasetVersion} (entries and reviewed flags unchanged).`);
   }
   console.log(`Wrote ${DATASET_PATH}: ${report.valid} kanji, ${report.missingThai.length} without Thai.`);
   return 0;

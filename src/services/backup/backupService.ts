@@ -2,7 +2,7 @@ import type { BackupRepository, KanjiRepository, SettingsRepository, UserDataSna
 import type { JlptLevel } from '../../types/entities';
 import { localDay } from '../../utils/localDay';
 import { DEFAULT_USER_SETTINGS } from '../settings/defaults';
-import { assertCompatible, CURRENT_ALGORITHM_VERSION } from './backupCompatibility';
+import { assertCompatible, CURRENT_ALGORITHM_VERSION, type DatasetWarning } from './backupCompatibility';
 import { BackupError } from './backupErrors';
 import { BACKUP_FORMAT, BACKUP_FORMAT_VERSION, type BackupV1 } from './backupSchema';
 import { parseBackupText, validateBackup } from './validateBackup';
@@ -42,6 +42,10 @@ export interface ImportPlan {
   readonly datasetVersion: string;
   readonly counts: { readonly reviewCards: number; readonly reviewLogs: number; readonly studySessions: number };
   readonly hasSettings: boolean;
+  /** Present when the backup came from another dataset version: must be shown before the user confirms. */
+  readonly datasetWarning: DatasetWarning | null;
+  /** The dataset version the backup was checked against; restore refuses if it changed meanwhile. */
+  readonly checkedDatasetVersion: string;
   readonly snapshot: UserDataSnapshot;
 }
 
@@ -49,7 +53,7 @@ export interface ImportPlan {
 export async function prepareImport(deps: BackupDeps, text: string): Promise<ImportPlan> {
   const backup = validateBackup(parseBackupText(text));
   const [datasetVersion, kanji] = await Promise.all([deps.kanji.getDatasetVersion(), deps.kanji.getByLevel(BACKUP_LEVEL)]);
-  assertCompatible(backup, {
+  const { datasetWarning } = assertCompatible(backup, {
     datasetVersion,
     kanjiIds: new Set(kanji.map((k) => k.id)),
     algorithmVersion: CURRENT_ALGORITHM_VERSION,
@@ -60,6 +64,8 @@ export async function prepareImport(deps: BackupDeps, text: string): Promise<Imp
     datasetVersion: backup.datasetVersion ?? '',
     counts: { reviewCards: reviewCards.length, reviewLogs: reviewLogs.length, studySessions: studySessions.length },
     hasSettings: userSettings !== null,
+    datasetWarning,
+    checkedDatasetVersion: datasetVersion ?? '',
     snapshot: { reviewCards, reviewLogs, studySessions, userSettings },
   };
 }
@@ -67,7 +73,7 @@ export async function prepareImport(deps: BackupDeps, text: string): Promise<Imp
 /** Replace/Restore after confirmation: one atomic transaction; on failure nothing has changed. */
 export async function applyImport(deps: BackupDeps, plan: ImportPlan): Promise<void> {
   const current = await deps.kanji.getDatasetVersion();
-  if (current !== plan.datasetVersion) {
+  if (current !== plan.checkedDatasetVersion) {
     throw new BackupError('DATASET_MISMATCH', 'The dataset changed after the backup was checked');
   }
   try {

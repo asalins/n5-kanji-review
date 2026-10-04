@@ -42,3 +42,12 @@ Only Thai entries with `reviewed: true` (and not `ambiguous`) are loaded into th
 
 ## Thai meanings
 - Authored and reviewed separately in `data/kanji/n5.th.json` (not generated from a source). Each entry has `reviewed` and `ambiguous` flags. Copyright of the Thai text belongs to this project's authors. If the Thai text is adapted from the English glosses, treat it as ShareAlike material as well.
+
+## In-app acknowledgement (Phase 12)
+Settings -> "About & Sources" shows the acknowledgement the EDRDG licence requires for apps (a separate screen reached from a menu, not only the launch screen): KANJIDIC2 by the EDRDG, copyright James William Breen and the EDRDG, CC BY-SA 4.0, the app data (`n5.json`) being derived from KANJIDIC2 and shared under the same licence, no copyright claim, no endorsement, links to the licence statement, the KANJIDIC project and CC BY-SA 4.0, and the dataset version. Wording was checked against the official licence page (https://www.edrdg.org/edrdg/license.html) during Phase 12.
+
+## Updating KANJIDIC2 (required by the licence)
+The licence requires a procedure for regular updating from the latest versions. Procedure: download the current KANJIDIC2 file into `data-sources/kanjidic2/`, run `npm run dataset:build` (the new date-based `datasetVersion` is applied to `n5.json` AND `n5.th.json`; Thai entries and their `reviewed` flags are kept), check `n5.report.json` and `npm run dataset:thai-audit`, run `npm run verify:all`, release. Do this at least with every app release and at least monthly while the app is published. Backups made with an earlier dataset version stay restorable when every kanji they refer to still exists (the user is warned before restoring).
+
+## Thai review workflow
+See `docs/release/thai-review.md`. Drafts may be written by anyone (including tools), but only a human reviewer sets `reviewed: true`; only reviewed, non-ambiguous meanings ever reach the app.

@@ -23,7 +23,11 @@ export const TEXT = {
     'ข้อมูลการเรียนปัจจุบันทั้งหมดจะถูกแทนที่ด้วยข้อมูลในไฟล์นี้ · Importing this backup will replace your current learning data.',
   importConfirm: 'แทนที่ข้อมูลของฉัน · Replace my data',
   cancel: 'ยกเลิก · Cancel',
+  datasetWarning: (backup: string, current: string) =>
+    `ไฟล์สำรองนี้สร้างจากชุดข้อมูลคันจิเวอร์ชัน ${backup} (ปัจจุบัน ${current}) ความคืบหน้าจะใช้กับคันจิตัวเดิม แต่ความหมายหรือการอ่านบางส่วนอาจเปลี่ยนไป · This backup was created with a different dataset version (${backup}; current ${current}). Your progress applies to the same kanji, but some meanings or readings may have changed.`,
   imported: 'กู้คืนข้อมูลแล้ว · Backup restored',
+  about: 'เกี่ยวกับและแหล่งข้อมูล · About & Sources',
+  openAbout: 'แหล่งข้อมูลและสัญญาอนุญาต · Sources & licences',
   danger: 'ลบข้อมูล · Danger zone',
   resetProgress: 'ลบความคืบหน้าทั้งหมด · Reset progress',
   resetProgressWarning:
@@ -60,7 +64,7 @@ export const IMPORT_ERROR: Record<BackupErrorCode, string> = {
   INVALID_BACKUP_FORMAT: 'ไฟล์นี้ไม่ใช่ข้อมูลสำรองของแอปนี้ · This file is not a backup of this application.',
   UNSUPPORTED_FORMAT_VERSION: 'ไฟล์สำรองนี้เป็นเวอร์ชันที่แอปนี้ไม่รองรับ · This backup format version is not supported.',
   DATASET_MISMATCH:
-    'ไฟล์สำรองนี้สร้างจากชุดคันจิคนละเวอร์ชัน จึงกู้คืนอย่างปลอดภัยไม่ได้ · This backup was created from a different Kanji dataset version and cannot be safely restored.',
+    'ไฟล์สำรองนี้มีคันจิที่ไม่อยู่ในชุดข้อมูลปัจจุบัน หรือมาจากชุดข้อมูลที่ไม่ทราบเวอร์ชัน จึงกู้คืนอย่างปลอดภัยไม่ได้ · This backup refers to kanji that are not in the current dataset (or to an unknown dataset) and cannot be safely restored.',
   ALGORITHM_MISMATCH:
     'ไฟล์สำรองนี้สร้างจากระบบทบทวนคนละเวอร์ชัน · This backup was created by a different review algorithm version and cannot be restored.',
   INVALID_RECORD: 'ไฟล์สำรองมีข้อมูลการเรียนที่ไม่ถูกต้อง · The backup contains invalid learning data.',

@@ -30,7 +30,13 @@ describe('architecture boundaries', () => {
   it('UI and features never import the storage layer or raw datasets', () => {
     const offenders = files
       .filter((f) => /^(pages|components|hooks|features)\//.test(f.rel))
-      .filter((f) => /(services\/storage|repositories\/indexeddb|data-sources|KANJIDIC|JMdict)/i.test(f.text))
+      // Checks import specifiers (not prose): the About screen must be able to NAME KANJIDIC2/JMdict in its
+      // licence acknowledgement while still never importing raw or bundled data. (Phase 12 refinement.)
+      .filter((f) =>
+        [...f.text.matchAll(/(?:from|import)\s*\(?\s*['"]([^'"]+)['"]/g)].some((m) =>
+          /(services\/storage|repositories\/indexeddb|data-sources|kanjidic|jmdict|\/data\/|\.json$)/i.test(m[1] ?? ''),
+        ),
+      )
       .map((f) => f.rel);
     expect(offenders).toEqual([]);
   });

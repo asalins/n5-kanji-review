@@ -1,4 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react';
+import { AboutPage } from '../pages/AboutPage';
+import { useScreenNavigation } from './navigation';
 import { StateMessage } from '../components/StateMessage';
 import { RepositoriesProvider, type AppRepositories } from '../hooks/useRepositories';
 import { HomePage } from '../pages/HomePage';
@@ -14,8 +16,6 @@ import { applyThemePreference } from './theme';
 import { SAFE_PAGE } from '../components/styles';
 import { usePwaUpdate, type PwaUpdate } from './pwaUpdate';
 import { UpdateBanner } from './UpdateBanner';
-
-type Screen = 'home' | 'review' | 'practice' | 'search' | 'settings';
 
 /** Applies the saved theme (Light / Dark / System) with the existing theme function. */
 function SavedTheme() {
@@ -52,7 +52,7 @@ export function App({ bootstrap = bootstrapApp, useUpdate = usePwaUpdate }: AppP
   const markFailed = useAppStore((s) => s.markFailed);
   const markBooting = useAppStore((s) => s.markBooting);
   const [repositories, setRepositories] = useState<AppRepositories | null>(null);
-  const [screen, setScreen] = useState<Screen>('home');
+  const { screen, open, goHome } = useScreenNavigation();
   const [attempt, setAttempt] = useState(0);
 
   // Until the saved settings are available (start-up screens) the system theme is used.
@@ -109,18 +109,19 @@ export function App({ bootstrap = bootstrapApp, useUpdate = usePwaUpdate }: AppP
         <WhenSettingsLoaded>
       {screen === 'home' && (
         <HomePage
-          onStartReview={() => setScreen('review')}
-          onStartPractice={() => setScreen('practice')}
-          onSearch={() => setScreen('search')}
-          onSettings={() => setScreen('settings')}
+          onStartReview={() => open('review')}
+          onStartPractice={() => open('practice')}
+          onSearch={() => open('search')}
+          onSettings={() => open('settings')}
           // Update notice only here: never during a review, an import/export or settings. Never automatic.
           notice={<UpdateBanner visible={update.updateReady} onUpdate={update.applyUpdate} onDismiss={update.dismiss} />}
         />
       )}
-      {screen === 'settings' && <SettingsPage onExit={() => setScreen('home')} />}
-      {screen === 'search' && <SearchPage onExit={() => setScreen('home')} />}
-      {screen === 'review' && <ReviewPage onExit={() => setScreen('home')} />}
-      {screen === 'practice' && <StudyPage onExit={() => setScreen('home')} />}
+      {screen === 'settings' && <SettingsPage onExit={goHome} onAbout={() => open('about')} />}
+      {screen === 'about' && <AboutPage onBack={() => open('settings')} />}
+      {screen === 'search' && <SearchPage onExit={goHome} />}
+      {screen === 'review' && <ReviewPage onExit={goHome} />}
+      {screen === 'practice' && <StudyPage onExit={goHome} />}
         </WhenSettingsLoaded>
       </SettingsProvider>
     </RepositoriesProvider>

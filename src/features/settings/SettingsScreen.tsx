@@ -104,7 +104,7 @@ function statusMessage(status: BackupStatus): { text: string; error: boolean } |
   }
 }
 
-export function SettingsScreen({ onExit }: { onExit: () => void }) {
+export function SettingsScreen({ onExit, onAbout }: { onExit: () => void; onAbout?: () => void }) {
   const backup = useBackup();
   const [confirming, setConfirming] = useState<'progress' | 'settings' | null>(null);
   const [fileKey, setFileKey] = useState(0);
@@ -156,6 +156,14 @@ export function SettingsScreen({ onExit }: { onExit: () => void }) {
           </>
         )}
       </Section>
+
+      {onAbout !== undefined && (
+        <Section title={TEXT.about}>
+          <button type="button" className={SECONDARY_BUTTON} onClick={onAbout}>
+            {TEXT.openAbout}
+          </button>
+        </Section>
+      )}
 
       <Section title={TEXT.danger}>
         {confirming === 'progress' ? (
@@ -220,6 +228,11 @@ function ImportConfirm({
   return (
     <ConfirmPanel title={TEXT.importWarningTitle} acknowledge={TEXT.understand} confirmLabel={TEXT.importConfirm} cancelLabel={TEXT.cancel} onConfirm={() => onConfirm(plan)} onCancel={onCancel}>
       <p className="mb-2 font-medium">{TEXT.importWarning}</p>
+      {plan.datasetWarning !== null && (
+        <p role="alert" className="mb-2 rounded-lg border-2 border-amber-600 bg-amber-50 p-2 font-medium text-amber-950 dark:border-amber-400 dark:bg-amber-950/40 dark:text-amber-100">
+          ⚠ {TEXT.datasetWarning(plan.datasetWarning.backupVersion, plan.datasetWarning.currentVersion)}
+        </p>
+      )}
       <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
         <dt>{TEXT.summaryDate}</dt>
         <dd>{plan.exportedAt}</dd>

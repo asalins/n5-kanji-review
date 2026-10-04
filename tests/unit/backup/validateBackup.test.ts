@@ -85,10 +85,23 @@ describe('compatibility: strict, no mapping', () => {
   const env = { datasetVersion: 'n5-2026.10.01', algorithmVersion: 'srs-v1', kanjiIds: new Set(['kanji:U+6C34', 'kanji:U+706B', 'kanji:U+5C71']) };
   const check = (backup = validBackup(), current = env) => code(() => assertCompatible(validateBackup(backup), current));
   it('same dataset and algorithm -> compatible', () => expect(check()).toBe('NO ERROR'));
-  it('another dataset version, or an unknown one -> DATASET_MISMATCH', () => {
-    expect(check(validBackup({ datasetVersion: 'n5-2099.01.01' }))).toBe('DATASET_MISMATCH');
+  it('an unknown dataset version (backup or current) -> DATASET_MISMATCH', () => {
     expect(check(validBackup({ datasetVersion: null }))).toBe('DATASET_MISMATCH');
     expect(check(validBackup(), { ...env, datasetVersion: null as never })).toBe('DATASET_MISMATCH');
+  });
+  it('the same dataset version -> compatible, no warning', () => {
+    expect(assertCompatible(validateBackup(validBackup()), env)).toEqual({ datasetWarning: null });
+  });
+  it('another dataset version with every kanji present -> compatible WITH the mandatory warning', () => {
+    expect(assertCompatible(validateBackup(validBackup({ datasetVersion: 'n5-2025.01.01' })), env)).toEqual({
+      datasetWarning: { backupVersion: 'n5-2025.01.01', currentVersion: 'n5-2026.10.01' },
+    });
+  });
+  it('another dataset version with even ONE kanji missing -> DATASET_MISMATCH', () => {
+    expect(check(validBackup({ datasetVersion: 'n5-2025.01.01' }), { ...env, kanjiIds: new Set(['kanji:U+6C34', 'kanji:U+706B']) })).toBe('DATASET_MISMATCH');
+  });
+  it('another dataset version does not relax the algorithm rule', () => {
+    expect(check(validBackup({ datasetVersion: 'n5-2025.01.01', algorithmVersion: 'srs-v2' }))).toBe('ALGORITHM_MISMATCH');
   });
   it('a card for a kanji that is not in the current dataset -> DATASET_MISMATCH (never guessed)', () => {
     expect(check(validBackup(), { ...env, kanjiIds: new Set(['kanji:U+6C34']) })).toBe('DATASET_MISMATCH');

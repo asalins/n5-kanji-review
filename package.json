@@ -14,7 +14,8 @@
     "dataset:build": "tsx scripts/dataset/build.ts",
     "verify": "npm run typecheck && npm test && vite build",
     "verify:all": "npm run verify && tsx scripts/qa/e2e.ts",
-    "qa:mutations": "tsx scripts/qa/mutations.ts"
+    "qa:mutations": "tsx scripts/qa/mutations.ts",
+    "dataset:thai-audit": "tsx scripts/dataset/thaiAudit.ts"
   },
   "dependencies": {
     "idb": "^8.0.3",

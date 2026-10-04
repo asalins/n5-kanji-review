@@ -10,6 +10,7 @@ import { DEFAULT_USER_SETTINGS } from '../../../src/services/settings/defaults';
 import { RepositoryError } from '../../../src/utils/errors';
 import { sampleRecords, validBackup } from '../../helpers/backupFixtures';
 import { openRealRepositories } from '../../helpers/realData';
+import { storedCard } from '../../helpers/sessionFixtures';
 
 let repos: Repositories;
 let dispose: () => Promise<void>;
@@ -117,6 +118,26 @@ describe('import', () => {
     expect((screen.getByLabelText(/New cards per day/) as HTMLSelectElement).value).toBe('20'); // settings reloaded
   });
 
+  it('a backup from another dataset version shows the mandatory warning before confirmation, then restores', async () => {
+    await seed();
+    show();
+    chooseFile(JSON.stringify(validBackup({ datasetVersion: 'n5-2025.01.01' })));
+    const dialog = await screen.findByRole('alertdialog', { name: /Import this backup/ });
+    const warning = within(dialog).getByRole('alert');
+    expect(warning.textContent).toMatch(/different dataset version \(n5-2025\.01\.01; current n5-2026\.10\.01\)/);
+    fireEvent.click(within(dialog).getByLabelText(/I understand/));
+    fireEvent.click(within(dialog).getByRole('button', { name: /Replace my data/ }));
+    expect(await screen.findByText(/Backup restored/)).toBeTruthy();
+    expect((await repos.backup.readUserData()).reviewCards).toHaveLength(4);
+  });
+
+  it('the same dataset version shows no dataset warning', async () => {
+    show();
+    chooseFile(JSON.stringify(validBackup()));
+    const dialog = await screen.findByRole('alertdialog', { name: /Import this backup/ });
+    expect(within(dialog).queryByRole('alert')).toBeNull();
+  });
+
   it('cancel writes nothing', async () => {
     await seed();
     show();
@@ -128,7 +149,7 @@ describe('import', () => {
   it.each([
     ['not JSON', '<html>', /not valid JSON/],
     ['another app', JSON.stringify({ hello: 1 }), /not a backup of this application/],
-    ['dataset mismatch', JSON.stringify(validBackup({ datasetVersion: 'n5-1999.01.01' })), /different Kanji dataset version/],
+    ['a kanji not in the current dataset', JSON.stringify(validBackup({ datasetVersion: 'n5-1999.01.01' }, { reviewCards: [...validBackup().data.reviewCards, storedCard('龍', 'A', { state: 'REVIEW', reviewCount: 1 })] })), /not in the current dataset/],
     ['invalid data', JSON.stringify(validBackup({}, { reviewLogs: [{ ...validBackup().data.reviewLogs[0]!, rating: 'MAYBE' as never }] })), /invalid learning data/],
   ])('%s: a safe message, no raw error, and the data is unchanged', async (_label, text, message) => {
     await seed();

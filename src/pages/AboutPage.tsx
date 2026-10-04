@@ -1,10 +1,10 @@
 import { SAFE_PAGE } from '../components/styles';
-import { SettingsScreen } from '../features/settings/SettingsScreen';
+import { AboutScreen } from '../features/about/AboutScreen';
 
-export function SettingsPage({ onExit, onAbout }: { onExit: () => void; onAbout: () => void }) {
+export function AboutPage({ onBack }: { onBack: () => void }) {
   return (
     <main className={`mx-auto flex min-h-dvh w-full max-w-3xl flex-col gap-4 bg-stone-50 text-stone-900 dark:bg-neutral-900 dark:text-neutral-100 ${SAFE_PAGE}`}>
-      <SettingsScreen onExit={onExit} onAbout={onAbout} />
+      <AboutScreen onBack={onBack} />
     </main>
   );
 }

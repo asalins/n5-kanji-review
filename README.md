@@ -93,11 +93,11 @@ Settings page (home -> Settings): daily new cards (5/10/20/30, default 10), dail
 
 **Backup format** (`services/backup/backupSchema.ts`): `{ format: "n5-kanji-review-backup", formatVersion: 1, exportedAt, databaseSchemaVersion, datasetVersion, algorithmVersion, data: { reviewCards, reviewLogs, studySessions, userSettings | null } }`. The format version is independent of the dataset, algorithm and database versions; `databaseSchemaVersion` is audit metadata only. The dataset and the legacy `streakState` are never exported. File name: `n5-kanji-backup-YYYY-MM-DD.json`.
 
-**Import rules** (strict, no mapping or guessing): JSON -> envelope -> every record (the app's own Zod schemas) -> integrity (no duplicate ids; every ReviewLog's card is in the backup; settings within the allowed options; StudySession.cardIds are not enforced) -> compatibility (dataset version must equal the loaded one; the envelope's and every card's algorithm version must be `srs-v1`; every card's kanji must exist in the current dataset) -> summary + explicit confirmation -> **Replace/Restore** in ONE IndexedDB transaction (`BackupRepository.replaceUserData`): cards, logs, sessions and settings are replaced together; any failure rolls everything back. Import restores state as stored; it never runs the SRS or recalculates anything. Errors: `INVALID_FILE`, `INVALID_JSON`, `INVALID_BACKUP_FORMAT`, `UNSUPPORTED_FORMAT_VERSION`, `DATASET_MISMATCH`, `ALGORITHM_MISMATCH`, `INVALID_RECORD`, `IMPORT_TRANSACTION_FAILED`.
+**Import rules** (strict, no mapping or guessing): JSON -> envelope -> every record (the app's own Zod schemas) -> integrity (no duplicate ids; every ReviewLog's card is in the backup; settings within the allowed options; StudySession.cardIds are not enforced) -> compatibility (the dataset version must be known; the envelope's and every card's algorithm version must be `srs-v1`; every card's kanji must exist in the current dataset; a backup from ANOTHER dataset version is accepted only then, with a mandatory warning shown before confirmation — Phase 12 policy) -> summary + explicit confirmation -> **Replace/Restore** in ONE IndexedDB transaction (`BackupRepository.replaceUserData`): cards, logs, sessions and settings are replaced together; any failure rolls everything back. Import restores state as stored; it never runs the SRS or recalculates anything. Errors: `INVALID_FILE`, `INVALID_JSON`, `INVALID_BACKUP_FORMAT`, `UNSUPPORTED_FORMAT_VERSION`, `DATASET_MISMATCH`, `ALGORITHM_MISMATCH`, `INVALID_RECORD`, `IMPORT_TRANSACTION_FAILED`.
 
 **Reset:** "Reset progress" deletes cards, logs and sessions in one transaction (settings, dataset, contentMeta and streakState stay). "Reset settings" saves the defaults. Both need an explicit "I understand" confirmation.
 
-**Known limitation:** when the dataset version changes, backups made with the previous dataset cannot be restored (DATASET_MISMATCH) until a backup migration policy exists.
+**Dataset updates (Phase 12):** backups from an earlier dataset version restore when every kanji they refer to still exists (kanji ids are code points); a single missing kanji or an unknown version is rejected.
 
 ## PWA and mobile (Phase 10)
 
@@ -118,3 +118,12 @@ Settings page (home -> Settings): daily new cards (5/10/20/30, default 10), dail
 E2E (`tests/e2e`): phones 320/360/412 run the full suite; desktop 1024/1440 and landscape 812x360/915x412 run `smoke.spec.ts`. Real-browser checks include backup export -> reset -> import -> reload on Chromium's own IndexedDB, failure injection inside the import transaction at five points (database must be byte-for-byte unchanged), and the PWA update lifecycle across two builds (new version waits, no automatic reload, user data kept after "Update").
 
 Locked by tests: released migrations (`v1Initial`, `v2ContentMeta`) are fingerprinted and the real v1 -> v2 upgrade is tested with user data; srs-v1 parameters are pinned as literal values (`tests/unit/srs/srsV1Locked.test.ts`).
+
+## Final polish (Phase 12)
+
+- **About & Sources** (Settings -> Sources & licences): the licence acknowledgement for KANJIDIC2 (see `DATA_SOURCES.md`).
+- **Thai meanings:** `npm run dataset:thai-audit` reports coverage (`-- --require-complete` fails until every kanji is reviewed). Drafts live in `n5.th.json` with `reviewed: false` and are never shown; see `docs/release/thai-review.md`.
+- **Mode D prompt:** the first kun reading without KANJIDIC notation (`.` okurigana, `-` prefix/suffix), else the first such on reading, else the original reading exactly as written. Readings are never edited.
+- **Back navigation (Simple Home boundary):** opening a screen from Home adds one history entry; system/browser Back returns Home; screen-to-screen moves replace that entry; Back on Home leaves the app normally.
+- **New-card order:** the same new cards, spread so one kanji's modes are not back to back (deterministic; due cards keep their due order).
+- **Release:** `docs/release/release-readiness.md`, `docs/release/android-checklist.md`.

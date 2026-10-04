@@ -187,7 +187,8 @@ describe('atomicity: a failed import leaves the database exactly as it was', () 
   it.each([
     ['invalid JSON', '{"format":'],
     ['invalid schema', JSON.stringify({ ...validBackup(), formatVersion: 1, exportedAt: 'nope' })],
-    ['dataset mismatch', JSON.stringify(validBackup({ datasetVersion: 'n5-1999.01.01' }))],
+    ['another dataset with a kanji that is not in the current one', JSON.stringify(validBackup({ datasetVersion: 'n5-1999.01.01' }, { reviewCards: [...validBackup().data.reviewCards, storedCard('龍', 'A', { state: 'REVIEW', reviewCount: 1 })] }))],
+    ['unknown dataset version', JSON.stringify(validBackup({ datasetVersion: null }))],
     ['algorithm mismatch', JSON.stringify(validBackup({ algorithmVersion: 'srs-v2' }))],
     ['duplicate ids', JSON.stringify(validBackup({}, { reviewLogs: [validBackup().data.reviewLogs[0]!, validBackup().data.reviewLogs[0]!] }))],
     ['partial corruption', JSON.stringify(validBackup({}, { studySessions: [{ id: 'ok', startedAt: 1, endedAt: null, cardIds: [], summary: null }, { id: 'bad', startedAt: 'x' } as never] }))],
@@ -201,6 +202,25 @@ describe('atomicity: a failed import leaves the database exactly as it was', () 
     const plan = await prepareImport(deps(), JSON.stringify(validBackup()));
     const kanji = Object.assign(Object.create(repos.kanji) as Repositories['kanji'], { getDatasetVersion: () => Promise.resolve('n5-2099.01.01') });
     await expect(applyImport({ ...deps(), kanji }, plan)).rejects.toMatchObject({ code: 'DATASET_MISMATCH' });
+  });
+});
+
+describe('backup from another dataset version (Phase 12 policy)', () => {
+  it('every kanji still exists: restored exactly, with the mandatory warning, logs keep their own datasetVersion', async () => {
+    const older = validBackup({ datasetVersion: 'n5-2025.01.01' });
+    const plan = await prepareImport(deps(), JSON.stringify(older));
+    expect(plan.datasetWarning).toEqual({ backupVersion: 'n5-2025.01.01', currentVersion: 'n5-2026.10.01' });
+    expect(plan.checkedDatasetVersion).toBe('n5-2026.10.01');
+    await applyImport(deps(), plan);
+    const restored = await read();
+    const byId = <T extends { id: string }>(list: readonly T[]) => [...list].sort((a, b) => (a.id < b.id ? -1 : 1));
+    expect(restored.reviewCards).toEqual(byId(older.data.reviewCards));
+    expect(restored.reviewLogs).toEqual(byId(older.data.reviewLogs)); // datasetVersion of each log unchanged
+    expect(restored.userSettings).toEqual(older.data.userSettings);
+  });
+
+  it('the same dataset version has no warning', async () => {
+    expect((await prepareImport(deps(), JSON.stringify(validBackup()))).datasetWarning).toBeNull();
   });
 });
 

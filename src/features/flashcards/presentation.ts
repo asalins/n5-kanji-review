@@ -85,8 +85,23 @@ export function groupReadings(readings: readonly KanjiReading[]): ReadingGroups 
 }
 
 /** The reading used as the question in Mode D: the first kun reading, else the first on reading. */
+/** KANJIDIC2 notation: '.' marks okurigana, '-' marks a prefix/suffix form. */
+const hasNotation = (view: ReadingView) => view.kana.includes('.') || view.kana.includes('-');
+
+/**
+ * Mode D prompt (Phase 12 approved rule). A reading is never edited, stripped or invented:
+ *  1. the first kun reading without '.' or '-';
+ *  2. otherwise the first on reading without '.' or '-';
+ *  3. otherwise the original first reading exactly as written in the source.
+ */
 export function pickPromptReading(groups: ReadingGroups): ReadingView | null {
-  return groups.kun[0] ?? groups.on[0] ?? null;
+  return (
+    groups.kun.find((view) => !hasNotation(view)) ??
+    groups.on.find((view) => !hasNotation(view)) ??
+    groups.kun[0] ??
+    groups.on[0] ??
+    null
+  );
 }
 
 /** A card can be asked in a mode only if that mode's question and answer data exist. */

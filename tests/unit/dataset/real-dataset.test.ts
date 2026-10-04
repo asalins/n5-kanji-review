@@ -60,9 +60,13 @@ describe('real n5.json', () => {
     expect(readingsOf('学').map((r) => r.kana)).toEqual(['ガク', 'まな.ぶ']);
   });
 
-  it('keeps Thai separate and unfilled: no Thai text was invented', () => {
+  // Phase 3 asserted an empty Thai file. Phase 12 (approved) adds DRAFT meanings, so the lasting invariants are:
+  // Thai lives only in n5.th.json, one entry per kanji, and a draft is never a reviewed meaning by itself.
+  it('keeps Thai separate: one entry per kanji in n5.th.json, none in n5.json, no reviewed entry without text', () => {
     expect(thai.entries).toHaveLength(196);
-    expect(thai.entries.every((e) => e.meaningsTh.length === 0 && !e.reviewed && !e.ambiguous)).toBe(true);
+    expect(new Set(thai.entries.map((e) => e.kanjiId)).size).toBe(196);
+    expect(JSON.stringify(dataset)).not.toMatch(/"th"\s*:/);
+    expect(thai.entries.filter((e) => e.reviewed && e.meaningsTh.length === 0)).toEqual([]);
   });
 });
 

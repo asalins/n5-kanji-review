@@ -25,15 +25,24 @@ const ids = (plan: Awaited<ReturnType<typeof planSession>>) => plan.cards.map((c
 const MINUTE = 60_000;
 
 describe('new cards come from the Project N5 list, in order, lazily', () => {
-  it('first session: 10 new cards, 一二三 in list order, modes A-D per kanji', async () => {
+  it('first session: the 10 new cards are 一二三 in list order with modes A-D (selection unchanged)', async () => {
     const plan = await planSession(deps());
     expect(plan.cards.every((c) => c.kind === 'new')).toBe(true);
-    expect(ids(plan)).toEqual([
+    const selected = [
       cardId('一', 'A'), cardId('一', 'B'), cardId('一', 'C'), cardId('一', 'D'),
       cardId('二', 'A'), cardId('二', 'B'), cardId('二', 'C'), cardId('二', 'D'),
       cardId('三', 'A'), cardId('三', 'B'),
-    ]);
+    ];
+    expect([...ids(plan)].sort()).toEqual([...selected].sort());
     expect(plan.emptyReason).toBeNull();
+  });
+
+  it('first session order (Phase 12): spread so the same kanji is never shown twice in a row', async () => {
+    const plan = await planSession(deps());
+    expect(ids(plan)).toEqual([
+      cardId('一', 'A'), cardId('二', 'A'), cardId('一', 'B'), cardId('二', 'B'), cardId('一', 'C'),
+      cardId('二', 'C'), cardId('三', 'A'), cardId('一', 'D'), cardId('二', 'D'), cardId('三', 'B'),
+    ]);
   });
 
   it('creates only the cards the queue needs (not 196 x 4 = 784)', async () => {

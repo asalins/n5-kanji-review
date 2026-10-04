@@ -120,3 +120,23 @@ test('a failed import in the real browser leaves the database exactly as it was,
     expect(await readDatabase(page)).toEqual(before);
   });
 });
+
+test('a backup from another dataset version: mandatory warning, then an exact restore in the real browser', async ({ page }) => {
+  const { file, state: exported } = await makeBackup(page);
+  const older = JSON.stringify({ ...JSON.parse(file), datasetVersion: 'n5-2025.01.01' });
+  await page.getByRole('button', { name: /Reset progress/ }).tap();
+  await page.getByLabel(/I understand/).check();
+  await page.getByRole('button', { name: /Delete/ }).tap();
+  await expect(page.getByText(/Progress deleted/)).toBeVisible();
+
+  await chooseBackup(page, older);
+  const dialog = page.getByRole('alertdialog', { name: /Import this backup/ });
+  await expect(dialog.getByRole('alert')).toContainText('n5-2025.01.01');
+  await expect(dialog.getByRole('alert')).toContainText(/different dataset version/);
+  await confirmImport(page);
+  await expect(page.getByText(/Backup restored/)).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'N5 Kanji Review' })).toBeVisible();
+  expect(userData(await readDatabase(page))).toEqual(userData(exported));
+});
+
