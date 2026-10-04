@@ -11,6 +11,9 @@ import { logError, toUserMessage } from '../utils/userMessage';
 import { useAppStore } from './appStore';
 import { bootstrapApp } from './bootstrap';
 import { applyThemePreference } from './theme';
+import { SAFE_PAGE } from '../components/styles';
+import { usePwaUpdate, type PwaUpdate } from './pwaUpdate';
+import { UpdateBanner } from './UpdateBanner';
 
 type Screen = 'home' | 'review' | 'practice' | 'search' | 'settings';
 
@@ -26,7 +29,7 @@ function WhenSettingsLoaded({ children }: { children: ReactNode }) {
   const { status } = useSettings();
   if (status === 'LOADING') {
     return (
-      <main className="min-h-dvh bg-stone-50 p-6 text-stone-900 dark:bg-neutral-900 dark:text-neutral-100">
+      <main className={`min-h-dvh bg-stone-50 text-stone-900 dark:bg-neutral-900 dark:text-neutral-100 ${SAFE_PAGE}`}>
         <StateMessage tone="loading" title="กำลังเตรียมข้อมูล…" />
       </main>
     );
@@ -37,9 +40,12 @@ function WhenSettingsLoaded({ children }: { children: ReactNode }) {
 interface AppProps {
   /** Injectable for tests. Defaults to opening the real database and loading the bundled dataset. */
   readonly bootstrap?: () => Promise<AppRepositories>;
+  /** Service-worker update lifecycle (tests inject a fake; production registers the generated worker). */
+  readonly useUpdate?: () => PwaUpdate;
 }
 
-export function App({ bootstrap = bootstrapApp }: AppProps) {
+export function App({ bootstrap = bootstrapApp, useUpdate = usePwaUpdate }: AppProps) {
+  const update = useUpdate();
   const bootState = useAppStore((s) => s.bootState);
   const bootError = useAppStore((s) => s.bootError);
   const markReady = useAppStore((s) => s.markReady);
@@ -73,7 +79,7 @@ export function App({ bootstrap = bootstrapApp }: AppProps) {
 
   if (bootState === 'failed') {
     return (
-      <main className="min-h-dvh bg-stone-50 p-6 text-stone-900 dark:bg-neutral-900 dark:text-neutral-100">
+      <main className={`min-h-dvh bg-stone-50 text-stone-900 dark:bg-neutral-900 dark:text-neutral-100 ${SAFE_PAGE}`}>
         <StateMessage tone="error" title="เริ่มแอปไม่สำเร็จ" description={bootError ?? undefined}>
           <button
             type="button"
@@ -91,7 +97,7 @@ export function App({ bootstrap = bootstrapApp }: AppProps) {
   }
   if (bootState === 'booting' || repositories === null) {
     return (
-      <main className="min-h-dvh bg-stone-50 p-6 text-stone-900 dark:bg-neutral-900 dark:text-neutral-100">
+      <main className={`min-h-dvh bg-stone-50 text-stone-900 dark:bg-neutral-900 dark:text-neutral-100 ${SAFE_PAGE}`}>
         <StateMessage tone="loading" title="กำลังเตรียมข้อมูล…" />
       </main>
     );
@@ -107,6 +113,8 @@ export function App({ bootstrap = bootstrapApp }: AppProps) {
           onStartPractice={() => setScreen('practice')}
           onSearch={() => setScreen('search')}
           onSettings={() => setScreen('settings')}
+          // Update notice only here: never during a review, an import/export or settings. Never automatic.
+          notice={<UpdateBanner visible={update.updateReady} onUpdate={update.applyUpdate} onDismiss={update.dismiss} />}
         />
       )}
       {screen === 'settings' && <SettingsPage onExit={() => setScreen('home')} />}

@@ -28,7 +28,10 @@ export function HistoryChart({ days, label }: { days: readonly DayStats[]; label
           <span>{shortDate(last.date)}</span>
         </p>
       )}
-      <table className="sr-only">
+      {/* sr-only on a wrapper, not on the table: a 1px-wide table still lays out at full width and made the
+          page scroll sideways on 320-360px phones (measured in Phase 10). The wrapper clips it. */}
+      <div className="sr-only">
+      <table>
         <caption>{label}</caption>
         <thead>
           <tr>
@@ -51,6 +54,7 @@ export function HistoryChart({ days, label }: { days: readonly DayStats[]; label
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

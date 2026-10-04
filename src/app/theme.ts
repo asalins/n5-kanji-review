@@ -1,23 +1,29 @@
 import type { Theme } from '../types/entities';
 
 const DARK_CLASS = 'dark';
+/** Browser/system bar colours: the page background of each theme (stone-50 / neutral-900). */
+export const THEME_COLOR = { light: '#fafaf9', dark: '#171717' } as const;
+
+function show(dark: boolean): void {
+  document.documentElement.classList.toggle(DARK_CLASS, dark);
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? THEME_COLOR.dark : THEME_COLOR.light);
+}
 
 /**
- * Applies the Light / Dark / System preference to <html>. Phase 4 always passes 'system';
- * Phase 9 (Settings) will pass the saved UserSettings.theme. Returns a cleanup function.
+ * Applies the Light / Dark / System preference to <html> and to the theme-color meta (system bars).
+ * App passes the saved UserSettings.theme ('system' during start-up). Returns a cleanup function.
  */
 export function applyThemePreference(theme: Theme): () => void {
-  const root = document.documentElement;
   if (theme !== 'system') {
-    root.classList.toggle(DARK_CLASS, theme === 'dark');
+    show(theme === 'dark');
     return () => undefined;
   }
   if (typeof window.matchMedia !== 'function') {
-    root.classList.remove(DARK_CLASS);
+    show(false);
     return () => undefined;
   }
   const query = window.matchMedia('(prefers-color-scheme: dark)');
-  const sync = () => root.classList.toggle(DARK_CLASS, query.matches);
+  const sync = () => show(query.matches);
   sync();
   query.addEventListener('change', sync);
   return () => query.removeEventListener('change', sync);

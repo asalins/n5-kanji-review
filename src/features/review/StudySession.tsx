@@ -137,7 +137,7 @@ export function StudySession({ mode, onExit, orchestrator, size, createSeed }: S
       <div ref={answerRef} tabIndex={-1} className="flex w-full flex-1 flex-col items-center outline-none">
         <Flashcard mode={mode} data={card} phase={state.phase} onReveal={reveal} />
       </div>
-      <div className="pb-[env(safe-area-inset-bottom)]">
+      <div>
         {state.phase === 'front' ? (
           <button type="button" onClick={reveal} aria-keyshortcuts="Space Enter" className={PRIMARY_BUTTON}>
             Show answer · ดูคำตอบ

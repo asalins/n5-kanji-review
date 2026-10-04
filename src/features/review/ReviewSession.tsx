@@ -144,7 +144,7 @@ export function ReviewSession({ onExit, now, limits, orchestrator }: ReviewSessi
               {ERROR_TEXT[state.saveError].title}: {ERROR_TEXT[state.saveError].description}
             </p>
           )}
-          <div className="pb-[env(safe-area-inset-bottom)]">
+          <div>
             {state.phase === 'front' ? (
               <button type="button" onClick={reveal} aria-keyshortcuts="Space Enter" className={PRIMARY_BUTTON}>
                 Show answer · ดูคำตอบ

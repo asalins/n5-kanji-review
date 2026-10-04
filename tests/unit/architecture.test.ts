@@ -246,4 +246,28 @@ describe('architecture boundaries', () => {
     const services = files.filter((f) => f.rel.startsWith('services/backup/'));
     expect(services.filter((f) => /\.(saveCard|appendLog|recordReview|saveSession|clear)\(/.test(f.text)).map((f) => f.rel)).toEqual([]);
   });
+  it('the PWA layer is asset caching and the update lifecycle only: no repository, IndexedDB, SRS, statistics or search', () => {
+    const pwaFiles = files.filter((f) => /^app\/(pwaUpdate|UpdateBanner)\./.test(f.rel));
+    expect(pwaFiles.map((f) => f.rel).sort()).toEqual(['app/UpdateBanner.tsx', 'app/pwaUpdate.ts']);
+    const offenders = pwaFiles
+      .filter((f) => /from ['"](idb|[^'"]*(repositories|services|hooks\/useRepositories|features|types\/schemas)[^'"]*)['"]|\bindexedDB\b/.test(f.text))
+      .map((f) => f.rel);
+    expect(offenders).toEqual([]);
+    const config = readFileSync(join(process.cwd(), 'pwa.config.ts'), 'utf8');
+    expect(config).not.toMatch(/from ['"]\.\/src\//); // the service-worker config imports no application code
+  });
+
+  it('only the PWA update hook talks to the service worker; nothing in the app reads Cache Storage', () => {
+    const swUsers = files.filter((f) => /virtual:pwa-register|navigator\.serviceWorker|\bcaches\./.test(f.text)).map((f) => f.rel);
+    expect(swUsers).toEqual(['app/pwaUpdate.ts']);
+    const cacheUse = files.filter((f) => /\bcaches\.(open|match|keys|delete)\b|CacheStorage/.test(f.text)).map((f) => f.rel);
+    expect(cacheUse).toEqual([]);
+  });
+
+  it('no hand-written service worker: the generated Workbox worker caches assets only, with no runtime (network/API) caching', () => {
+    expect(files.filter((f) => /(^|\/)(sw|service-?worker)\.(ts|js)$/i.test(f.rel))).toEqual([]);
+    const config = readFileSync(join(process.cwd(), 'pwa.config.ts'), 'utf8');
+    expect(config).toMatch(/runtimeCaching: \[\]/);
+    expect(config).toMatch(/registerType: 'prompt'/);
+  });
 });

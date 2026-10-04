@@ -1,5 +1,6 @@
+import type { ReactNode } from 'react';
 import { APP_NAME } from '../app/config';
-import { PRIMARY_BUTTON, SECONDARY_BUTTON } from '../components/styles';
+import { PRIMARY_BUTTON, SECONDARY_BUTTON, SAFE_PAGE } from '../components/styles';
 import { Dashboard } from '../features/progress/Dashboard';
 import { useStatistics } from '../features/progress/useStatistics';
 import { useSettings } from '../features/settings/SettingsProvider';
@@ -10,17 +11,21 @@ export function HomePage({
   onStartPractice,
   onSearch,
   onSettings,
+  notice,
 }: {
   onStartReview: () => void;
   onStartPractice: () => void;
   onSearch: () => void;
   onSettings: () => void;
+  /** Optional app-level notice (the PWA update banner). */
+  notice?: ReactNode;
 }) {
   const { limits } = useSettings();
   const statistics = useStatistics({ limits });
   return (
-    <main className="mx-auto flex min-h-dvh max-w-3xl flex-col items-center gap-5 bg-stone-50 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] text-center text-stone-900 dark:bg-neutral-900 dark:text-neutral-100">
+    <main className={`mx-auto flex min-h-dvh max-w-3xl flex-col items-center gap-5 bg-stone-50 text-center text-stone-900 dark:bg-neutral-900 dark:text-neutral-100 ${SAFE_PAGE}`}>
       <h1 className="pt-2 text-2xl font-semibold">{APP_NAME}</h1>
+      {notice}
       <div className="flex w-full max-w-sm flex-col gap-3">
         <button type="button" onClick={onStartReview} className={PRIMARY_BUTTON}>
           ทบทวนวันนี้ · Today's review
