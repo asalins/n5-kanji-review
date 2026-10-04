@@ -10,6 +10,8 @@ export function buildAppServices(repositories: Repositories): AppRepositories {
   return {
     kanji: repositories.kanji,
     review: repositories.review,
+    settings: repositories.settings,
+    backup: repositories.backup,
     newItems: createProjectListSource(),
     reviewOrchestrator: createReviewOrchestrator({
       recorder: repositories.review,

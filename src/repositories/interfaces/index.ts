@@ -1,4 +1,4 @@
-export type { BackupPayload, BackupRepository, ImportPreview } from './BackupRepository';
+export type { BackupRepository, UserDataExport, UserDataSnapshot } from './BackupRepository';
 export type { ContentWriter } from './ContentWriter';
 export type { KanjiRepository, KanjiSearchFilters } from './KanjiRepository';
 export type { DateRange, ReviewRepository } from './ReviewRepository';

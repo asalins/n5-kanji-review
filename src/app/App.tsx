@@ -1,16 +1,38 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { StateMessage } from '../components/StateMessage';
 import { RepositoriesProvider, type AppRepositories } from '../hooks/useRepositories';
 import { HomePage } from '../pages/HomePage';
 import { ReviewPage } from '../pages/ReviewPage';
 import { SearchPage } from '../pages/SearchPage';
+import { SettingsPage } from '../pages/SettingsPage';
+import { SettingsProvider, useSettings } from '../features/settings/SettingsProvider';
 import { StudyPage } from '../pages/StudyPage';
 import { logError, toUserMessage } from '../utils/userMessage';
 import { useAppStore } from './appStore';
 import { bootstrapApp } from './bootstrap';
 import { applyThemePreference } from './theme';
 
-type Screen = 'home' | 'review' | 'practice' | 'search';
+type Screen = 'home' | 'review' | 'practice' | 'search' | 'settings';
+
+/** Applies the saved theme (Light / Dark / System) with the existing theme function. */
+function SavedTheme() {
+  const { settings } = useSettings();
+  useEffect(() => applyThemePreference(settings.theme), [settings.theme]);
+  return null;
+}
+
+/** Pages render once the saved settings have been read (or failed to be read: then the defaults are used). */
+function WhenSettingsLoaded({ children }: { children: ReactNode }) {
+  const { status } = useSettings();
+  if (status === 'LOADING') {
+    return (
+      <main className="min-h-dvh bg-stone-50 p-6 text-stone-900 dark:bg-neutral-900 dark:text-neutral-100">
+        <StateMessage tone="loading" title="กำลังเตรียมข้อมูล…" />
+      </main>
+    );
+  }
+  return <>{children}</>;
+}
 
 interface AppProps {
   /** Injectable for tests. Defaults to opening the real database and loading the bundled dataset. */
@@ -27,8 +49,8 @@ export function App({ bootstrap = bootstrapApp }: AppProps) {
   const [screen, setScreen] = useState<Screen>('home');
   const [attempt, setAttempt] = useState(0);
 
-  // Phase 9 will pass the saved theme setting instead of 'system'.
-  useEffect(() => applyThemePreference('system'), []);
+  // Until the saved settings are available (start-up screens) the system theme is used.
+  useEffect(() => (repositories === null ? applyThemePreference('system') : undefined), [repositories]);
 
   useEffect(() => {
     let cancelled = false;
@@ -76,12 +98,23 @@ export function App({ bootstrap = bootstrapApp }: AppProps) {
   }
   return (
     <RepositoriesProvider value={repositories}>
+      <SettingsProvider>
+        <SavedTheme />
+        <WhenSettingsLoaded>
       {screen === 'home' && (
-        <HomePage onStartReview={() => setScreen('review')} onStartPractice={() => setScreen('practice')} onSearch={() => setScreen('search')} />
+        <HomePage
+          onStartReview={() => setScreen('review')}
+          onStartPractice={() => setScreen('practice')}
+          onSearch={() => setScreen('search')}
+          onSettings={() => setScreen('settings')}
+        />
       )}
+      {screen === 'settings' && <SettingsPage onExit={() => setScreen('home')} />}
       {screen === 'search' && <SearchPage onExit={() => setScreen('home')} />}
       {screen === 'review' && <ReviewPage onExit={() => setScreen('home')} />}
       {screen === 'practice' && <StudyPage onExit={() => setScreen('home')} />}
+        </WhenSettingsLoaded>
+      </SettingsProvider>
     </RepositoriesProvider>
   );
 }

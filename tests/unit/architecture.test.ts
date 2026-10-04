@@ -93,7 +93,7 @@ describe('architecture boundaries', () => {
     const offenders = files
       .filter((f) => !f.rel.startsWith('services/srs/'))
       .filter((f) => /from ['"][^'"]*services\/srs[^'"]*['"]/.test(f.text))
-      .filter((f) => !/^(features\/review\/[A-Za-z]*[Oo]rchestrator[A-Za-z]*\.ts|services\/session\/cardFactory\.ts)$/.test(f.rel))
+      .filter((f) => !/^(features\/review\/[A-Za-z]*[Oo]rchestrator[A-Za-z]*\.ts|services\/session\/cardFactory\.ts|services\/backup\/backupCompatibility\.ts)$/.test(f.rel))
       .map((f) => f.rel);
     expect(offenders).toEqual([]);
   });
@@ -209,5 +209,41 @@ describe('architecture boundaries', () => {
   it('search normalization is pure and never rewrites stored data', () => {
     const normalize = files.find((f) => f.rel === 'services/kanjiSearch/normalize.ts')?.text ?? '';
     expect(normalize).not.toMatch(/Date\.now|Math\.random|\bawait\b|\bimport\b[^;]*repositories/);
+  });
+  it('settings and backup UI reach storage only through services and repository interfaces', () => {
+    const offenders = files
+      .filter((f) => /^(features\/settings\/|pages\/SettingsPage|components\/ConfirmPanel)/.test(f.rel))
+      .filter((f) => /from ['"](idb|[^'"]*(repositories\/indexeddb|services\/storage)[^'"]*)['"]|\bindexedDB\b|\blocalStorage\b|\bIDBKeyRange\b/.test(f.text))
+      .map((f) => f.rel);
+    expect(offenders).toEqual([]);
+  });
+
+  it('backup never runs the SRS: only the algorithm version label is imported, never updateCardState/createNewCard', () => {
+    const backup = files.filter((f) => f.rel.startsWith('services/backup/'));
+    expect(backup.length).toBeGreaterThan(0);
+    const srsImports = backup.flatMap((f) => [...f.text.matchAll(/import\s*{([^}]*)}\s*from ['"][^'"]*services\/srs[^'"]*['"]|import\s*{([^}]*)}\s*from ['"]\.\.\/srs[^'"]*['"]/g)].map((m) => (m[1] ?? m[2] ?? '').trim()));
+    expect(srsImports).toEqual(['SRS_ALGORITHM_VERSION']);
+    const calls = backup.filter((f) => /updateCardState|createNewCard|srsV1|newCardFor/.test(f.text)).map((f) => f.rel);
+    expect(calls).toEqual([]);
+  });
+
+  it('backup cannot write the dataset: no content writer, no content stores, no streakState', () => {
+    const backupCode = files.filter((f) => f.rel.startsWith('services/backup/') || f.rel === 'repositories/indexeddb/IndexedDbBackupRepository.ts' || f.rel.startsWith('features/settings/'));
+    const offenders = backupCode
+      .filter((f) => /ContentWriter|saveContent|replaceContent|STORES\.(kanji|kanjiReadings|vocabulary|exampleSentences|contentMeta|streakState)\b|StreakState/.test(f.text))
+      .map((f) => f.rel);
+    expect(offenders).toEqual([]);
+  });
+
+  it('import and reset are single transactions in the repository (no store-by-store writes from services)', () => {
+    const repo = files.find((f) => f.rel === 'repositories/indexeddb/IndexedDbBackupRepository.ts')?.text ?? '';
+    const replace = repo.slice(repo.indexOf('replaceUserData('), repo.indexOf('resetProgress('));
+    expect(replace.match(/this\.db\.transaction\(/g)).toHaveLength(1);
+    expect(replace).toMatch(/'readwrite'/);
+    expect(replace).not.toMatch(/this\.db\.(put|add|clear|delete)\(/);
+    const reset = repo.slice(repo.indexOf('resetProgress('));
+    expect(reset.match(/this\.db\.transaction\(/g)).toHaveLength(1);
+    const services = files.filter((f) => f.rel.startsWith('services/backup/'));
+    expect(services.filter((f) => /\.(saveCard|appendLog|recordReview|saveSession|clear)\(/.test(f.text)).map((f) => f.rel)).toEqual([]);
   });
 });

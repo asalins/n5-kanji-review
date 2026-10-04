@@ -1,6 +1,6 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import type { ReviewOrchestrator } from '../features/review/reviewBoundary';
-import type { KanjiRepository, ReviewRepository } from '../repositories/interfaces';
+import type { BackupRepository, KanjiRepository, ReviewRepository, SettingsRepository } from '../repositories/interfaces';
 import type { NewItemSource } from '../services/session/types';
 
 /** What the UI is allowed to know: repository INTERFACES only, never an implementation. */
@@ -11,6 +11,10 @@ export interface AppRepositories {
   readonly reviewOrchestrator?: ReviewOrchestrator;
   /** Project N5 list order for NEW cards. Required by the review session; absent in practice-only tests. */
   readonly newItems?: NewItemSource;
+  /** Saved settings. Absent in tests: the defaults are used. */
+  readonly settings?: SettingsRepository;
+  /** Backup / restore / reset storage. Absent in tests that do not need it. */
+  readonly backup?: BackupRepository;
 }
 
 const RepositoriesContext = createContext<AppRepositories | null>(null);
