@@ -106,3 +106,15 @@ Settings page (home -> Settings): daily new cards (5/10/20/30, default 10), dail
 - **Updates are never forced:** `registerType: 'prompt'`. A new version waits; a small notice appears on the home screen only (never during a review, import/export or settings) and nothing reloads until the user taps "Update".
 - **Mobile layout:** `viewport-fit=cover` + one safe-area aware page padding (`SAFE_PAGE`) on every page; the `theme-color` meta follows the theme actually shown (light/dark/system).
 - **E2E:** `npm run test:e2e` builds, serves the production build and runs at 320 / 360 / 412 px (no sideways scroll, 44 px touch targets, full review, search/filter, settings, offline after first load, manifest/icons). Where Playwright cannot download its browser, point it at any Chromium binary: `PLAYWRIGHT_CHROMIUM_EXECUTABLE=/path/to/chromium npm run test:e2e` (test infrastructure only, not a project dependency).
+
+## Testing and QA (Phase 11)
+
+| Command | What it runs |
+|---|---|
+| `npm run verify` | typecheck -> unit/component/architecture tests -> production build (the single check for any CI later) |
+| `npm run verify:all` | `verify`, then the E2E suite. Without a Chromium it prints **E2E BLOCKED** and exits with code 2 (never a silent pass). Set `PLAYWRIGHT_CHROMIUM_EXECUTABLE` where Playwright cannot download its browser. |
+| `npm run qa:mutations` | Mutation QA without dependencies: copies the repository to a temporary folder, breaks one locked rule at a time (Due/MASTERED, accuracy, atomic review write, atomic restore, dataset and algorithm compatibility, orphan logs, srs-v1 intervals, project order, Thai drafts, PWA auto-update, AGAIN re-insertion) and requires the targeted tests to FAIL. The working tree is never modified. Exit 0 only if every mutation is killed. |
+
+E2E (`tests/e2e`): phones 320/360/412 run the full suite; desktop 1024/1440 and landscape 812x360/915x412 run `smoke.spec.ts`. Real-browser checks include backup export -> reset -> import -> reload on Chromium's own IndexedDB, failure injection inside the import transaction at five points (database must be byte-for-byte unchanged), and the PWA update lifecycle across two builds (new version waits, no automatic reload, user data kept after "Update").
+
+Locked by tests: released migrations (`v1Initial`, `v2ContentMeta`) are fingerprinted and the real v1 -> v2 upgrade is tested with user data; srs-v1 parameters are pinned as literal values (`tests/unit/srs/srsV1Locked.test.ts`).

@@ -264,3 +264,20 @@ describe('practice mode never writes SRS state', () => {
     expect(sessionOnlyOrchestrator).toBeDefined();
   });
 });
+
+describe('AGAIN does not put the card back into the same session (fixed queue, approved Phase 6 behaviour)', () => {
+  it('two planned cards: AGAIN on the first, GOOD on the second, and the session ends after exactly two', async () => {
+    renderReview(services());
+    await start();
+    await card(1, 2);
+    reveal();
+    rate(/Again/);
+    await card(2, 2);
+    reveal();
+    rate(/Good/);
+    expect(await screen.findByText('จบรอบทบทวนแล้ว')).toBeTruthy();
+    expect(screen.getByText(/ทบทวนแล้ว 2 จาก 2 ใบ/)).toBeTruthy();
+    expect(screen.queryByText(/of 3/)).toBeNull();
+  });
+});
+

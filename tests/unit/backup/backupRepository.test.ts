@@ -140,6 +140,32 @@ describe('atomicity: a failed import leaves the database exactly as it was', () 
     expect(await read()).toEqual(before);
   });
 
+  /** Fail the nth add/put/clear on one store, inside the import transaction (fake-indexeddb). */
+  function injectAt(store: string, method: 'add' | 'put' | 'clear', nth: number) {
+    const real = IDBObjectStore.prototype[method] as (...args: unknown[]) => unknown;
+    let calls = 0;
+    return vi.spyOn(IDBObjectStore.prototype, method).mockImplementation(function (this: IDBObjectStore, ...args: unknown[]) {
+      if (this.name === store && ++calls === nth) throw new Error(`injected ${store}.${method} #${nth}`);
+      return real.apply(this, args);
+    } as never);
+  }
+
+  it.each([
+    ['after the clears, on the first card write', 'reviewCards', 'add', 1],
+    ['after card #1, on card #2', 'reviewCards', 'add', 2],
+    ['after several cards, on the last card', 'reviewCards', 'add', 4],
+    ['on the first log write', 'reviewLogs', 'add', 1],
+    ['on the settings write (the very last write)', 'userSettings', 'put', 1],
+    ['while clearing (third store)', 'studySessions', 'clear', 1],
+  ] as const)('failure %s: rollback, the database is exactly as before', async (_label, store, method, nth) => {
+    const before = await seedSample();
+    const plan = await prepareImport(deps(), JSON.stringify(validBackup()));
+    injectAt(store, method, nth);
+    await expect(applyImport(deps(), plan)).rejects.toMatchObject({ code: 'IMPORT_TRANSACTION_FAILED' });
+    vi.restoreAllMocks();
+    expect(await read()).toEqual(before);
+  });
+
   it('a duplicate id reaching the repository fails the add and rolls everything back', async () => {
     const before = await seedSample();
     const { cards, logs, sessions } = sampleRecords();
