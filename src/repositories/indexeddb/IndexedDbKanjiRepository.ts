@@ -86,6 +86,15 @@ export class IndexedDbKanjiRepository implements KanjiRepository {
     });
   }
 
+  getAllReadings(): Promise<readonly KanjiReading[]> {
+    return runRepositoryOperation('KanjiRepository.getAllReadings', async () => {
+      const records = await this.db.getAll(STORES.kanjiReadings);
+      return parseRecords(kanjiReadingSchema, records, 'kanji reading').sort(
+        (a, b) => a.kanjiId.localeCompare(b.kanjiId) || a.type.localeCompare(b.type) || a.kana.localeCompare(b.kana),
+      );
+    });
+  }
+
   getVocabulary(kanjiId: string): Promise<readonly Vocabulary[]> {
     return runRepositoryOperation('KanjiRepository.getVocabulary', async () => {
       const records = await this.db.getAllFromIndex(STORES.vocabulary, 'by-kanjiId', kanjiId);

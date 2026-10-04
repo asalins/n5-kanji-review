@@ -10,6 +10,7 @@ const emptyRepositories: AppRepositories = {
     search: () => Promise.resolve([]),
     getDatasetVersion: () => Promise.resolve(null),
     getReadings: () => Promise.resolve([]),
+    getAllReadings: () => Promise.resolve([]),
     getVocabulary: () => Promise.resolve([]),
     getExamples: () => Promise.resolve([]),
   },

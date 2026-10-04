@@ -99,7 +99,7 @@ describe('architecture boundaries', () => {
   });
   it('the session engine and review session never read the system clock or randomness directly', () => {
     const offenders = files
-      .filter((f) => /^(services\/session\/|services\/statistics\/|features\/progress\/|features\/review\/(useReviewSession|ReviewSession)\.)/.test(f.rel))
+      .filter((f) => /^(services\/session\/|services\/statistics\/|services\/kanjiSearch\/|features\/progress\/|features\/review\/(useReviewSession|ReviewSession)\.)/.test(f.rel))
       .filter((f) => /Date\.now\(|Math\.random\(|new Date\(\)/.test(f.text))
       .map((f) => f.rel);
     expect(offenders).toEqual([]);
@@ -181,5 +181,33 @@ describe('architecture boundaries', () => {
       .filter((f) => /\b(saveCard|appendLog|recordReview|saveSession|saveStreakState|saveSettings)\s*\(/.test(f.text))
       .map((f) => f.rel);
     expect(offenders).toEqual([]);
+  });
+  it('search (services/kanjiSearch, features/kanji) is read-only and never touches SRS', () => {
+    const search = files.filter((f) => /^(services\/kanjiSearch\/|features\/kanji\/)/.test(f.rel));
+    expect(search.length).toBeGreaterThan(0);
+    const writes = search.filter((f) => /\.(saveCard|appendLog|recordReview|saveSession|saveStreakState|saveContent|replaceContent)\(/.test(f.text)).map((f) => f.rel);
+    expect(writes).toEqual([]);
+    const srs = search.filter((f) => /from ['"][^'"]*services\/srs[^'"]*['"]|StreakState/.test(f.text)).map((f) => f.rel);
+    expect(srs).toEqual([]);
+  });
+
+  it('search goes through the repository interfaces only and never queries per kanji (no N+1)', () => {
+    const search = files.filter((f) => /^(services\/kanjiSearch\/|features\/kanji\/)/.test(f.rel));
+    const direct = search.filter((f) => /from ['"](idb|[^'"]*(repositories\/indexeddb|services\/storage)[^'"]*)['"]|\bindexedDB\b/.test(f.text)).map((f) => f.rel);
+    expect(direct).toEqual([]);
+    const perKanji = search.filter((f) => /\.(getReadings|getById|getCard|getVocabulary|getExamples)\(/.test(f.text)).map((f) => f.rel);
+    expect(perKanji).toEqual([]);
+  });
+
+  it('search reuses the single Due definition and the Phase 7 Learned/Mastered meaning without a second Due predicate', () => {
+    const states = files.find((f) => f.rel === 'services/kanjiSearch/kanjiReviewStates.ts')?.text ?? '';
+    expect(states).toMatch(/isDueCard\(/);
+    const second = files.filter((f) => /^(services\/kanjiSearch\/|features\/kanji\/)/.test(f.rel)).filter((f) => /\.due\s*(<=|>=|<(?!=)|>(?!=))|(?<![=-])(<=|>=|<|>)\s*[\w.]*\.due\b/.test(f.text)).map((f) => f.rel);
+    expect(second).toEqual([]);
+  });
+
+  it('search normalization is pure and never rewrites stored data', () => {
+    const normalize = files.find((f) => f.rel === 'services/kanjiSearch/normalize.ts')?.text ?? '';
+    expect(normalize).not.toMatch(/Date\.now|Math\.random|\bawait\b|\bimport\b[^;]*repositories/);
   });
 });

@@ -75,3 +75,14 @@ Metric definitions (the single source of truth for the dashboard):
 - **Data-version policy:** all stored ReviewLogs are used; `datasetVersion` is kept for audit and is not a filter. Retention is out of scope.
 - **Legacy / technical debt:** the `streakState` store and `getStreakState`/`saveStreakState` are unused (streak comes from the logs, so there is one source of truth). They are kept unchanged, without migration.
 - **Known limitation:** days are grouped with the time zone of the device at calculation time; if the user changes time zone, daily history and streaks are regrouped by the new local dates.
+
+## Search / Filter (Phase 8)
+
+`src/services/kanjiSearch/` (pure) + `features/kanji/` (hook and UI), opened from the home page. The corpus is loaded once with a fixed number of reads (`getByLevel`, `getAllReadings`, `getCardsByStates`, plus the Project N5 list order); typing and filtering then run in memory with no query per kanji. Read-only. `KanjiRepository.search()` (Phase 2) is kept unchanged and is not used by the UI.
+
+- **Searched fields:** the kanji, English meaning, Thai meaning (the content store only holds reviewed Thai, so drafts are never searchable), kana and romaji. Vocabulary is not searched.
+- **Matching:** the query is trimmed; Latin is case-insensitive; katakana is folded to hiragana and the notation marks `.` and `-` are ignored, for comparison only (stored readings are never changed and are displayed as stored, e.g. `ひと.つ`, `スイ`). Partial = substring.
+- **Order:** match tier (0 exact kanji, 1 exact reading, 2 exact meaning, 3 partial), then Project N5 list order, then id. One result per kanji. An empty query lists the whole list in order.
+- **State filter (kanji level, from its four cards):** New = not Learned; Learning = at least one LEARNING card and not a Mastered Kanji; Review / Relearning = at least one card in that state; Mastered = Mastered Kanji (A-D all exist and are MASTERED). Learning, Review and Relearning can overlap. Search AND state AND Due.
+- **Due now:** the kanji has at least one card for which `isDueCard(card, nowMs)` is true. The clock is read again when the page opens, when the query or a filter changes, and when the window gets focus or the tab becomes visible; there is no polling.
+- **Known debt:** `KanjiRepository.search()` and the search service have different semantics (two search implementations). There is no Kanji detail page, so results are read-only cards.

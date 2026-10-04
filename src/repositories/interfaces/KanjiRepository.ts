@@ -13,6 +13,8 @@ export interface KanjiRepository {
   /** Version of the dataset currently loaded into the content stores, or null if none. */
   getDatasetVersion(): Promise<string | null>;
   getReadings(kanjiId: string): Promise<readonly KanjiReading[]>;
+  /** Every reading of every kanji in one read (for in-memory search); sorted by kanjiId, type, kana. */
+  getAllReadings(): Promise<readonly KanjiReading[]>;
   getVocabulary(kanjiId: string): Promise<readonly Vocabulary[]>;
   getExamples(kanjiId: string): Promise<readonly ExampleSentence[]>;
 }
