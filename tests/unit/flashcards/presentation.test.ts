@@ -11,6 +11,7 @@ import {
 } from '../../../src/features/flashcards/presentation';
 import type { Kanji, KanjiReading } from '../../../src/types/entities';
 import { openRealRepositories, realCard } from '../../helpers/realData';
+import { approvedThai } from '../../helpers/thaiState';
 
 let cards: Record<string, KanjiCardData>;
 let dispose: () => Promise<void>;
@@ -44,11 +45,11 @@ describe('meaning presentation policy', () => {
     expect(promptMeanings(selectMeanings(kanji(['water'], ['น้ำ'])))).toEqual(['น้ำ']);
     expect(promptMeanings(selectMeanings(kanji(['water'])))).toEqual(['water']);
   });
-  it('real data: 一 has several English meanings and no Thai yet', () => {
+  it('real data: 一 shows English meanings and exactly its approved Thai meanings', () => {
     const m = selectMeanings(cards['一']!.kanji);
     expect(m.en.length).toBeGreaterThan(0);
     expect(m.en.length).toBeLessThanOrEqual(MAX_DISPLAYED_MEANINGS);
-    expect(m.th).toEqual([]);
+    expect(m.th).toEqual(approvedThai('一').slice(0, MAX_DISPLAYED_MEANINGS));
   });
 });
 
@@ -91,7 +92,8 @@ describe('the four study modes (front never shows the answer)', () => {
   });
   it('B: Meaning → Kanji shows meaning lines and not the kanji', () => {
     const front = buildFront('B', cards['水']!);
-    expect(front).toMatchObject({ kind: 'meaning', lines: ['water'] });
+    const thai = approvedThai('水');
+    expect(front).toMatchObject({ kind: 'meaning', lines: thai.length > 0 ? thai : ['water'] });
     expect(JSON.stringify(front)).not.toContain('水');
   });
   it('C: Kanji → Reading shows the kanji', () => {

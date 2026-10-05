@@ -68,8 +68,22 @@ describe('drafts never reach the app', () => {
     for (const kanji of bundle.kanji) {
       if (!approved.has(kanji.id)) expect(kanji.meanings.th, kanji.character).toEqual([]);
     }
-    // drafts exist in the file but none of them is shown
-    expect(realThai.entries.filter((e) => !e.reviewed && e.meaningsTh.length > 0).length).toBeGreaterThan(0);
+  });
+
+  it('whatever the file state, a draft (reviewed:false) or an ambiguous entry is never shown', () => {
+    const realDataset = kanjiDatasetFileSchema.parse(JSON.parse(readFileSync('data/kanji/n5.json', 'utf8')));
+    const realThai = thaiDatasetFileSchema.parse(JSON.parse(readFileSync('data/kanji/n5.th.json', 'utf8')));
+    const water = makeKanjiId('水');
+    const fire = makeKanjiId('火');
+    const withDraftAndAmbiguous: ThaiDatasetFile = {
+      ...realThai,
+      entries: realThai.entries.map((e) =>
+        e.kanjiId === water ? { ...e, meaningsTh: ['ร่าง'], reviewed: false } : e.kanjiId === fire ? { ...e, meaningsTh: ['ไฟ'], reviewed: true, ambiguous: true } : e,
+      ),
+    };
+    const { bundle } = buildContentBundle(realDataset, withDraftAndAmbiguous);
+    expect(bundle.kanji.find((k) => k.id === water)?.meanings.th).toEqual([]);
+    expect(bundle.kanji.find((k) => k.id === fire)?.meanings.th).toEqual([]);
   });
 });
 

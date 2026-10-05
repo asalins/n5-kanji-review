@@ -11,6 +11,7 @@ import { makeKanjiId } from '../../../src/utils/kanjiId';
 import { makeDataset, makeThai } from '../../helpers/datasetFixtures';
 import { makeCard, makeLog, session, settings, streak } from '../../helpers/fixtures';
 import { openTestDatabase } from '../../helpers/testDatabase';
+import { approvedThai } from '../../helpers/thaiState';
 
 /**
  * Tests on the REAL generated files (data/kanji/n5.json, n5.th.json). They need `npm run dataset:build`
@@ -115,8 +116,8 @@ describe('real dataset loaded through replaceContent', () => {
     const meta = await dbHandle.get('contentMeta', SINGLETON_KEY);
     expect(meta?.datasetVersion).toBe(dataset.datasetVersion);
     expect(await repos.kanji.getDatasetVersion()).toBe(thai.datasetVersion);
-    // Thai is merged from the separate file; nothing was invented, so th is empty
-    expect((await repos.kanji.getById(makeKanjiId('水')))?.meanings).toEqual({ en: ['water'], th: [] });
+    // Thai is merged from the separate file: exactly the approved meanings (none while unreviewed)
+    expect((await repos.kanji.getById(makeKanjiId('水')))?.meanings).toEqual({ en: ['water'], th: approvedThai('水') });
   });
 
   it('does not touch user data when the real dataset replaces content', async () => {

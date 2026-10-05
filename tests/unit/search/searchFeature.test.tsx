@@ -15,6 +15,7 @@ import { openRealRepositories } from '../../helpers/realData';
 import { NOON, realProjectList, storedCard } from '../../helpers/sessionFixtures';
 import { openTestDatabase } from '../../helpers/testDatabase';
 import { SearchProbe } from './SearchProbe';
+import { approvedThai } from '../../helpers/thaiState';
 
 let repos: Repositories;
 let dispose: () => Promise<void>;
@@ -240,11 +241,14 @@ describe('search screen (real repositories, real dataset)', () => {
     expect(screen.getByText(/ひと\.つ/)).toBeTruthy(); // matched without the dot, displayed with it
   });
 
-  it('does not invent Thai: no Thai line while the dataset has none', async () => {
+  it('does not invent Thai: a Thai line shows exactly the approved meanings, or nothing', async () => {
     show(app());
     await screen.findByText('พบ 196 ตัว · 196 found');
     fireEvent.change(input(), { target: { value: 'water' } });
-    expect(document.querySelector('[lang="th"]')).toBeNull();
+    const thaiLines = [...document.querySelectorAll('[lang="th"]')].map((el) => el.textContent ?? '');
+    const approved = approvedThai('水');
+    if (approved.length === 0) expect(thaiLines).toEqual([]);
+    else for (const meaning of approved) expect(thaiLines.join(' ')).toContain(meaning);
   });
 
   it('state filter + search + Due now combine, with real review data', async () => {

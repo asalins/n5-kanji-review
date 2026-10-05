@@ -5,6 +5,7 @@ import { RatingButtons } from '../../../src/features/flashcards/RatingButtons';
 import type { KanjiCardData } from '../../../src/features/flashcards/presentation';
 import type { StudyMode } from '../../../src/types/entities';
 import { openRealRepositories, realCard } from '../../helpers/realData';
+import { approvedThai } from '../../helpers/thaiState';
 
 let cards: Record<string, KanjiCardData>;
 let dispose: () => Promise<void>;
@@ -27,9 +28,9 @@ describe('card front', () => {
     expect(text(container)).not.toContain('スイ');
     expect(text(container)).not.toContain('water');
   });
-  it('Mode B shows the meaning and not the kanji', () => {
+  it('Mode B shows the meaning (approved Thai first, otherwise English) and not the kanji', () => {
     const { container } = show('B', cards['水']!);
-    expect(text(container)).toContain('water');
+    expect(text(container)).toContain(approvedThai('水')[0] ?? 'water');
     expect(text(container)).not.toContain('水');
   });
   it('Mode C shows the kanji and no reading', () => {
