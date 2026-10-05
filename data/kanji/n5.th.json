@@ -6,7 +6,7 @@
       "meaningsTh": [
         "หนึ่ง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -14,7 +14,7 @@
       "meaningsTh": [
         "สอง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -22,7 +22,7 @@
       "meaningsTh": [
         "สาม"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -30,7 +30,7 @@
       "meaningsTh": [
         "สี่"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -38,7 +38,7 @@
       "meaningsTh": [
         "ห้า"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -46,7 +46,7 @@
       "meaningsTh": [
         "หก"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -54,7 +54,7 @@
       "meaningsTh": [
         "เจ็ด"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -62,7 +62,7 @@
       "meaningsTh": [
         "แปด"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -70,7 +70,7 @@
       "meaningsTh": [
         "เก้า"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -78,7 +78,7 @@
       "meaningsTh": [
         "สิบ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -86,7 +86,7 @@
       "meaningsTh": [
         "ร้อย"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -94,7 +94,7 @@
       "meaningsTh": [
         "พัน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -102,7 +102,7 @@
       "meaningsTh": [
         "หมื่น"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -111,7 +111,7 @@
         "เยน",
         "วงกลม"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -120,7 +120,7 @@
         "วัน",
         "ดวงอาทิตย์"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -129,7 +129,7 @@
         "เดือน",
         "ดวงจันทร์"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -137,7 +137,7 @@
       "meaningsTh": [
         "ไฟ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -145,7 +145,7 @@
       "meaningsTh": [
         "น้ำ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -154,7 +154,7 @@
         "ต้นไม้",
         "ไม้"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -163,7 +163,7 @@
         "ทอง",
         "เงิน (ตรา)"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -171,7 +171,7 @@
       "meaningsTh": [
         "ดิน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -179,7 +179,7 @@
       "meaningsTh": [
         "เที่ยงวัน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -187,7 +187,7 @@
       "meaningsTh": [
         "ปี"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -196,7 +196,7 @@
         "เวลา",
         "ชั่วโมง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -206,7 +206,7 @@
         "ส่วน",
         "แบ่ง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -214,7 +214,7 @@
       "meaningsTh": [
         "ตอนนี้"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -222,7 +222,7 @@
       "meaningsTh": [
         "ครึ่ง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -230,7 +230,7 @@
       "meaningsTh": [
         "สัปดาห์"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -238,7 +238,7 @@
       "meaningsTh": [
         "เช้า"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -247,7 +247,7 @@
         "กลางวัน",
         "เที่ยง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -255,7 +255,7 @@
       "meaningsTh": [
         "กลางคืน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -264,7 +264,7 @@
         "ระหว่าง",
         "ช่วง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -272,7 +272,7 @@
       "meaningsTh": [
         "ฤดูใบไม้ผลิ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -280,7 +280,7 @@
       "meaningsTh": [
         "ฤดูร้อน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -288,7 +288,7 @@
       "meaningsTh": [
         "ฤดูใบไม้ร่วง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -296,7 +296,7 @@
       "meaningsTh": [
         "ฤดูหนาว"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -304,7 +304,7 @@
       "meaningsTh": [
         "มือ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -314,16 +314,16 @@
         "ขา",
         "เพียงพอ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
       "kanjiId": "kanji:U+529B",
       "meaningsTh": [
         "พลัง",
-        "กำลัง"
+        "พละกำลัง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -331,7 +331,7 @@
       "meaningsTh": [
         "ปาก"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -339,7 +339,7 @@
       "meaningsTh": [
         "คอ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -347,7 +347,7 @@
       "meaningsTh": [
         "เสียง (พูด)"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -355,7 +355,7 @@
       "meaningsTh": [
         "หู"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -363,7 +363,7 @@
       "meaningsTh": [
         "ตา"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -371,7 +371,7 @@
       "meaningsTh": [
         "ร่างกาย"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -380,7 +380,7 @@
         "หัวใจ",
         "จิตใจ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -388,7 +388,7 @@
       "meaningsTh": [
         "ใหญ่"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -396,7 +396,7 @@
       "meaningsTh": [
         "เล็ก"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -404,7 +404,7 @@
       "meaningsTh": [
         "มาก"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -412,7 +412,7 @@
       "meaningsTh": [
         "น้อย"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -421,7 +421,7 @@
         "ยาว",
         "หัวหน้า"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -429,7 +429,7 @@
       "meaningsTh": [
         "สั้น"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -438,7 +438,7 @@
         "สูง",
         "แพง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -447,7 +447,7 @@
         "ถูก (ราคา)",
         "สงบ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -455,7 +455,7 @@
       "meaningsTh": [
         "ใหม่"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -463,7 +463,7 @@
       "meaningsTh": [
         "เก่า"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -471,7 +471,7 @@
       "meaningsTh": [
         "สว่าง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -479,7 +479,7 @@
       "meaningsTh": [
         "มืด"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -487,7 +487,7 @@
       "meaningsTh": [
         "ร้อน (อากาศ)"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -495,7 +495,7 @@
       "meaningsTh": [
         "หนาว"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -503,7 +503,7 @@
       "meaningsTh": [
         "แข็งแรง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -511,7 +511,7 @@
       "meaningsTh": [
         "อ่อนแอ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -519,7 +519,7 @@
       "meaningsTh": [
         "ใกล้"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -527,7 +527,7 @@
       "meaningsTh": [
         "ไกล"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -536,7 +536,7 @@
         "อ้วน",
         "หนา"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -544,7 +544,7 @@
       "meaningsTh": [
         "กว้าง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -552,7 +552,7 @@
       "meaningsTh": [
         "แดง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -560,7 +560,7 @@
       "meaningsTh": [
         "ขาว"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -569,7 +569,7 @@
         "น้ำเงิน",
         "เขียว"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -577,7 +577,7 @@
       "meaningsTh": [
         "ดำ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -585,7 +585,7 @@
       "meaningsTh": [
         "เหลือง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -593,7 +593,7 @@
       "meaningsTh": [
         "สี"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -601,7 +601,7 @@
       "meaningsTh": [
         "ขวา"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -609,7 +609,7 @@
       "meaningsTh": [
         "ซ้าย"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -618,7 +618,7 @@
         "บน",
         "ขึ้น"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -627,7 +627,7 @@
         "ล่าง",
         "ลง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -636,7 +636,7 @@
         "กลาง",
         "ใน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -644,7 +644,7 @@
       "meaningsTh": [
         "นอก"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -653,7 +653,7 @@
         "หน้า",
         "ก่อน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -662,7 +662,7 @@
         "หลัง",
         "ภายหลัง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -670,7 +670,7 @@
       "meaningsTh": [
         "ทิศเหนือ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -678,7 +678,7 @@
       "meaningsTh": [
         "ทิศใต้"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -686,7 +686,7 @@
       "meaningsTh": [
         "ทิศตะวันออก"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -694,7 +694,7 @@
       "meaningsTh": [
         "ทิศตะวันตก"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -703,7 +703,7 @@
         "ป่าละเมาะ",
         "ดงไม้"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -711,7 +711,7 @@
       "meaningsTh": [
         "ป่า"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -719,7 +719,7 @@
       "meaningsTh": [
         "ภูเขา"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -727,7 +727,7 @@
       "meaningsTh": [
         "แม่น้ำ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -735,7 +735,7 @@
       "meaningsTh": [
         "หิน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -744,7 +744,7 @@
         "ฟ้า",
         "สวรรค์"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -753,7 +753,7 @@
         "จิตใจ",
         "อากาศ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -761,7 +761,7 @@
       "meaningsTh": [
         "ฝน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -769,7 +769,7 @@
       "meaningsTh": [
         "เย็น (ช่วงเวลา)"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -778,7 +778,7 @@
         "ท้องฟ้า",
         "ว่างเปล่า"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -786,7 +786,7 @@
       "meaningsTh": [
         "เมฆ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -794,7 +794,7 @@
       "meaningsTh": [
         "หิมะ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -802,7 +802,7 @@
       "meaningsTh": [
         "ทะเล"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -811,7 +811,7 @@
         "พื้นดิน",
         "แผ่นดิน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -820,7 +820,7 @@
         "บ่อน้ำ",
         "สระ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -828,7 +828,7 @@
       "meaningsTh": [
         "ลม"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -836,7 +836,7 @@
       "meaningsTh": [
         "ผู้ชาย"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -844,7 +844,7 @@
       "meaningsTh": [
         "ผู้หญิง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -852,7 +852,7 @@
       "meaningsTh": [
         "คน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -861,7 +861,7 @@
         "กษัตริย์",
         "ราชา"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -870,7 +870,7 @@
         "เด็ก",
         "ลูก"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -878,7 +878,7 @@
       "meaningsTh": [
         "พ่อ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -886,7 +886,7 @@
       "meaningsTh": [
         "แม่"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -894,7 +894,7 @@
       "meaningsTh": [
         "พี่ชาย"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -902,7 +902,7 @@
       "meaningsTh": [
         "น้องชาย"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -910,7 +910,7 @@
       "meaningsTh": [
         "พี่สาว"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -918,7 +918,7 @@
       "meaningsTh": [
         "น้องสาว"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -926,7 +926,7 @@
       "meaningsTh": [
         "ชื่อ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -934,7 +934,7 @@
       "meaningsTh": [
         "เพื่อน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -943,7 +943,7 @@
         "พ่อแม่",
         "สนิท"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -951,7 +951,7 @@
       "meaningsTh": [
         "สุนัข"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -959,7 +959,7 @@
       "meaningsTh": [
         "แมลง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -967,7 +967,7 @@
       "meaningsTh": [
         "หอย"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -975,7 +975,7 @@
       "meaningsTh": [
         "วัว"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -983,7 +983,7 @@
       "meaningsTh": [
         "เนื้อ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -991,7 +991,7 @@
       "meaningsTh": [
         "ปลา"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -999,7 +999,7 @@
       "meaningsTh": [
         "ม้า"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1007,7 +1007,7 @@
       "meaningsTh": [
         "นก"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1015,7 +1015,7 @@
       "meaningsTh": [
         "ดอกไม้"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1023,7 +1023,7 @@
       "meaningsTh": [
         "หญ้า"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1031,7 +1031,7 @@
       "meaningsTh": [
         "ไผ่"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1040,7 +1040,7 @@
         "ข้าว (ข้าวสาร)",
         "อเมริกา"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1048,7 +1048,7 @@
       "meaningsTh": [
         "ชา"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1057,7 +1057,7 @@
         "ข้าว (ข้าวสุก)",
         "มื้ออาหาร"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1066,7 +1066,7 @@
         "ก่อน",
         "ข้างหน้า"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1075,7 +1075,7 @@
         "ชีวิต",
         "เกิด"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1084,16 +1084,17 @@
         "หนังสือ",
         "หลัก"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
       "kanjiId": "kanji:U+6587",
       "meaningsTh": [
         "ประโยค",
-        "วรรณกรรม"
+        "วรรณกรรม",
+        "ข้อความ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1101,7 +1102,7 @@
       "meaningsTh": [
         "ตัวอักษร"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1109,7 +1110,7 @@
       "meaningsTh": [
         "ถูกต้อง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1118,7 +1119,7 @@
         "เรียน",
         "การศึกษา"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1126,7 +1127,7 @@
       "meaningsTh": [
         "โรงเรียน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1134,7 +1135,7 @@
       "meaningsTh": [
         "กระดาษ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1143,7 +1144,7 @@
         "ภาษา",
         "คำ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1152,7 +1153,7 @@
         "จุด",
         "คะแนน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1161,7 +1162,7 @@
         "แผนที่",
         "แผนภาพ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1169,7 +1170,7 @@
       "meaningsTh": [
         "เข้า"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1177,7 +1178,7 @@
       "meaningsTh": [
         "ออก"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1186,7 +1187,7 @@
         "พัก",
         "หยุด"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1194,7 +1195,7 @@
       "meaningsTh": [
         "ยืน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1203,7 +1204,7 @@
         "ดู",
         "เห็น"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1211,7 +1212,7 @@
       "meaningsTh": [
         "ไป"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1219,7 +1220,7 @@
       "meaningsTh": [
         "มา"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1227,7 +1228,7 @@
       "meaningsTh": [
         "กลับ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1235,7 +1236,7 @@
       "meaningsTh": [
         "เดิน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1243,7 +1244,7 @@
       "meaningsTh": [
         "พูด"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1252,7 +1253,7 @@
         "พูดคุย",
         "เรื่องเล่า"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1260,7 +1261,7 @@
       "meaningsTh": [
         "เขียน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1268,7 +1269,7 @@
       "meaningsTh": [
         "อ่าน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1277,7 +1278,7 @@
         "ฟัง",
         "ถาม"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1286,7 +1287,7 @@
         "กิน",
         "อาหาร"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1294,7 +1295,7 @@
       "meaningsTh": [
         "ดื่ม"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1302,7 +1303,7 @@
       "meaningsTh": [
         "ซื้อ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1310,7 +1311,7 @@
       "meaningsTh": [
         "ขาย"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1319,7 +1320,7 @@
         "พบ",
         "การประชุม"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1327,7 +1328,7 @@
       "meaningsTh": [
         "รู้"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1335,7 +1336,7 @@
       "meaningsTh": [
         "คิด"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1344,7 +1345,7 @@
         "ทำ",
         "สร้าง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1352,7 +1353,7 @@
       "meaningsTh": [
         "อาศัยอยู่"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1360,7 +1361,7 @@
       "meaningsTh": [
         "ใช้"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1368,7 +1369,7 @@
       "meaningsTh": [
         "ให้ยืม"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1376,7 +1377,7 @@
       "meaningsTh": [
         "ยืม"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1384,7 +1385,7 @@
       "meaningsTh": [
         "ตัด"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1393,7 +1394,7 @@
         "ถือ",
         "มี"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1401,7 +1402,7 @@
       "meaningsTh": [
         "ส่ง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1410,7 +1411,7 @@
         "สวมใส่",
         "มาถึง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1418,7 +1419,7 @@
       "meaningsTh": [
         "สอน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1426,7 +1427,7 @@
       "meaningsTh": [
         "เรียน (ฝึก)"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1434,7 +1435,7 @@
       "meaningsTh": [
         "เมือง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1442,7 +1443,7 @@
       "meaningsTh": [
         "หมู่บ้าน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1450,7 +1451,7 @@
       "meaningsTh": [
         "นาข้าว"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1459,7 +1460,7 @@
         "บ้าน",
         "ครอบครัว"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1467,7 +1468,7 @@
       "meaningsTh": [
         "ร้าน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1475,7 +1476,7 @@
       "meaningsTh": [
         "ประเทศ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1484,7 +1485,7 @@
         "ถนน",
         "ทาง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1493,7 +1494,7 @@
         "บริษัท",
         "ศาลเจ้า"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1501,7 +1502,7 @@
       "meaningsTh": [
         "สถานที่"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1509,7 +1510,7 @@
       "meaningsTh": [
         "สถาบัน"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1517,7 +1518,7 @@
       "meaningsTh": [
         "อาคาร"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1525,7 +1526,7 @@
       "meaningsTh": [
         "สถานีรถไฟ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1533,7 +1534,7 @@
       "meaningsTh": [
         "รถ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1541,7 +1542,7 @@
       "meaningsTh": [
         "อะไร"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1549,7 +1550,7 @@
       "meaningsTh": [
         "ทุก ๆ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1557,7 +1558,7 @@
       "meaningsTh": [
         "ไม่"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1565,7 +1566,7 @@
       "meaningsTh": [
         "เสียง"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1574,7 +1575,7 @@
         "เร็ว",
         "เช้า (ก่อนเวลา)"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1583,7 +1584,7 @@
         "คำถาม",
         "ถาม"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1591,7 +1592,7 @@
       "meaningsTh": [
         "ชอบ"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1599,7 +1600,7 @@
       "meaningsTh": [
         "ไฟฟ้า"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1608,7 +1609,7 @@
         "แพทย์",
         "การแพทย์"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1617,7 +1618,7 @@
         "ป่วย",
         "โรค"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     },
     {
@@ -1625,7 +1626,7 @@
       "meaningsTh": [
         "ยา"
       ],
-      "reviewed": false,
+      "reviewed": true,
       "ambiguous": false
     }
   ]
