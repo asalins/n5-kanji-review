@@ -140,7 +140,8 @@ export function SettingsScreen({ onExit, onAbout }: { onExit: () => void; onAbou
               type="file"
               accept=".json,application/json"
               disabled={busy}
-              className={`min-h-12 w-full text-sm ${FOCUS_RING}`}
+              // The browser's own "Choose file" button, styled like the app's secondary buttons (bordered, 48 px).
+              className={`w-full rounded-xl text-sm ${FOCUS_RING} file:mr-3 file:min-h-12 file:cursor-pointer file:rounded-xl file:border file:border-solid file:border-stone-400 file:bg-white file:px-4 file:text-base file:font-medium file:text-stone-900 active:file:bg-stone-100 disabled:file:opacity-50 dark:file:border-neutral-500 dark:file:bg-neutral-800 dark:file:text-neutral-100`}
               onChange={(e) => void backup.chooseFile(e.target.files?.[0])}
             />
             {backup.status.kind === 'CONFIRM_IMPORT' && (

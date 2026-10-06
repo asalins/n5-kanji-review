@@ -107,3 +107,19 @@ test('PWA: manifest, icons and the maskable safe zone', async ({ page, request }
   });
   expect(outside).toBe(0);
 });
+
+test('settings: the import control shows a bordered, touch-sized "choose file" button', async ({ page }) => {
+  await openHome(page);
+  await page.getByRole('button', { name: /Settings/ }).tap();
+  const input = page.getByLabel(/Import backup/);
+  await expect(input).toBeVisible();
+  const button = await input.evaluate((el) => {
+    const style = getComputedStyle(el, '::file-selector-button');
+    return { border: style.borderTopWidth, borderStyle: style.borderTopStyle, height: style.minHeight, radius: style.borderTopLeftRadius };
+  });
+  expect(button.borderStyle).toBe('solid');
+  expect(Number.parseFloat(button.border)).toBeGreaterThanOrEqual(1);
+  expect(Number.parseFloat(button.height)).toBeGreaterThanOrEqual(44);
+  expect(Number.parseFloat(button.radius)).toBeGreaterThan(0);
+  await expectNoHorizontalOverflow(page);
+});
