@@ -166,6 +166,22 @@ export const MUTATIONS: readonly Mutation[] = [
     replace: "licence: 'https://example.com/',",
     tests: ['tests/unit/about/about.test.tsx'],
   },
+  {
+    id: 'detail-due-bypass',
+    rule: 'Kanji detail uses isDueCard (a NEW card is never due)',
+    file: 'src/features/kanjiDetail/useKanjiDetail.ts',
+    find: 'due: isDueCard(card, nowMs),',
+    replace: 'due: card.due <= nowMs,',
+    tests: ['tests/unit/kanjiDetail/kanjiDetail.test.tsx'],
+  },
+  {
+    id: 'detail-back-replace',
+    rule: 'Search -> Kanji detail pushes a history entry so Back returns to Search',
+    file: 'src/app/navigation.ts',
+    find: "    window.history.pushState({ n5Screen: 'detail', kanjiId }, '');",
+    replace: "    window.history.replaceState({ n5Screen: 'detail', kanjiId }, '');",
+    tests: ['tests/unit/navigation.test.tsx'],
+  },
 ];
 
 type Outcome = 'KILLED' | 'SURVIVED' | 'NOT APPLICABLE';

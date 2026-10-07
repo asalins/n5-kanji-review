@@ -2,6 +2,7 @@ import type { StateFilter } from '../../services/kanjiSearch/kanjiReviewStates';
 
 /** Thai first, English next to it (each feature keeps its own strings; there is no central i18n). */
 export const TEXT = {
+  details: 'รายละเอียด · Details',
   title: 'ค้นหาคันจิ · Search Kanji',
   back: '← กลับ · Back',
   searchLabel: 'ค้นหา · Search',

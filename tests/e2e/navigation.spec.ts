@@ -77,3 +77,23 @@ test('About & Sources: reachable from Settings, licence acknowledgement and link
   await expect(page.getByText(/KANJIDIC2/).first()).toBeVisible();
   await context.setOffline(false);
 });
+
+test('Phase 13: Search -> Kanji detail -> system Back returns to Search with the query', async ({ page }) => {
+  await openHome(page);
+  await page.getByRole('button', { name: /Search/ }).tap();
+  await page.locator('#kanji-search-input').fill('mizu');
+  await page.getByRole('button', { name: /Details 水/ }).tap();
+  await expect(page.getByRole('heading', { name: /Kanji detail/ })).toBeVisible();
+  const base = await appEntries(page);
+  await page.goBack();
+  await expect(page.getByRole('heading', { name: /Search Kanji/ })).toBeVisible();
+  await expect(page.locator('#kanji-search-input')).toHaveValue('mizu');
+  for (let i = 0; i < 3; i += 1) {
+    await page.getByRole('button', { name: /Details 水/ }).tap();
+    await page.getByRole('button', { name: /← ค้นหา · Search/ }).tap();
+    await expect(page.locator('#kanji-search-input')).toHaveValue('mizu');
+  }
+  expect(await appEntries(page)).toBeLessThanOrEqual(base);
+  await page.goBack();
+  await atHome(page);
+});

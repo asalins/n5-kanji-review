@@ -31,6 +31,9 @@ test('offline after the first load: the app shell, stored progress, search and s
   await page.getByRole('button', { name: /Search/ }).tap();
   await page.locator('#kanji-search-input').fill('mizu');
   await expect(page.getByText('水').first()).toBeVisible();
+  await page.getByRole('button', { name: /Details 水/ }).tap();
+  await expect(page.getByTestId('detail-strokes')).toBeVisible();
+  await page.getByRole('button', { name: /← ค้นหา · Search/ }).tap();
   await page.goto('/');
   await page.getByRole('button', { name: /Settings/ }).tap();
   await page.getByLabel(/Reviews per day/).selectOption('50');

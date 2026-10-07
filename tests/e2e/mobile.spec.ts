@@ -123,3 +123,16 @@ test('settings: the import control shows a bordered, touch-sized "choose file" b
   expect(Number.parseFloat(button.radius)).toBeGreaterThan(0);
   await expectNoHorizontalOverflow(page);
 });
+
+test('kanji detail: fits the phone, no sideways scroll, touch-sized controls', async ({ page }) => {
+  await openHome(page);
+  await page.getByRole('button', { name: /Search/ }).tap();
+  await page.locator('#kanji-search-input').fill('sei');
+  const details = page.getByRole('button', { name: /Details 生/ });
+  await expectTouchTarget(details);
+  await details.tap();
+  await expect(page.getByRole('heading', { name: /Kanji detail/ })).toBeVisible();
+  await expect(page.getByTestId('detail-mode-D')).toBeVisible();
+  await expectTouchTarget(page.getByRole('button', { name: /← ค้นหา · Search/ }));
+  await expectNoHorizontalOverflow(page);
+});

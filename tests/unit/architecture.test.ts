@@ -276,4 +276,20 @@ describe('architecture boundaries', () => {
     expect(config).toMatch(/runtimeCaching: \[\]/);
     expect(config).toMatch(/registerType: 'prompt'/);
   });
+  it('Phase 13: the kanji detail is strictly read-only and uses the single Due definition', () => {
+    const detail = files.filter((f) => f.rel.startsWith('features/kanjiDetail/') || f.rel === 'pages/KanjiDetailPage.tsx');
+    expect(detail.map((f) => f.rel).sort()).toEqual([
+      'features/kanjiDetail/KanjiDetail.tsx',
+      'features/kanjiDetail/strings.ts',
+      'features/kanjiDetail/useKanjiDetail.ts',
+      'pages/KanjiDetailPage.tsx',
+    ]);
+    const storage = detail.filter((f) => /from ['"](idb|[^'"]*(services\/storage|repositories\/indexeddb)[^'"]*)['"]|\bindexedDB\b/.test(f.text));
+    expect(storage.map((f) => f.rel)).toEqual([]);
+    const writes = detail.filter((f) => /\b(recordReview|saveCard|saveSession|saveSettings|appendLog|replaceUserData|resetProgress|saveStreakState)\b|\.save\(|\.put\(|\.add\(|\.delete\(/.test(f.text));
+    expect(writes.map((f) => f.rel)).toEqual([]);
+    const hook = detail.find((f) => f.rel === 'features/kanjiDetail/useKanjiDetail.ts')!;
+    expect(hook.text).toMatch(/isDueCard\(/);
+    expect(hook.text).not.toMatch(/state\s*[!=]==?\s*'NEW'\s*&&[^;]*\.due/); // no hand-made Due rule
+  });
 });

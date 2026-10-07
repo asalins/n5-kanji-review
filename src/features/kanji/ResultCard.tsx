@@ -1,3 +1,4 @@
+import { SECONDARY_BUTTON } from '../../components/styles';
 import { groupReadings, selectMeanings, type ReadingView } from '../flashcards/presentation';
 import type { SearchHit } from '../../services/kanjiSearch/searchKanji';
 import { BADGE, TEXT } from './strings';
@@ -36,7 +37,7 @@ function badges(hit: SearchHit): string[] {
   return labels;
 }
 
-export function ResultCard({ hit }: { hit: SearchHit }) {
+export function ResultCard({ hit, onOpen }: { hit: SearchHit; onOpen?: (kanjiId: string) => void }) {
   const { kanji, readings } = hit.entry;
   const meanings = selectMeanings(kanji);
   const groups = groupReadings(readings);
@@ -67,6 +68,16 @@ export function ResultCard({ hit }: { hit: SearchHit }) {
             </li>
           ))}
         </ul>
+        {onOpen !== undefined && (
+          <button
+            type="button"
+            className={`${SECONDARY_BUTTON} self-start`}
+            aria-label={`${TEXT.details} ${kanji.character}`}
+            onClick={() => onOpen(kanji.id)}
+          >
+            {TEXT.details}
+          </button>
+        )}
       </div>
     </li>
   );

@@ -1,4 +1,5 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { KanjiDetailPage } from '../pages/KanjiDetailPage';
 import { AboutPage } from '../pages/AboutPage';
 import { useScreenNavigation } from './navigation';
 import { StateMessage } from '../components/StateMessage';
@@ -52,7 +53,23 @@ export function App({ bootstrap = bootstrapApp, useUpdate = usePwaUpdate }: AppP
   const markFailed = useAppStore((s) => s.markFailed);
   const markBooting = useAppStore((s) => s.markBooting);
   const [repositories, setRepositories] = useState<AppRepositories | null>(null);
-  const { screen, open, goHome } = useScreenNavigation();
+  const { screen, detailKanjiId, open, openDetail, backFromDetail, goHome } = useScreenNavigation();
+  // Search keeps its page position while a kanji detail is open (Phase 13).
+  const searchScroll = useRef(0);
+  const previousScreen = useRef(screen);
+  const openKanjiDetail = useCallback(
+    (kanjiId: string) => {
+      searchScroll.current = document.documentElement.scrollTop;
+      openDetail(kanjiId);
+    },
+    [openDetail],
+  );
+  useEffect(() => {
+    const from = previousScreen.current;
+    previousScreen.current = screen;
+    if (screen === 'detail') document.documentElement.scrollTop = 0;
+    else if (screen === 'search' && from === 'detail') document.documentElement.scrollTop = searchScroll.current;
+  }, [screen]);
   const [attempt, setAttempt] = useState(0);
 
   // Until the saved settings are available (start-up screens) the system theme is used.
@@ -119,7 +136,10 @@ export function App({ bootstrap = bootstrapApp, useUpdate = usePwaUpdate }: AppP
       )}
       {screen === 'settings' && <SettingsPage onExit={goHome} onAbout={() => open('about')} />}
       {screen === 'about' && <AboutPage onBack={() => open('settings')} />}
-      {screen === 'search' && <SearchPage onExit={goHome} />}
+      {(screen === 'search' || screen === 'detail') && (
+        <SearchPage onExit={goHome} onOpenDetail={openKanjiDetail} hidden={screen === 'detail'} />
+      )}
+      {screen === 'detail' && detailKanjiId !== null && <KanjiDetailPage kanjiId={detailKanjiId} onBack={backFromDetail} />}
       {screen === 'review' && <ReviewPage onExit={goHome} />}
       {screen === 'practice' && <StudyPage onExit={goHome} />}
         </WhenSettingsLoaded>

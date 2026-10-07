@@ -23,6 +23,11 @@ test('home, review, dashboard, search and settings', async ({ page }) => {
   await page.locator('#kanji-search-input').fill('mizu');
   await expect(page.getByText('水').first()).toBeVisible();
   await expectNoHorizontalOverflow(page);
+  await page.getByRole('button', { name: /Details 水/ }).click();
+  await expect(page.getByRole('heading', { name: /Kanji detail/ })).toBeVisible();
+  await expectNoHorizontalOverflow(page);
+  await page.getByRole('button', { name: /← ค้นหา · Search/ }).click();
+  await expect(page.locator('#kanji-search-input')).toHaveValue('mizu');
 
   await page.goto('/');
   await page.getByRole('button', { name: /Settings/ }).click();

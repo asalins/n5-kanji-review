@@ -7,7 +7,7 @@ import { useKanjiSearch } from './useKanjiSearch';
 
 const FIELD = `min-h-12 w-full rounded-xl border border-stone-300 bg-white px-4 text-lg text-stone-900 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-100 ${FOCUS_RING}`;
 
-export function KanjiSearch({ onExit }: { onExit: () => void }) {
+export function KanjiSearch({ onExit, onOpenDetail }: { onExit: () => void; onOpenDetail?: (kanjiId: string) => void }) {
   const { status, hits, text, state, dueOnly, setText, setState, setDueOnly, reload } = useKanjiSearch();
   return (
     <div className="flex flex-col gap-4">
@@ -82,7 +82,7 @@ export function KanjiSearch({ onExit }: { onExit: () => void }) {
           ) : (
             <ul className="flex flex-col gap-3">
               {hits.map((hit) => (
-                <ResultCard key={hit.entry.kanji.id} hit={hit} />
+                <ResultCard key={hit.entry.kanji.id} hit={hit} onOpen={onOpenDetail} />
               ))}
             </ul>
           )}
