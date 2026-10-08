@@ -31,7 +31,13 @@ Used for the PWA update test #13:
 ## Promoting a commit to production
 - Changing the production branch does **not** create a deployment by itself (Cloudflare deploys on push). A commit already pushed before the change stays a Preview.
 - Method used for 29d5354: Settings → Build → Deploy Hooks → create a hook for the production branch → `Invoke-RestMethod -Method Post -Uri "<hook URL>"` → the HEAD of the branch is built as Production (no new commit) → **delete the hook immediately**. The hook URL is a secret: never paste it into chats or documents.
+- Method used for e135edb (fast-forward push): when the release commit's parent is exactly the current production commit, the release can be promoted with an ordinary push of the release branch to the production branch:
+  1. `git status --short` is empty; `git fetch origin`.
+  2. `git rev-parse origin/ui-import-button` = current production commit; `git rev-parse <release-branch>` = approved release commit.
+  3. `git merge-base --is-ancestor origin/ui-import-button <release-branch>` exits `0`.
+  4. `git push origin <release-branch>:ui-import-button` and the output shows `<old>..<new>` (two dots; never `+` or `--force`). Cloudflare builds it as Production automatically.
+  This is a documented procedure, not a permission: a Production Gate decision is still required before step 4. If the push is rejected as non-fast-forward, stop and report.
 - After promotion check the Deployments page: Production = expected branch and commit, Success; the previous production deployment is still listed.
 
 ## Rollback
-Deployments → the previous **Production** deployment (currently `thai-review-1 · 7f3cf7d`) → "..." → Rollback. Preview deployments cannot be rollback targets. A rollback changes what the production URL serves; it does not change Git branches. Decide rollbacks through a Gate.
+Deployments → the previous **Production** deployment (as of release `e135edb`: `ui-import-button · efb0627`; older: `ui-import-button · 29d5354`, `thai-review-1 · 7f3cf7d`) → "..." → Rollback. Preview deployments cannot be rollback targets. A rollback changes what the production URL serves; it does not change Git branches. Decide rollbacks through a Gate.

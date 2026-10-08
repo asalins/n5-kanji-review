@@ -50,8 +50,31 @@ Branch `ui-import-button`, commit `29d5354920a5baf5da62af155032018e96784cdf` (pa
 | Android targeted regression | PASS 8/8; production update on the installed PWA: prompt → Update, Home values identical before/after (10 · 10 · 0 · 100% · 0/100 · 10/30) |
 | Final Update Gate | **GO** (Coordinator decision) |
 
+## Release e135edb — Phase 13 Kanji Detail (read-only) — RELEASED
+Branch `phase13-kanji-detail` → production branch `ui-import-button`, commit `e135edbc83364e55b266c2a74b8d1731b1082c41` (parent `efb0627`), dataset `n5-2026.10.01`. Scope: read-only Kanji Detail opened from Search (meanings, readings, strokes, frequency, per-mode review state using `isDueCard`); Search → Detail = push, Back returns to Search with query, filter, results and scroll kept. No change to the database schema, SRS, statistics, search semantics, backup, settings, dataset, PWA configuration or dependencies. Frozen release baseline after Phase 13.
+
+| Gate | Result |
+|---|---|
+| Implementation | PASS: verify 657/657, architecture 33/33, mutation QA 20/20 killed, E2E 38 passed / 0 failed |
+| Pre-Promotion | APPROVED (re-verified on a fresh clone 2026-10-08) |
+| Preview smoke (PC Chrome) | PASS: `phase13-kanji-detail.n5-kanji-review.pages.dev`; Back Detail → Search → Home, context kept, read-only (reviewCards 10 → 10, reviewLogs 0 → 0), NEW + due ≤ now not Due, invalid state → Search, reload on Detail → Home, 320/360/412/1024/1440, offline, console without app errors |
+| Android regression | PASS (Xiaomi 12T Pro, Android 15, Chrome 154; Chrome tab and installed PWA; see `android-checklist.md`) |
+| Production promotion | Fast-forward push `efb0627..e135edb` to `ui-import-button` on 2026-10-08 (no merge, no force, no Deploy Hook) |
+| Post-deployment | PASS: update prompt on PC and Android (tab and installed PWA), no automatic reload, user data kept, Detail and Back work in production |
+| Phase 13 | **CLOSED / RELEASED** (Coordinator decision) |
+
+Closed deferred item: PWA update with the Phase 13 build (tested in production, see above).
+
+Known limitations (Phase 13):
+- Reload while on Detail starts the app at Home (accepted behaviour; locked by a navigation test).
+- No deep links: a Detail screen cannot be opened from a URL.
+- Android installed PWA may not show the update prompt when it resumes from memory; it appears on the next navigation or launch.
+- Android widths 320/360/412 were checked in the PC preview only (one physical device width).
+
+Cosmetic debt (not fixed in `e135edb`): for NEW cards the Detail screen shows "ใหม่ · New" twice per mode (state badge and status line).
+
 ## Known limitations of the release evidence
-- Android device model, Android version and Chrome version were not recorded.
+- Releases 7f3cf7d and 29d5354: Android device model, Android version and Chrome version were not recorded (they are recorded for e135edb).
 - Android results are tester reports; screenshots exist only for the update prompt and the Home values before/after the production update.
 - "Learned" was not captured before/after the update.
 - PC production data could not prove persistence across the update: the tester had used Reset progress / Import on that browser beforehand.

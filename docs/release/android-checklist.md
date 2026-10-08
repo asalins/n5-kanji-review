@@ -42,3 +42,34 @@ Installed PWA from production, 2026-10-06. Device / Android / Chrome: not record
 | 6 | File picker opens | PASS | tester report |
 | 7 | Cancel picker, app normal | PASS | tester report |
 | 8 | No horizontal overflow | PASS | tester report |
+
+## Result — Phase 13 e135edb (Kanji Detail regression)
+Device: Xiaomi 12T Pro (22081212UG) · OS: Xiaomi HyperOS 3.0.6.0.VLFMIXM · Android: 15 (AQ3A.250226.002) · Chrome: 154.0.8037.126 · Navigation: 3-button (system Back = ◀) · Tester: project owner · Date: 2026-10-08.
+
+Preview (`https://phase13-kanji-detail.n5-kanji-review.pages.dev`, fresh database), 20:55–21:07 (UTC+7), Chrome tab and installed PWA:
+
+| # | Check | Result | Evidence |
+|---|---|---|---|
+| 1 | Preview opens | PASS | screenshot |
+| 2 | Search → Detail (水: น้ำ · water · スイ sui · みず/みず- mizu · 4 strokes · freq 223) | PASS | screenshot |
+| 3 | System Back: Detail → Search (Chrome tab and PWA) | PASS | tester report |
+| 4 | Search context kept after Back (query 水, filter "New", 1 found) | PASS | screenshot |
+| 5 | System Back: Search → Home; in the PWA a further Back leaves the app | PASS | tester report |
+| 6 | No history accumulation: after 3× Search → Detail → Back, Detail → Home = 2 Backs (tab and PWA) | PASS | tester report |
+| 7 | Detail content 生 (22 kun readings wrap, no horizontal scroll) and 一 | PASS | screenshots |
+| 8 | Read-only: Home unchanged after repeated Detail visits (reviews 0, new 0/10) | PASS | screenshot |
+| 9 | NEW cards with due ≤ now shown "New", not "Due" (一 A–D) | PASS | screenshot |
+| 10 | Offline: airplane mode, PWA killed and relaunched, 水 Detail renders | PASS | screenshot |
+| 11 | PWA relaunched 2–3× online: no blank screen, no update loop | PASS | tester report |
+| — | 320 / 360 / 412 px | NOT TESTED on this device (one width); PASS in the PC preview smoke test | — |
+
+Production (`https://n5-kanji-review.pages.dev`, user's real data) after promotion, 21:23–21:29:
+
+| # | Check | Result | Evidence |
+|---|---|---|---|
+| 1 | Update prompt shown in Chrome tab and installed PWA; no automatic reload | PASS | screenshots |
+| 2 | After Update: Details button present (Phase 13 build); settings kept (limits 100 / 30), 10 cards due | PASS | screenshots |
+| 3 | 水 Detail in the installed PWA | PASS | screenshots |
+| 4 | System Back: Detail → Search → Home | PASS | tester report |
+
+Note: the update prompt did not appear on the first PWA resume (app resumed from memory without a navigation); it appeared after a navigation in a Chrome tab and on the next PWA launch.
