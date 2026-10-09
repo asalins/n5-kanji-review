@@ -40,4 +40,8 @@ Used for the PWA update test #13:
 - After promotion check the Deployments page: Production = expected branch and commit, Success; the previous production deployment is still listed.
 
 ## Rollback
-Deployments → the previous **Production** deployment (as of release `e135edb`: `ui-import-button · efb0627`; older: `ui-import-button · 29d5354`, `thai-review-1 · 7f3cf7d`) → "..." → Rollback. Preview deployments cannot be rollback targets. A rollback changes what the production URL serves; it does not change Git branches. Decide rollbacks through a Gate.
+Deployments → the chosen **Production** deployment → "..." → Rollback. Preview deployments cannot be rollback targets. Choose the target by build (`RELEASES.md`), as of 2026-10-10:
+- Fault in the current deployment only (same build wanted): an earlier Production deployment of the current production build `e135edb`: `ui-import-button · d35eaa0` (`25804ffc`) or `ui-import-button · e135edb` (`864e61e9`). Their `dist` is byte-identical to the current one.
+- Fault in the current build (Phase 13): the latest Production deployment of the previous build: `ui-import-button · efb0627` (`a491049e`), `dist` byte-identical to `29d5354`. Older: `ui-import-button · 29d5354` (`d19948e7`), `thai-review-1 · 7f3cf7d` (`5fc67251`).
+
+These are Production deployments listed as Success in Cloudflare; a rollback itself has not been tested. A rollback changes what the production URL serves; it does not change Git branches. Decide rollbacks through a Gate.
