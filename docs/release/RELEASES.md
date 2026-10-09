@@ -13,7 +13,7 @@ Rules
 - `e135edb` is the frozen release baseline after Phase 13; later work starts from it through a new Gate.
 - `thai-review-1` is frozen at `7f3cf7d`; `ui-import-button` is the production branch. The two branches are not merged.
 - Nothing is pushed to the production branch without a Gate decision (automatic deployments are enabled).
-- Branch `phase13-kanji-detail` (= `e135edb`) is kept as the Phase 13 preview alias and evidence until a Housekeeping Gate decides.
-- Branch `pwa-update-test` (7f3cf7d → 29d5354) is kept as the evidence of the PWA update test #13.
+- Phase 13 evidence does not depend on branch `phase13-kanji-detail` (= `e135edb`): it is kept by tag `release-2026-10-08-e135edb` and Cloudflare Preview deployment `f46d55df`.
+- PWA update test #13 evidence does not depend on branch `pwa-update-test` (7f3cf7d → 29d5354): it is kept by Cloudflare Preview deployments `70efd90c` (version A, `7f3cf7d`) and `4ad98e0e` (version B, `29d5354`) and tags `release-2026-10-05-7f3cf7d`, `release-2026-10-06-29d5354`.
 
 Evidence and limitations: `release-readiness.md`, `android-checklist.md`. Deployment procedure: `deployment.md`.
