@@ -36,7 +36,7 @@ export const pwaOptions: Partial<VitePWAOptions> = {
   manifest: pwaManifest,
   workbox: {
     // App shell + bundled dataset chunks + icons: the app works offline after the first successful load.
-    globPatterns: ['**/*.{js,css,html,svg,png,webmanifest}'],
+    globPatterns: ['**/*.{js,css,html,svg,png,webmanifest,woff2}'],
     navigateFallback: 'index.html',
     cleanupOutdatedCaches: true,
     // No runtime caching: no API or network response is ever cached (backups are local files, never fetched).

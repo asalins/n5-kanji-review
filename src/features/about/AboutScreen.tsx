@@ -91,6 +91,27 @@ export function AboutScreen({ onBack }: { onBack: () => void }) {
       <Block title={ABOUT_TEXT.thaiTitle}>
         <p>{ABOUT_TEXT.thai}</p>
       </Block>
+      <Block title={ABOUT_TEXT.fontsTitle}>
+        <p>{ABOUT_TEXT.fonts}</p>
+        <h3 className="mt-2 text-sm font-semibold">{ABOUT_TEXT.fontsLicences}</h3>
+        <ul className="flex flex-col">
+          {(
+            [
+              [ABOUT_LINKS.fontKlee, 'Klee One · OFL 1.1'],
+              [ABOUT_LINKS.fontNotoSans, 'Noto Sans JP · OFL 1.1'],
+              [ABOUT_LINKS.fontNotoSerif, 'Noto Serif JP · OFL 1.1'],
+              [ABOUT_LINKS.fontYuji, 'Yuji Syuku · OFL 1.1'],
+              [ABOUT_LINKS.fontKosugi, 'Kosugi Maru · Apache 2.0'],
+            ] as const
+          ).map(([href, label]) => (
+            <li key={href}>
+              <a className={LINK} href={href} target="_blank" rel="noopener noreferrer">
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </Block>
       <Block title={ABOUT_TEXT.storageTitle}>
         <p>{ABOUT_TEXT.storageNote}</p>
         <p>

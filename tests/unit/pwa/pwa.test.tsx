@@ -41,8 +41,8 @@ describe('service worker configuration: assets only, user-controlled updates', (
     expect(pwaOptions.registerType).toBe('prompt');
     expect(pwaOptions.injectRegister).toBe(false);
   });
-  it('precaches the app shell, the bundled dataset chunks and icons; caches no network/API responses', () => {
-    expect(pwaOptions.workbox?.globPatterns).toEqual(['**/*.{js,css,html,svg,png,webmanifest}']);
+  it('precaches the app shell, the bundled dataset chunks, icons and the bundled kanji fonts; caches no network/API responses', () => {
+    expect(pwaOptions.workbox?.globPatterns).toEqual(['**/*.{js,css,html,svg,png,webmanifest,woff2}']);
     expect(pwaOptions.workbox?.runtimeCaching).toEqual([]);
     expect(pwaOptions.workbox?.navigateFallback).toBe('index.html');
     expect(JSON.stringify(pwaOptions.workbox)).not.toMatch(/json/); // backups are local .json files, never cached

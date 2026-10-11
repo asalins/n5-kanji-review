@@ -3,9 +3,23 @@
 /* Class-based dark mode so Phase 9 can offer Light / Dark / System. */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Japanese text: system fonts only, so the app works offline with no font download. */
+/*
+ * Japanese text. The kanji font is chosen in Settings (--kanji-font, default Klee One). The fonts are bundled
+ * subsets (the 196 kanji + kana), precached for offline use; any other character falls back to system fonts.
+ * Licences: public/licenses/fonts (SIL OFL 1.1; Kosugi Maru: Apache 2.0).
+ */
+@font-face { font-family: 'N5 Klee One'; src: url('./assets/fonts/klee-one-n5.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'N5 Noto Sans JP'; src: url('./assets/fonts/noto-sans-jp-n5.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'N5 Noto Serif JP'; src: url('./assets/fonts/noto-serif-jp-n5.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'N5 Yuji Syuku'; src: url('./assets/fonts/yuji-syuku-n5.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'N5 Kosugi Maru'; src: url('./assets/fonts/kosugi-maru-n5.woff2') format('woff2'); font-display: swap; }
+
+:root {
+  --kanji-font: 'N5 Klee One';
+}
+
 .font-jp {
-  font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Noto Sans CJK JP', 'Yu Gothic', 'Meiryo', sans-serif;
+  font-family: var(--kanji-font), 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Noto Sans CJK JP', 'Yu Gothic', 'Meiryo', sans-serif;
 }
 
 /* Gentle reveal (about 250 ms). Removed entirely when the user prefers reduced motion. */

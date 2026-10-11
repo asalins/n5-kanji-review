@@ -87,6 +87,22 @@ describe('study limits and theme', () => {
   });
 });
 
+describe('kanji font', () => {
+  it('offers the five bundled fonts and the system font, applies the choice at once and remembers it in this browser', async () => {
+    localStorage.removeItem('n5-kanji-review.kanjiFont');
+    show();
+    const select = (await screen.findByLabelText(/Choose a font/)) as HTMLSelectElement;
+    expect([...select.options].map((o) => o.value)).toEqual(['klee-one', 'noto-sans-jp', 'noto-serif-jp', 'yuji-syuku', 'kosugi-maru', 'system']);
+    expect(select.value).toBe('klee-one');
+    fireEvent.change(select, { target: { value: 'kosugi-maru' } });
+    expect(document.documentElement.getAttribute('data-kanji-font')).toBe('kosugi-maru');
+    expect(localStorage.getItem('n5-kanji-review.kanjiFont')).toBe('kosugi-maru');
+    expect(screen.getByTestId('kanji-font-sample').className).toContain('font-jp');
+    expect((await repos.backup.readUserData()).userSettings).toBeNull(); // not part of the learning data or backups
+    localStorage.removeItem('n5-kanji-review.kanjiFont');
+  });
+});
+
 describe('export', () => {
   it('downloads a dated JSON backup that validates as format version 1', async () => {
     await seed();

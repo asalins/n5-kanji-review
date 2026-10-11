@@ -52,7 +52,7 @@ export function KanjiDetailView({ detail, format = (ms) => defaultFormat.format(
   const kanjiStatus = detail.mastered ? TEXT.kanjiMastered : detail.learned ? TEXT.kanjiLearned : TEXT.kanjiNew;
   return (
     <div className="flex flex-col gap-4">
-      <p lang="ja" className="text-center text-8xl leading-none" aria-label={`คันจิ ${kanji.character}`}>
+      <p lang="ja" className="font-jp text-center text-8xl leading-none" aria-label={`คันจิ ${kanji.character}`}>
         {kanji.character}
       </p>
       <Section title={TEXT.meanings}>

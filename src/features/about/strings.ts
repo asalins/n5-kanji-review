@@ -14,6 +14,10 @@ export const ABOUT_TEXT = {
     'โปรเจกต์นี้ไม่อ้างลิขสิทธิ์ในข้อมูลดังกล่าว และไม่ได้รับการรับรองจาก EDRDG · This project claims no copyright over that data and is not endorsed by the EDRDG.',
   datasetVersion: 'เวอร์ชันชุดข้อมูลในแอป · Dataset version',
   datasetVersionUnknown: 'ไม่ทราบ · unknown',
+  fontsTitle: 'ฟอนต์ญี่ปุ่น · Japanese fonts',
+  fonts:
+    'คันจิแสดงด้วยฟอนต์ Klee One, Noto Sans JP, Noto Serif JP, Yuji Syuku (SIL Open Font License 1.1) และ Kosugi Maru (Apache License 2.0) ตัดให้เหลือเฉพาะตัวอักษรที่แอปใช้ · Kanji are shown with Klee One, Noto Sans JP, Noto Serif JP, Yuji Syuku (SIL OFL 1.1) and Kosugi Maru (Apache 2.0), subset to the characters this app uses.',
+  fontsLicences: 'สัญญาอนุญาตของฟอนต์ · Font licences',
   storageTitle: 'การเก็บข้อมูลในเครื่อง · Storage on this device',
   storageNote:
     'ความคืบหน้าเก็บไว้ในเบราว์เซอร์นี้เท่านั้น ไม่มีบัญชีผู้ใช้ ใช้ Export backup ในหน้าตั้งค่าเพื่อย้ายไปเครื่องอื่น · Progress is stored only in this browser (no account); use Export backup in Settings to move it.',
@@ -37,4 +41,9 @@ export const ABOUT_LINKS = {
   licence: 'https://www.edrdg.org/edrdg/license.html',
   project: 'https://www.edrdg.org/wiki/index.php/KANJIDIC_Project',
   cc: 'https://creativecommons.org/licenses/by-sa/4.0/',
+  fontKlee: '/licenses/fonts/KleeOne-OFL.txt',
+  fontNotoSans: '/licenses/fonts/NotoSansJP-OFL.txt',
+  fontNotoSerif: '/licenses/fonts/NotoSerifJP-OFL.txt',
+  fontYuji: '/licenses/fonts/YujiSyuku-OFL.txt',
+  fontKosugi: '/licenses/fonts/KosugiMaru-Apache-2.0.txt',
 } as const;

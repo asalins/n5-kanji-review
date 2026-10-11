@@ -43,7 +43,7 @@ export function ResultCard({ hit, onOpen }: { hit: SearchHit; onOpen?: (kanjiId:
   const groups = groupReadings(readings);
   return (
     <li className="flex gap-4 rounded-2xl border border-stone-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-800">
-      <p lang="ja" className="w-16 shrink-0 text-center text-5xl leading-none">
+      <p lang="ja" className="font-jp w-16 shrink-0 text-center text-5xl leading-none">
         {kanji.character}
       </p>
       <div className="flex min-w-0 flex-1 flex-col gap-2">

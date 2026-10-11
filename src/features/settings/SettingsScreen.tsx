@@ -7,6 +7,7 @@ import { THEMES, type Theme, type UserSettings } from '../../types/entities';
 import { IMPORT_ERROR, TEXT, THEME_LABEL } from './strings';
 import { useSettings } from './SettingsProvider';
 import { useBackup, type BackupStatus } from './useBackup';
+import { KANJI_FONTS, applyKanjiFont, isKanjiFontId, readKanjiFont, saveKanjiFont, type KanjiFontId } from '../../services/display/kanjiFont';
 
 const SELECT = `min-h-12 w-full rounded-xl border border-stone-300 bg-white px-3 text-base text-stone-900 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-100 ${FOCUS_RING}`;
 
@@ -86,6 +87,44 @@ function StudyLimits() {
   );
 }
 
+function KanjiFontPicker() {
+  const id = useId();
+  const [font, setFont] = useState<KanjiFontId>(() => readKanjiFont());
+  const [notSaved, setNotSaved] = useState(false);
+  const choose = (value: string) => {
+    if (!isKanjiFontId(value)) return;
+    setFont(value);
+    applyKanjiFont(value);
+    setNotSaved(!saveKanjiFont(value));
+  };
+  return (
+    <Section title={TEXT.kanjiFont}>
+      <label htmlFor={id} className="text-sm font-medium">
+        {TEXT.kanjiFontChoose}
+      </label>
+      <select id={id} className={SELECT} value={font} onChange={(e) => choose(e.target.value)}>
+        {KANJI_FONTS.map((f) => (
+          <option key={f.id} value={f.id}>
+            {f.label} · {f.note}
+          </option>
+        ))}
+      </select>
+      <p className="flex items-center gap-4">
+        <span className="text-sm">{TEXT.kanjiFontSample}</span>
+        <span lang="ja" className="font-jp text-5xl leading-none" data-testid="kanji-font-sample">
+          水 日 学 あ ア
+        </span>
+      </p>
+      <p className="text-sm">{TEXT.kanjiFontHelp}</p>
+      {notSaved && (
+        <p role="status" className="text-sm">
+          {TEXT.kanjiFontNotSaved}
+        </p>
+      )}
+    </Section>
+  );
+}
+
 function statusMessage(status: BackupStatus): { text: string; error: boolean } | null {
   switch (status.kind) {
     case 'DONE':
@@ -122,6 +161,8 @@ export function SettingsScreen({ onExit, onAbout }: { onExit: () => void; onAbou
       </div>
 
       <StudyLimits />
+
+      <KanjiFontPicker />
 
       <Section title={TEXT.backup}>
         {!backup.available ? (

@@ -27,6 +27,8 @@ test('offline after the first load: the app shell, stored progress, search and s
   // progress survived the reload and offline start: 3 reviews today
   const reviewsToday = page.locator('dt', { hasText: /Reviews today/ }).locator('xpath=..');
   await expect(reviewsToday).toContainText('3');
+  // the bundled kanji font (default Klee One) is precached and loads offline
+  await expect.poll(() => page.evaluate(async () => (await document.fonts.load("48px 'N5 Klee One'", '水')).length)).toBeGreaterThan(0);
 
   await page.getByRole('button', { name: /Search/ }).tap();
   await page.locator('#kanji-search-input').fill('mizu');
