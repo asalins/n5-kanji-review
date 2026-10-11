@@ -6,6 +6,7 @@ import { RepositoryError, ValidationError } from '../../../src/utils/errors';
 import { makeCard, makeLog } from '../../helpers/fixtures';
 import { openRealRepositories } from '../../helpers/realData';
 import { openTestDatabase } from '../../helpers/testDatabase';
+import { CURRENT_DATASET_VERSION } from '../../helpers/currentDataset';
 
 let repos: Repositories;
 let dispose: () => Promise<void>;
@@ -109,7 +110,7 @@ describe('production wiring: rating -> SRS -> atomic write (real repositories, r
       expect(card).toMatchObject({ state: 'LEARNING', reviewCount: 1, correctCount: 1, algorithmVersion: 'srs-v1' });
       const logs = await real.repos.review.getLogs({ from: new Date(0), to: new Date(NOW + 1) });
       expect(logs).toEqual([
-        expect.objectContaining({ cardId: card!.id, rating: 'GOOD', durationMs: 2_500, stateBefore: 'NEW', stateAfter: 'LEARNING', datasetVersion: 'n5-2026.10.01' }),
+        expect.objectContaining({ cardId: card!.id, rating: 'GOOD', durationMs: 2_500, stateBefore: 'NEW', stateAfter: 'LEARNING', datasetVersion: CURRENT_DATASET_VERSION }),
       ]);
     } finally {
       await real.dispose();

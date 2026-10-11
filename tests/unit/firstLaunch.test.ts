@@ -1,6 +1,7 @@
 import { IDBFactory } from 'fake-indexeddb';
 import { openDB } from 'idb';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { CURRENT_DATASET_VERSION } from '../helpers/currentDataset';
 
 let originalFactory: IDBFactory;
 beforeEach(() => {
@@ -28,7 +29,7 @@ async function loadedAt(): Promise<number | undefined> {
 describe('first launch through the real composition root (real bundled dataset files)', () => {
   it('loads and validates the bundled dataset into an empty profile, then the app is usable', async () => {
     const app = await launch();
-    expect(await app.kanji.getDatasetVersion()).toBe('n5-2026.10.01');
+    expect(await app.kanji.getDatasetVersion()).toBe(CURRENT_DATASET_VERSION);
     expect(await app.kanji.getByLevel('N5')).toHaveLength(196);
     expect(await app.settings?.get()).toBeNull(); // nothing is written for the user on first launch
     expect(app.reviewOrchestrator).toBeDefined();

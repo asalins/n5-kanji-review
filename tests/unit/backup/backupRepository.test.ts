@@ -14,6 +14,7 @@ import { sampleRecords, validBackup } from '../../helpers/backupFixtures';
 import { streak } from '../../helpers/fixtures';
 import { openRealRepositories } from '../../helpers/realData';
 import { NOON, realProjectList, storedCard } from '../../helpers/sessionFixtures';
+import { CURRENT_DATASET_VERSION } from '../../helpers/currentDataset';
 
 let repos: Repositories;
 let dispose: () => Promise<void>;
@@ -47,7 +48,7 @@ describe('export', () => {
   it('builds a versioned envelope from the stored user data and changes nothing', async () => {
     const before = await seedSample();
     const { backup, fileName } = await createBackup(deps(new Date(2026, 9, 4, 9).getTime()));
-    expect(backup).toMatchObject({ format: 'n5-kanji-review-backup', formatVersion: 1, databaseSchemaVersion: 2, datasetVersion: 'n5-2026.10.01', algorithmVersion: 'srs-v1' });
+    expect(backup).toMatchObject({ format: 'n5-kanji-review-backup', formatVersion: 1, databaseSchemaVersion: 2, datasetVersion: CURRENT_DATASET_VERSION, algorithmVersion: 'srs-v1' });
     expect(backup.exportedAt).toBe(new Date(2026, 9, 4, 9).toISOString());
     expect(fileName).toBe('n5-kanji-backup-2026-10-04.json');
     expect(backup.data.reviewCards).toEqual(before.reviewCards);
@@ -200,7 +201,7 @@ describe('atomicity: a failed import leaves the database exactly as it was', () 
 
   it('the dataset changing between the check and the restore is caught', async () => {
     const plan = await prepareImport(deps(), JSON.stringify(validBackup()));
-    const kanji = Object.assign(Object.create(repos.kanji) as Repositories['kanji'], { getDatasetVersion: () => Promise.resolve('n5-2099.01.01') });
+    const kanji = Object.assign(Object.create(repos.kanji) as Repositories['kanji'], { getDatasetVersion: () => Promise.resolve(`${CURRENT_DATASET_VERSION}-changed`) });
     await expect(applyImport({ ...deps(), kanji }, plan)).rejects.toMatchObject({ code: 'DATASET_MISMATCH' });
   });
 });
@@ -209,8 +210,8 @@ describe('backup from another dataset version (Phase 12 policy)', () => {
   it('every kanji still exists: restored exactly, with the mandatory warning, logs keep their own datasetVersion', async () => {
     const older = validBackup({ datasetVersion: 'n5-2025.01.01' });
     const plan = await prepareImport(deps(), JSON.stringify(older));
-    expect(plan.datasetWarning).toEqual({ backupVersion: 'n5-2025.01.01', currentVersion: 'n5-2026.10.01' });
-    expect(plan.checkedDatasetVersion).toBe('n5-2026.10.01');
+    expect(plan.datasetWarning).toEqual({ backupVersion: 'n5-2025.01.01', currentVersion: CURRENT_DATASET_VERSION });
+    expect(plan.checkedDatasetVersion).toBe(CURRENT_DATASET_VERSION);
     await applyImport(deps(), plan);
     const restored = await read();
     const byId = <T extends { id: string }>(list: readonly T[]) => [...list].sort((a, b) => (a.id < b.id ? -1 : 1));
@@ -234,7 +235,7 @@ describe('reset', () => {
     expect([after.reviewCards, after.reviewLogs, after.studySessions]).toEqual([[], [], []]);
     expect(await repos.settings.get()).toEqual(settingsBefore);
     expect(await repos.kanji.getByLevel('N5')).toHaveLength(196);
-    expect(await repos.kanji.getDatasetVersion()).toBe('n5-2026.10.01');
+    expect(await repos.kanji.getDatasetVersion()).toBe(CURRENT_DATASET_VERSION);
     expect(await repos.review.getStreakState()).toEqual(streak);
   });
 

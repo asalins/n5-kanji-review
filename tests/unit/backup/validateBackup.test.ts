@@ -3,6 +3,7 @@ import { assertCompatible } from '../../../src/services/backup/backupCompatibili
 import { BackupError, type BackupErrorCode } from '../../../src/services/backup/backupErrors';
 import { parseBackupText, validateBackup } from '../../../src/services/backup/validateBackup';
 import { validBackup } from '../../helpers/backupFixtures';
+import { CURRENT_DATASET_VERSION } from '../../helpers/currentDataset';
 
 const code = (fn: () => unknown): BackupErrorCode | 'NO ERROR' => {
   try {
@@ -82,7 +83,7 @@ describe('integrity', () => {
 });
 
 describe('compatibility: strict, no mapping', () => {
-  const env = { datasetVersion: 'n5-2026.10.01', algorithmVersion: 'srs-v1', kanjiIds: new Set(['kanji:U+6C34', 'kanji:U+706B', 'kanji:U+5C71']) };
+  const env = { datasetVersion: CURRENT_DATASET_VERSION, algorithmVersion: 'srs-v1', kanjiIds: new Set(['kanji:U+6C34', 'kanji:U+706B', 'kanji:U+5C71']) };
   const check = (backup = validBackup(), current = env) => code(() => assertCompatible(validateBackup(backup), current));
   it('same dataset and algorithm -> compatible', () => expect(check()).toBe('NO ERROR'));
   it('an unknown dataset version (backup or current) -> DATASET_MISMATCH', () => {
@@ -94,7 +95,7 @@ describe('compatibility: strict, no mapping', () => {
   });
   it('another dataset version with every kanji present -> compatible WITH the mandatory warning', () => {
     expect(assertCompatible(validateBackup(validBackup({ datasetVersion: 'n5-2025.01.01' })), env)).toEqual({
-      datasetWarning: { backupVersion: 'n5-2025.01.01', currentVersion: 'n5-2026.10.01' },
+      datasetWarning: { backupVersion: 'n5-2025.01.01', currentVersion: CURRENT_DATASET_VERSION },
     });
   });
   it('another dataset version with even ONE kanji missing -> DATASET_MISMATCH', () => {

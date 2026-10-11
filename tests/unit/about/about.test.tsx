@@ -4,6 +4,7 @@ import { AboutScreen } from '../../../src/features/about/AboutScreen';
 import { RepositoriesProvider } from '../../../src/hooks/useRepositories';
 import type { Repositories } from '../../../src/repositories/indexeddb';
 import { openRealRepositories } from '../../helpers/realData';
+import { CURRENT_DATASET_VERSION } from '../../helpers/currentDataset';
 
 let repos: Repositories;
 let dispose: () => Promise<void>;
@@ -46,7 +47,7 @@ describe('About & Sources: the acknowledgement required by the EDRDG licence', (
 
   it('shows the dataset version loaded in the app', async () => {
     show();
-    expect((await screen.findByText('n5-2026.10.01')).getAttribute('data-testid')).toBe('dataset-version');
+    expect((await screen.findByText(CURRENT_DATASET_VERSION)).getAttribute('data-testid')).toBe('dataset-version');
   });
 
   it('still shows the acknowledgement when the version cannot be read', async () => {

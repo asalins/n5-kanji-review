@@ -2,6 +2,7 @@ import type { BackupV1 } from '../../src/services/backup/backupSchema';
 import { DEFAULT_USER_SETTINGS } from '../../src/services/settings/defaults';
 import type { ReviewCard, ReviewLog, StudySession } from '../../src/types/entities';
 import { NOON, logAt, storedCard } from './sessionFixtures';
+import { CURRENT_DATASET_VERSION } from './currentDataset';
 
 /** Realistic records for the real dataset (kanji ids of 水 / 火 / 山). Test data only. */
 export function sampleRecords(): { cards: ReviewCard[]; logs: ReviewLog[]; sessions: StudySession[] } {
@@ -30,7 +31,7 @@ export function validBackup(over: Partial<BackupV1> = {}, data: Partial<BackupV1
     formatVersion: 1,
     exportedAt: '2026-10-02T05:00:00.000Z',
     databaseSchemaVersion: 2,
-    datasetVersion: 'n5-2026.10.01',
+    datasetVersion: CURRENT_DATASET_VERSION,
     algorithmVersion: 'srs-v1',
     data: { reviewCards: cards, reviewLogs: logs, studySessions: sessions, userSettings: { ...DEFAULT_USER_SETTINGS, dailyNewCards: 20 }, ...data },
     ...over,

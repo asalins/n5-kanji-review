@@ -11,6 +11,7 @@ import { RepositoryError } from '../../../src/utils/errors';
 import { sampleRecords, validBackup } from '../../helpers/backupFixtures';
 import { openRealRepositories } from '../../helpers/realData';
 import { storedCard } from '../../helpers/sessionFixtures';
+import { CURRENT_DATASET_VERSION } from '../../helpers/currentDataset';
 
 let repos: Repositories;
 let dispose: () => Promise<void>;
@@ -107,7 +108,7 @@ describe('import', () => {
     chooseFile(JSON.stringify(validBackup()));
     const dialog = await screen.findByRole('alertdialog', { name: /Import this backup/ });
     expect(within(dialog).getByText(/will replace your current learning data/)).toBeTruthy();
-    expect(within(dialog).getByText('n5-2026.10.01')).toBeTruthy();
+    expect(within(dialog).getByText(CURRENT_DATASET_VERSION)).toBeTruthy();
     expect((await repos.backup.readUserData()).reviewCards).toHaveLength(1); // nothing written yet
     const confirm = within(dialog).getByRole('button', { name: /Replace my data/ });
     expect((confirm as HTMLButtonElement).disabled).toBe(true);
@@ -124,7 +125,7 @@ describe('import', () => {
     chooseFile(JSON.stringify(validBackup({ datasetVersion: 'n5-2025.01.01' })));
     const dialog = await screen.findByRole('alertdialog', { name: /Import this backup/ });
     const warning = within(dialog).getByRole('alert');
-    expect(warning.textContent).toMatch(/different dataset version \(n5-2025\.01\.01; current n5-2026\.10\.01\)/);
+    expect(warning.textContent).toContain(`different dataset version (n5-2025.01.01; current ${CURRENT_DATASET_VERSION})`);
     fireEvent.click(within(dialog).getByLabelText(/I understand/));
     fireEvent.click(within(dialog).getByRole('button', { name: /Replace my data/ }));
     expect(await screen.findByText(/Backup restored/)).toBeTruthy();

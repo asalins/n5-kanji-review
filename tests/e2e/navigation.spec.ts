@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { expectNoHorizontalOverflow, expectTouchTarget, openHome } from './helpers';
+import { CURRENT_DATASET_VERSION } from '../helpers/currentDataset';
 
 test.skip(({ viewport }) => viewport?.width !== 360, 'browser history is checked once, on the 360 px phone');
 
@@ -60,7 +61,7 @@ test('About & Sources: reachable from Settings, licence acknowledgement and link
   await page.getByRole('button', { name: /Sources & licences/ }).tap();
   await expect(page.getByText(/KANJIDIC2/).first()).toBeVisible();
   await expect(page.getByText(/CC BY-SA 4\.0/).first()).toBeVisible();
-  await expect(page.getByTestId('dataset-version')).toHaveText('n5-2026.10.01');
+  await expect(page.getByTestId('dataset-version')).toHaveText(CURRENT_DATASET_VERSION);
   await expect(page.getByRole('link', { name: /EDRDG licence statement/ })).toHaveAttribute('href', 'https://www.edrdg.org/edrdg/license.html');
   await expectNoHorizontalOverflow(page);
   await expectTouchTarget(page.getByRole('button', { name: /← ตั้งค่า/ }));

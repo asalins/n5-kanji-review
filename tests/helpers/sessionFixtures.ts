@@ -5,6 +5,7 @@ import type { NewItemSource } from '../../src/services/session/types';
 import type { ItemRef, LearningState, ReviewCard, ReviewLog, StudyMode } from '../../src/types/entities';
 import { buildReviewCardId } from '../../src/utils/reviewCardId';
 import { makeKanjiId } from '../../src/utils/kanjiId';
+import { CURRENT_DATASET_VERSION } from './currentDataset';
 
 /** The real Project N5 list file, read from disk exactly as the app bundles it. */
 export const realProjectList: NewItemSource = {
@@ -28,7 +29,7 @@ export function logAt(n: number, reviewedAt: number, stateBefore: LearningState,
     durationMs: 1_000,
     stateBefore,
     stateAfter: 'LEARNING',
-    datasetVersion: 'n5-2026.10.01',
+    datasetVersion: CURRENT_DATASET_VERSION,
     ...over,
   };
 }

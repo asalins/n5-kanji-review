@@ -10,6 +10,7 @@ import type { StudySession } from '../../../src/types/entities';
 import { RepositoryError } from '../../../src/utils/errors';
 import { openRealRepositories } from '../../helpers/realData';
 import { NOON, cardId, logAt, realProjectList, storedCard } from '../../helpers/sessionFixtures';
+import { CURRENT_DATASET_VERSION } from '../../helpers/currentDataset';
 
 let repos: Repositories;
 let dispose: () => Promise<void>;
@@ -79,7 +80,7 @@ describe('review session: real flow through the orchestrator', () => {
     expect(second).toMatchObject({ reviewCount: 1, incorrectCount: 1 });
     const logs = await repos.review.getLogs(ALL);
     expect(logs).toHaveLength(2);
-    expect(logs[0]).toMatchObject({ stateBefore: 'NEW', datasetVersion: 'n5-2026.10.01' });
+    expect(logs[0]).toMatchObject({ stateBefore: 'NEW', datasetVersion: CURRENT_DATASET_VERSION });
     expect(logs.every((l) => Number.isInteger(l.durationMs) && l.durationMs > 0)).toBe(true);
 
     // summary shown to the user comes from the real results (1 Good, 1 Again -> 50%)
