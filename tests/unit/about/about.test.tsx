@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { AboutScreen } from '../../../src/features/about/AboutScreen';
 import { RepositoriesProvider } from '../../../src/hooks/useRepositories';
 import type { Repositories } from '../../../src/repositories/indexeddb';
@@ -21,6 +21,12 @@ const show = (kanji = repos.kanji) =>
       <AboutScreen onBack={() => undefined} />
     </RepositoriesProvider>,
   );
+
+async function waitStatus(status: string, text: RegExp) {
+  const el = await screen.findByTestId('storage-status');
+  await waitFor(() => expect(el.getAttribute('data-status')).toBe(status));
+  expect(el.textContent).toMatch(text);
+}
 
 describe('About & Sources: the acknowledgement required by the EDRDG licence', () => {
   it('names the source, its owners and the licence, says the app data is derived and shared alike, and claims no copyright', async () => {
@@ -48,6 +54,29 @@ describe('About & Sources: the acknowledgement required by the EDRDG licence', (
   it('shows the dataset version loaded in the app', async () => {
     show();
     expect((await screen.findByText(CURRENT_DATASET_VERSION)).getAttribute('data-testid')).toBe('dataset-version');
+  });
+
+  it('shows whether this browser keeps the storage, and says progress stays on this device', async () => {
+    const set = (persisted: (() => Promise<boolean>) | undefined) =>
+      persisted === undefined
+        ? delete (navigator as { storage?: unknown }).storage
+        : Object.defineProperty(navigator, 'storage', { configurable: true, value: { persisted } });
+    try {
+      set(() => Promise.resolve(true));
+      const first = show();
+      expect(document.body.textContent).toMatch(/Progress is stored only in this browser/);
+      await waitStatus('persistent', /Persistent/);
+      first.unmount();
+      set(() => Promise.resolve(false));
+      const second = show();
+      await waitStatus('not-persistent', /Not persistent/);
+      second.unmount();
+      set(undefined);
+      show();
+      await waitStatus('unsupported', /Not supported/);
+    } finally {
+      delete (navigator as { storage?: unknown }).storage;
+    }
   });
 
   it('still shows the acknowledgement when the version cannot be read', async () => {

@@ -44,6 +44,20 @@ describe('first launch through the real composition root (real bundled dataset f
     expect(await loadedAt()).toBe(first);
   });
 
+  it('asks the browser to keep the storage once at start-up, and a refusal or a missing API does not stop the app', async () => {
+    const persist = vi.fn(() => Promise.resolve(false));
+    Object.defineProperty(navigator, 'storage', { configurable: true, value: { persisted: () => Promise.resolve(false), persist } });
+    try {
+      const app = await launch();
+      await vi.waitFor(() => expect(persist).toHaveBeenCalledTimes(1));
+      expect(await app.kanji.getByLevel('N5')).toHaveLength(196);
+    } finally {
+      delete (navigator as { storage?: unknown }).storage;
+    }
+    vi.resetModules();
+    expect(await (await launch()).kanji.getByLevel('N5')).toHaveLength(196); // no navigator.storage at all
+  });
+
   it('within one run the start-up work happens once (React StrictMode safe)', async () => {
     const { bootstrapApp } = await import('../../src/app/bootstrap');
     expect(await bootstrapApp()).toBe(await bootstrapApp());

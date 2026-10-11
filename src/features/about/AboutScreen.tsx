@@ -1,6 +1,7 @@
 import { useEffect, useId, useState, type ReactNode } from 'react';
 import { FOCUS_RING, SECONDARY_BUTTON } from '../../components/styles';
 import { useRepositories } from '../../hooks/useRepositories';
+import { readPersistentStorage, type PersistenceStatus } from '../../services/persistence/persistentStorage';
 import { logError } from '../../utils/userMessage';
 import { ABOUT_LINKS, ABOUT_TEXT } from './strings';
 
@@ -22,6 +23,15 @@ const LINK = `inline-flex min-h-11 items-center underline underline-offset-4 ${F
 export function AboutScreen({ onBack }: { onBack: () => void }) {
   const { kanji } = useRepositories();
   const [version, setVersion] = useState<string | null | undefined>(undefined);
+  const [storage, setStorage] = useState<PersistenceStatus | undefined>(undefined);
+
+  useEffect(() => {
+    let cancelled = false;
+    void readPersistentStorage().then((status) => !cancelled && setStorage(status));
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -80,6 +90,22 @@ export function AboutScreen({ onBack }: { onBack: () => void }) {
       </Block>
       <Block title={ABOUT_TEXT.thaiTitle}>
         <p>{ABOUT_TEXT.thai}</p>
+      </Block>
+      <Block title={ABOUT_TEXT.storageTitle}>
+        <p>{ABOUT_TEXT.storageNote}</p>
+        <p>
+          {ABOUT_TEXT.storageStatus}:{' '}
+          <span className="font-semibold" data-testid="storage-status" data-status={storage ?? 'loading'}>
+            {storage === undefined
+              ? '…'
+              : {
+                  persistent: ABOUT_TEXT.storagePersistent,
+                  'not-persistent': ABOUT_TEXT.storageNotPersistent,
+                  unsupported: ABOUT_TEXT.storageUnsupported,
+                  unknown: ABOUT_TEXT.datasetVersionUnknown,
+                }[storage]}
+          </span>
+        </p>
       </Block>
     </div>
   );

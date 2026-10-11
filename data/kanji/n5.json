@@ -1,12 +1,12 @@
 {
-  "datasetVersion": "n5-2026.10.01",
-  "generatedAt": "2026-10-02T00:21:11.953Z",
+  "datasetVersion": "n5-2026.10.11",
+  "generatedAt": "2026-10-11T13:19:05.611Z",
   "level": "N5",
   "sources": [
     {
       "name": "KANJIDIC2",
-      "version": "2026-274",
-      "date": "2026-10-01",
+      "version": "2026-284",
+      "date": "2026-10-11",
       "officialUrl": "https://www.edrdg.org/wiki/index.php/KANJIDIC_Project",
       "license": "CC BY-SA 4.0 (EDRDG General Dictionary Licence Statement)"
     },

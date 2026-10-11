@@ -62,6 +62,7 @@ test('About & Sources: reachable from Settings, licence acknowledgement and link
   await expect(page.getByText(/KANJIDIC2/).first()).toBeVisible();
   await expect(page.getByText(/CC BY-SA 4\.0/).first()).toBeVisible();
   await expect(page.getByTestId('dataset-version')).toHaveText(CURRENT_DATASET_VERSION);
+  await expect(page.getByTestId('storage-status')).toHaveAttribute('data-status', /^(persistent|not-persistent)$/);
   await expect(page.getByRole('link', { name: /EDRDG licence statement/ })).toHaveAttribute('href', 'https://www.edrdg.org/edrdg/license.html');
   await expectNoHorizontalOverflow(page);
   await expectTouchTarget(page.getByRole('button', { name: /← ตั้งค่า/ }));

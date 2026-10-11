@@ -14,6 +14,13 @@ export const ABOUT_TEXT = {
     'โปรเจกต์นี้ไม่อ้างลิขสิทธิ์ในข้อมูลดังกล่าว และไม่ได้รับการรับรองจาก EDRDG · This project claims no copyright over that data and is not endorsed by the EDRDG.',
   datasetVersion: 'เวอร์ชันชุดข้อมูลในแอป · Dataset version',
   datasetVersionUnknown: 'ไม่ทราบ · unknown',
+  storageTitle: 'การเก็บข้อมูลในเครื่อง · Storage on this device',
+  storageNote:
+    'ความคืบหน้าเก็บไว้ในเบราว์เซอร์นี้เท่านั้น ไม่มีบัญชีผู้ใช้ ใช้ Export backup ในหน้าตั้งค่าเพื่อย้ายไปเครื่องอื่น · Progress is stored only in this browser (no account); use Export backup in Settings to move it.',
+  storageStatus: 'สถานะ · Status',
+  storagePersistent: 'ถาวร: เบราว์เซอร์จะไม่ลบเอง · Persistent',
+  storageNotPersistent: 'ไม่ถาวร: เบราว์เซอร์อาจลบเมื่อพื้นที่เหลือน้อย แนะนำติดตั้งลงหน้าจอโฮมและ Export backup · Not persistent',
+  storageUnsupported: 'เบราว์เซอร์นี้ไม่รองรับ · Not supported by this browser',
   linksTitle: 'ลิงก์ (ต้องใช้อินเทอร์เน็ต) · Links (need internet)',
   linkLicence: 'สัญญาอนุญาตของ EDRDG · EDRDG licence statement',
   linkProject: 'โครงการ KANJIDIC · KANJIDIC Project',
