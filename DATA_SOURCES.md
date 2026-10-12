@@ -49,7 +49,7 @@ Settings -> "About & Sources" shows the acknowledgement the EDRDG licence requir
 ## Updating KANJIDIC2 (required by the licence)
 The licence requires a procedure for regular updating from the latest versions. Procedure: download the current KANJIDIC2 file into `data-sources/kanjidic2/`, run `npm run dataset:build` (the new date-based `datasetVersion` is applied to `n5.json` AND `n5.th.json`; Thai entries and their `reviewed` flags are kept), check `n5.report.json` and `npm run dataset:thai-audit`, run `npm run verify:all`, release. Do this at least with every app release and at least monthly while the app is published. Backups made with an earlier dataset version stay restorable when every kanji they refer to still exists (the user is warned before restoring).
 
-Schedule: the app has been published since 2026-10-05 (dataset `n5-2026.10.01`). Following the procedure above (at least monthly while published), the next KANJIDIC2 update is due by **2026-11-05**, or earlier with the next app release.
+Schedule: the app has been published since 2026-10-05. Last update: 2026-10-11 (KANJIDIC2 2026-284, dataset `n5-2026.10.11`, release `acd3e31`; previous `n5-2026.10.01`). Following the procedure above (at least monthly while published), the next KANJIDIC2 update is due by **2026-11-11**, or earlier with the next app release. Since `b11509f` the tests read the dataset version from `n5.json`, so a refresh needs no test edits; a refresh changes the build and goes through Preview (PWA update test on Android) and a Production Gate.
 
 ## Thai review workflow
 See `docs/release/thai-review.md`. Drafts may be written by anyone (including tools), but only a human reviewer sets `reviewed: true`; only reviewed, non-ambiguous meanings ever reach the app.
