@@ -4,8 +4,9 @@ Production URL: `https://n5-kanji-review.pages.dev` · Repository: `asalins/n5-k
 
 | Release | Commit | Branch | Date | Status | Change | Gates |
 |---|---|---|---|---|---|---|
-| acd3e31 | `acd3e31231b8a714f22021f6838a95636e38567f` | `ui-import-button` (from `data-refresh`) | 2026-10-11 | **Current production build** | KANJIDIC2 data refresh 2026-274 → 2026-284, dataset `n5-2026.10.01` → `n5-2026.10.11` (content of the 196 kanji unchanged: strokes, frequency, readings, English and Thai meanings identical); persistent storage requested at start-up, status shown in About & Sources; tests read the dataset version from `n5.json` (`b11509f`) | Data Refresh Preflight, Release Gate, Preview PWA update on Android (prompt, progress kept, persistent), Production Gate, production update on Android: all PASS · tag `release-2026-10-11-acd3e31` |
-| e135edb | `e135edbc83364e55b266c2a74b8d1731b1082c41` | `ui-import-button` (from `phase13-kanji-detail`) | 2026-10-08 | Previous production build · **rollback target** | Phase 13: Kanji Detail (read-only) opened from Search; Search → Detail = push, Back returns to Search with its context | Implementation, Pre-Promotion, Preview smoke (PC), Android regression, Production Gate, Post-Deployment: all PASS |
+| 9545af3 | `9545af38fee2cdb5bf9f38b175f285c926bf2271` | `ui-import-button` (from `kanji-font`) | 2026-10-12 | **Current production build** | Kanji font picker in Settings: five bundled subset fonts (Klee One default, Noto Sans JP, Noto Serif JP, Yuji Syuku, Kosugi Maru) + system font, precached for offline, choice kept per browser (not in backups); font licences in About & Sources and `THIRD_PARTY_NOTICES.md`; dataset unchanged (`n5-2026.10.11`) | verify:all (668 tests, E2E 38 incl. offline font load), mutation QA 20/20, Preview PWA update on Android (progress kept, Klee One default, font choice remembered, offline font), production on PC: PASS · tag `release-2026-10-12-9545af3` |
+| acd3e31 | `acd3e31231b8a714f22021f6838a95636e38567f` | `ui-import-button` (from `data-refresh`) | 2026-10-11 | Previous production build · **rollback target** | KANJIDIC2 data refresh 2026-274 → 2026-284, dataset `n5-2026.10.01` → `n5-2026.10.11` (content of the 196 kanji unchanged: strokes, frequency, readings, English and Thai meanings identical); persistent storage requested at start-up, status shown in About & Sources; tests read the dataset version from `n5.json` (`b11509f`) | Data Refresh Preflight, Release Gate, Preview PWA update on Android (prompt, progress kept, persistent), Production Gate, production update on Android: all PASS · tag `release-2026-10-11-acd3e31` |
+| e135edb | `e135edbc83364e55b266c2a74b8d1731b1082c41` | `ui-import-button` (from `phase13-kanji-detail`) | 2026-10-08 | Earlier production | Phase 13: Kanji Detail (read-only) opened from Search; Search → Detail = push, Back returns to Search with its context | Implementation, Pre-Promotion, Preview smoke (PC), Android regression, Production Gate, Post-Deployment: all PASS |
 | efb0627 | `efb06276ea1a964a8983293b50ca4a7faa3dac64` | `ui-import-button` | 2026-10-07 | Earlier production (documentation only) | Documentation only (release records, deployment guide, KANJIDIC2 update schedule); build byte-identical to 29d5354 | Documentation Gate, byte-identical build check |
 | 29d5354 | `29d5354920a5baf5da62af155032018e96784cdf` | `ui-import-button` | 2026-10-06 | Earlier production | Bordered, touch-sized "Choose File" button (UI only) | Update Gates 1-3, production promotion, Android targeted 8/8, Final Update Gate GO |
 | 7f3cf7d | `7f3cf7d28e9f2c42630eafeea30139a6c44d8c16` | `thai-review-1` | 2026-10-05 | Earlier production · frozen | First public release (Phases 1-12, Thai meanings 196/196 reviewed) | Thai human review, PC smoke (Edge, Chrome), Android QA, Public Release GO |
@@ -23,6 +24,12 @@ Documentation-only commits after `e135edb` (`dist` byte-identical to `e135edb`, 
 | `d35eaa09573f4ebbb8cc636c590135998d96ac8a` | `release-2026-10-09-d35eaa0` | `25804ffc` |
 | `cb5c05beb8628125107b1ad66422ecea1c2b1f0a` | `release-2026-10-10-cb5c05b` | `05f6f82b` |
 | `23587bd86a7e50cfb51460107dff8339d14ab5d9` | `release-2026-10-10-23587bd` | `6b956e1a` |
+
+Documentation-only commits after `acd3e31` (`dist` byte-identical to `acd3e31`):
+
+| Commit | Tag | Production deployment |
+|---|---|---|
+| `9b54a57430237c8518695ad04aee5b658182f4a6` | `release-2026-10-11-9b54a57` | `bc9625d0` |
 
 This list can lag behind production; the annotated tags are the authoritative record of documentation-only commits.
 

@@ -40,8 +40,8 @@ Used for the PWA update test #13:
 - After promotion check the Deployments page: Production = expected branch and commit, Success; the previous production deployment is still listed.
 
 ## Rollback
-Deployments → the chosen **Production** deployment → "..." → Rollback. Preview deployments cannot be rollback targets. Choose the target by build (`RELEASES.md`), as of 2026-10-11 (current production build `acd3e31`, deployment `e592d896`):
-- Fault in the current build (data refresh `n5-2026.10.11` / persistent storage): the latest Production deployment of the previous build `e135edb`: `ui-import-button · 23587bd` (`6b956e1a`). Earlier deployments of the same build: `cb5c05b` (`05f6f82b`), `d35eaa0` (`25804ffc`), `e135edb` (`864e61e9`). After such a rollback the app loads dataset `n5-2026.10.01` again; learning data is kept.
-- Older builds: `ui-import-button · efb0627` (`a491049e`, `dist` byte-identical to `29d5354`), `ui-import-button · 29d5354` (`d19948e7`), `thai-review-1 · 7f3cf7d` (`5fc67251`).
+Deployments → the chosen **Production** deployment → "..." → Rollback. Preview deployments cannot be rollback targets. Choose the target by build (`RELEASES.md`), as of 2026-10-12 (current production build `9545af3`, deployment `9c203693`):
+- Fault in the current build (kanji font picker): the latest Production deployment of the previous build `acd3e31`: `ui-import-button · 9b54a57` (`bc9625d0`); earlier deployment of the same build: `acd3e31` (`e592d896`). After such a rollback the large kanji use the system font again; learning data is kept and the stored font choice is ignored.
+- Older builds: `e135edb` (`6b956e1a`, dataset `n5-2026.10.01`), `efb0627` (`a491049e`, `dist` byte-identical to `29d5354`), `29d5354` (`d19948e7`), `thai-review-1 · 7f3cf7d` (`5fc67251`).
 
 These are Production deployments listed as Success in Cloudflare; a rollback itself has not been tested. A rollback changes what the production URL serves; it does not change Git branches. Decide rollbacks through a Gate.
