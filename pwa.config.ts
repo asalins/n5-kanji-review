@@ -37,7 +37,10 @@ export const pwaOptions: Partial<VitePWAOptions> = {
   workbox: {
     // App shell + bundled dataset chunks + icons: the app works offline after the first successful load.
     globPatterns: ['**/*.{js,css,html,svg,png,webmanifest,woff2}'],
+    // L0 Login Spike: never precached (installing the app must not download Firebase) and never answered with index.html.
+    globIgnores: ['login-spike.html', 'assets/loginSpike-*.js'],
     navigateFallback: 'index.html',
+    navigateFallbackDenylist: [/^\/login-spike/],
     cleanupOutdatedCaches: true,
     // No runtime caching: no API or network response is ever cached (backups are local files, never fetched).
     runtimeCaching: [],

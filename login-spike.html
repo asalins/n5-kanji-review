@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <!-- L0 Login Spike (branch login-spike only; never merged to production). -->
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>L0 Login Spike</title>
+    <style>
+      body { font-family: system-ui, sans-serif; margin: 0; padding: 16px; background: #fafaf9; color: #1c1917; max-width: 720px; margin-inline: auto; }
+      h1 { font-size: 1.25rem; } h2 { font-size: 1rem; margin-top: 1.5rem; }
+      button, a.btn { display: block; width: 100%; min-height: 48px; margin: 8px 0; font-size: 1rem; border-radius: 12px; border: 1px solid #a8a29e; background: #fff; color: inherit; text-align: center; text-decoration: none; line-height: 48px; padding: 0; }
+      button.primary { background: #b91c1c; color: #fff; border-color: #b91c1c; }
+      .banner { background: #fef3c7; border: 1px solid #f59e0b; border-radius: 12px; padding: 12px; }
+      dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; word-break: break-all; }
+      dt { font-weight: 600; }
+      #log { font: 12px/1.4 ui-monospace, monospace; white-space: pre-wrap; background: #f5f5f4; border-radius: 12px; padding: 12px; max-height: 50vh; overflow: auto; }
+    </style>
+  </head>
+  <body>
+    <h1>L0 Login Spike · ทดลองล็อกอิน</h1>
+    <p class="banner">หน้าทดลองเท่านั้น (Preview branch <code>login-spike</code>) · ไม่ sync และไม่แตะข้อมูลการเรียนในแอป</p>
+    <dl id="status"></dl>
+    <h2>ล็อกอิน</h2>
+    <button type="button" class="primary" id="popup">A · Sign in with Google (Popup)</button>
+    <button type="button" id="redirect">B · Sign in with Google (Redirect)</button>
+    <button type="button" id="signout">Sign out</button>
+    <h2>Token / session</h2>
+    <button type="button" id="token">แสดงข้อมูล ID token (ไม่ refresh)</button>
+    <button type="button" id="refresh">บังคับ refresh ID token (getIdToken(true))</button>
+    <button type="button" id="reload">ตรวจบัญชีกับเซิร์ฟเวอร์ (user.reload())</button>
+    <h2>Log</h2>
+    <button type="button" id="copy">คัดลอก log</button>
+    <div id="log" aria-live="polite"></div>
+    <a class="btn" href="/">← กลับแอปหลัก</a>
+    <script type="module" src="/src/spike/loginSpike.ts"></script>
+  </body>
+</html>

@@ -10,6 +10,12 @@ export default defineConfig({
     tailwindcss(),
     VitePWA(pwaOptions),
   ],
+  build: {
+    rollupOptions: {
+      // L0 Login Spike (branch login-spike only): a second, separate page. Firebase is bundled only into its chunk.
+      input: { main: 'index.html', loginSpike: 'login-spike.html' },
+    },
+  },
   test: {
     environment: 'jsdom',
     include: ['tests/unit/**/*.test.{ts,tsx}'],

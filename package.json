@@ -18,6 +18,7 @@
     "dataset:thai-audit": "tsx scripts/dataset/thaiAudit.ts"
   },
   "dependencies": {
+    "firebase": "12.19.0",
     "idb": "^8.0.3",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",

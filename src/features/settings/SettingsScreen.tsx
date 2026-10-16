@@ -7,6 +7,7 @@ import { THEMES, type Theme, type UserSettings } from '../../types/entities';
 import { IMPORT_ERROR, TEXT, THEME_LABEL } from './strings';
 import { useSettings } from './SettingsProvider';
 import { useBackup, type BackupStatus } from './useBackup';
+import { LoginSpikeLink } from './LoginSpikeLink';
 import { KANJI_FONTS, applyKanjiFont, isKanjiFontId, readKanjiFont, saveKanjiFont, type KanjiFontId } from '../../services/display/kanjiFont';
 
 const SELECT = `min-h-12 w-full rounded-xl border border-stone-300 bg-white px-3 text-base text-stone-900 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-100 ${FOCUS_RING}`;
@@ -249,6 +250,8 @@ export function SettingsScreen({ onExit, onAbout }: { onExit: () => void; onAbou
           </div>
         )}
       </Section>
+
+      <LoginSpikeLink />
 
       <p role={message?.error === true ? 'alert' : 'status'} className="min-h-6 text-sm">
         {message?.text ?? ''}
