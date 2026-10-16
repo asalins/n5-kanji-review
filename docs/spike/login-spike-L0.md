@@ -44,30 +44,70 @@ are tested separately and refresh is forced on demand.
 
 | Check | Command | Result |
 |---|---|---|
-| Typecheck + unit + build + E2E | `npm run verify:all` (Chromium via `PLAYWRIGHT_CHROMIUM_EXECUTABLE`) | see report |
-| Spike isolation in this build | `tsx scripts/qa/spikeIsolation.ts dist spike` | see report |
-| No spike in the production build | build `c6fdf23`, then `tsx scripts/qa/spikeIsolation.ts <dist> production` | see report |
+| Typecheck + unit + build + E2E | `npm run verify:all` (Chromium via `PLAYWRIGHT_CHROMIUM_EXECUTABLE`) | **PASS**: unit 670/670; E2E 41 passed, 26 skipped by the existing per-viewport gating; no BLOCKED |
+| Spike E2E (T8, T7, service worker) | `playwright test tests/e2e/loginSpike.spec.ts --repeat-each=3` | **PASS** 9/9 |
+| Spike isolation in this build | `tsx scripts/qa/spikeIsolation.ts dist spike` | **PASS** (Firebase only in `assets/loginSpike-*.js`; not precached) |
+| No spike in the production build | build `c6fdf23`, then `tsx scripts/qa/spikeIsolation.ts <dist> production` | **PASS**; `dist` byte-identical to production build `9545af3` (25/25 files) |
 
 `verify:all` rule: if Chromium or another environment piece is missing it reports **BLOCKED** (exit 2). BLOCKED is reported
 as BLOCKED, never as PASS, and no test is skipped to make it pass.
 
-## Results (owner fills in)
+## Results (2026-10-16)
+
+Preview deployment `e2b0b695` (commit `b9a96ad`, built with the Preview `VITE_FIREBASE_*` values). Chrome 155 on
+Windows 10 (PC) and Android 10. Tester: project owner.
+
+Evidence key: **log** = the spike page's copied log; **shot** = screenshot; **owner** = reported by the tester without a
+log (the log lives only in the page and was lost before it was copied).
 
 | | PC-tab | PC-PWA | AND-tab | AND-PWA |
 |---|---|---|---|---|
-| T1 A Popup | | | | |
-| T1 B Redirect | | | | |
-| T2 cancel A / B | | | | |
-| T3 | | | | |
-| T4 | | | | |
-| T5 A / B | | | | |
-| T6a | | | | |
-| T6b | | | | |
-| T6c (extra, once) | | | | |
-| T7 | | | | |
-| T8 (PC DevTools; Android via `chrome://inspect`) | | | | |
+| T1 A Popup | PASS (log) | PASS (log) | PASS (log) | PASS (log, shot: `PWA (standalone)`, Android 10) |
+| T1 B Redirect | **NO result** (log) | **NO result** (log) | **NO result** (log) | **NO result** (log) |
+| T2 cancel | PASS (owner) | PASS (owner) | — | — |
+| T3 sign out | PASS (log) | PASS (owner) | PASS (log) | PASS (log) |
+| T4 / T6a reopen, still signed in | PASS (owner) | PASS (log) | — | PASS (log) |
+| T5 offline | PASS (owner) | PASS (owner) | PASS (log) | — |
+| T6b token refresh | PASS (owner) | PASS (log) | PASS (log) | PASS (log) |
+| T6c user deleted in Console (once) | PASS (log, shot) | | | |
+| T7 app data unchanged after the spike | PASS (shot) | | | |
+| T8 no Firebase on Home/Settings | PASS (shot) | | | |
 
-Evidence: the spike page's "คัดลอก log" text for each context, plus screenshots.
+Details
+- **Redirect**: in every context the page returns from Google with `getRedirectResult` = null and no error code. This
+  matches third-party storage blocking between `n5-kanji-review-dev.firebaseapp.com` and `*.pages.dev`. No proxy or
+  Pages Function was added (out of L0 scope).
+- **T5**: offline → `auth/network-request-failed` within 0.1 s, page stays usable. Back online: pressing A 8 s after the
+  network returned still failed; pressing A again ~20 s later, **without reloading**, succeeded (Android tab).
+- **T6b**: `getIdToken(true)` always returned a newer `issued` time; tokens expire 1 h after issue.
+- **T6c**: after deleting the user in the Console, `user.reload()` → `auth/user-token-expired` and the session ended
+  (`auth state signed out`); signing in again created a new uid (`W2njOC…` → `HQKn66…`).
+- **T7**: Reviews today 2, Correct 2, New cards 2/10 before and after visiting the spike (also asserted on IndexedDB by E2E).
+- **T8** (PC Incognito, Keep log): Home + Settings = 32 requests, 0 matches for `loginSpike`, `firebase`, `googleapis`,
+  `gstatic`; after opening the spike, `loginSpike-*.js` appears, initiator `login-spike:11`.
+- **Finding — shared session**: on one device the Chrome tab and the installed PWA share one Firebase session (same
+  origin). Signing in in one shows signed in in the other; signing out in the tab signed the PWA out ~1.3 s later
+  (PC and Android). L2 (logout / delete account) must account for this.
+
+Limitations (kept on record)
+- Some PC results are owner-reported, not logged (see the evidence key).
+- T2 recorded no error code.
+- T8 was checked on PC only (Android optional in the plan; covered by the automated E2E).
+- Redirect did not succeed anywhere. **Login is proven for Google Popup only, not for every method.**
+
+Untouched: Production stays `c6fdf23` (deployment `90ae9e05`); nothing pushed to `ui-import-button`; no Firestore, no
+sync, no schema change. Production environment variables contain no `VITE_FIREBASE_*` (only `NODE_VERSION`).
+
+## Coordinator Gate (2026-10-16)
+
+- **L0: PASS** on the evidence above, with the limitations above.
+- **L1: open**, limited to local data / migration and ReviewLog IDs (no Firestore, no sync engine, no login in the main
+  app, no production change). L2–L4 not approved.
+- Login method for L2: **Google Popup**. Redirect: not pursued now; a proxy or self-hosted helper needs its own Gate.
+- Keep Firebase project `n5-kanji-review-dev`, the test user `HQKn66…` (temporary, minimal data, never real study data),
+  branch `login-spike` (evidence; never merged) and the Preview `VITE_FIREBASE_*` values (Preview only; client config,
+  not secrets; no private keys).
+- `VITE_FIREBASE_*` and the web config are not a substitute for Security Rules.
 
 ## Stop conditions
 
