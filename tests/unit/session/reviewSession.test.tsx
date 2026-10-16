@@ -140,9 +140,10 @@ describe('review session: real flow through the orchestrator', () => {
 
 describe('review save failures do not advance or count', () => {
   it('a rolled-back write keeps the card on screen with an alert; nothing is counted and no raw error is shown', async () => {
-    // the first card's log id is already taken (yesterday's log) so the real transaction fails and rolls back
-    await repos.review.appendLog(logAt(1, NOON - 2 * 86_400_000, 'REVIEW', { id: `${cardId('一', 'A')}#1`, cardId: cardId('一', 'A') }));
-    renderReview(services());
+    // the new log's id is already taken (yesterday's log) so the real transaction fails and rolls back
+    await repos.review.appendLog(logAt(1, NOON - 2 * 86_400_000, 'REVIEW', { id: 'log:taken', cardId: cardId('一', 'A') }));
+    const colliding = buildAppServices(repos, { newLogId: () => 'log:taken' });
+    renderReview(services({ reviewOrchestrator: colliding.reviewOrchestrator! }));
     await start();
     await card(1, 2);
     reveal();

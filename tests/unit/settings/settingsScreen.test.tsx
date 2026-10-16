@@ -104,7 +104,7 @@ describe('kanji font', () => {
 });
 
 describe('export', () => {
-  it('downloads a dated JSON backup that validates as format version 1', async () => {
+  it('downloads a dated JSON backup that validates as format version 2', async () => {
     await seed();
     show();
     fireEvent.click(await screen.findByRole('button', { name: /Export backup/ }));
@@ -112,7 +112,7 @@ describe('export', () => {
     await waitFor(() => expect(downloads).toHaveLength(1));
     expect(downloads[0]!.name).toMatch(/^n5-kanji-backup-\d{4}-\d{2}-\d{2}\.json$/);
     const file = JSON.parse(downloads[0]!.text) as { formatVersion: number; data: { reviewLogs: unknown[] } };
-    expect(file.formatVersion).toBe(1);
+    expect(file.formatVersion).toBe(2);
     expect(file.data.reviewLogs).toHaveLength(2);
   });
 });
@@ -205,7 +205,7 @@ describe('reset', () => {
     fireEvent.click(screen.getByLabelText(/I understand/));
     fireEvent.click(screen.getByRole('button', { name: /^คืนค่า · Reset$/ }));
     expect(await screen.findByText(/Settings reset/)).toBeTruthy();
-    expect(await repos.settings.get()).toEqual(DEFAULT_USER_SETTINGS);
+    expect(await repos.settings.get()).toEqual({ ...DEFAULT_USER_SETTINGS, updatedAt: expect.any(Number) as number });
     expect((screen.getByLabelText(/New cards per day/) as HTMLSelectElement).value).toBe('10');
     expect((await repos.backup.readUserData()).reviewCards).toHaveLength(1);
   });

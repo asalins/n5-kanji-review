@@ -14,7 +14,7 @@ import { openRealRepositories } from '../../helpers/realData';
 
 describe('settings rules', () => {
   it('approved defaults: 10 new / 20 reviews / system theme', () => {
-    expect(DEFAULT_USER_SETTINGS).toEqual({ dailyNewCards: 10, dailyReviewLimit: 20, theme: 'system', uiLanguage: 'th', soundEnabled: false, autoPlay: false, studyMode: 'A', animationsEnabled: true });
+    expect(DEFAULT_USER_SETTINGS).toEqual({ dailyNewCards: 10, dailyReviewLimit: 20, theme: 'system', uiLanguage: 'th', soundEnabled: false, autoPlay: false, studyMode: 'A', animationsEnabled: true, updatedAt: 0 });
     expect(isValidSettings(DEFAULT_USER_SETTINGS)).toBe(true);
   });
   it.each(NEW_CARD_OPTIONS)('new cards %i is allowed', (n) => expect(isValidSettings({ ...DEFAULT_USER_SETTINGS, dailyNewCards: n })).toBe(true));

@@ -1,0 +1,210 @@
+{
+  "format": "n5-kanji-review-backup",
+  "formatVersion": 1,
+  "exportedAt": "2026-10-10T03:08:20.000Z",
+  "databaseSchemaVersion": 2,
+  "datasetVersion": "n5-2026.10.11",
+  "algorithmVersion": "srs-v1",
+  "data": {
+    "reviewCards": [
+      {
+        "id": "kanji:kanji:U+5C71:B",
+        "itemType": "kanji",
+        "itemId": "kanji:U+5C71",
+        "mode": "B",
+        "state": "REVIEW",
+        "interval": 10080,
+        "ease": 2500,
+        "due": 1792206120000,
+        "reviewCount": 1,
+        "correctCount": 1,
+        "incorrectCount": 0,
+        "lastReviewed": 1791601320000,
+        "algorithmVersion": "srs-v1"
+      },
+      {
+        "id": "kanji:kanji:U+65E5:C",
+        "itemType": "kanji",
+        "itemId": "kanji:U+65E5",
+        "mode": "C",
+        "state": "LEARNING",
+        "interval": 10,
+        "ease": 2500,
+        "due": 1791601980000,
+        "reviewCount": 1,
+        "correctCount": 1,
+        "incorrectCount": 0,
+        "lastReviewed": 1791601380000,
+        "algorithmVersion": "srs-v1"
+      },
+      {
+        "id": "kanji:kanji:U+6708:A",
+        "itemType": "kanji",
+        "itemId": "kanji:U+6708",
+        "mode": "A",
+        "state": "LEARNING",
+        "interval": 1440,
+        "ease": 2500,
+        "due": 1791687900000,
+        "reviewCount": 1,
+        "correctCount": 1,
+        "incorrectCount": 0,
+        "lastReviewed": 1791601500000,
+        "algorithmVersion": "srs-v1"
+      },
+      {
+        "id": "kanji:kanji:U+6C34:A",
+        "itemType": "kanji",
+        "itemId": "kanji:U+6C34",
+        "mode": "A",
+        "state": "REVIEW",
+        "interval": 4320,
+        "ease": 2500,
+        "due": 1791946800000,
+        "reviewCount": 2,
+        "correctCount": 2,
+        "incorrectCount": 0,
+        "lastReviewed": 1791687600000,
+        "algorithmVersion": "srs-v1"
+      },
+      {
+        "id": "kanji:kanji:U+6C34:B",
+        "itemType": "kanji",
+        "itemId": "kanji:U+6C34",
+        "mode": "B",
+        "state": "LEARNING",
+        "interval": 1440,
+        "ease": 2500,
+        "due": 1791687840000,
+        "reviewCount": 1,
+        "correctCount": 1,
+        "incorrectCount": 0,
+        "lastReviewed": 1791601440000,
+        "algorithmVersion": "srs-v1"
+      },
+      {
+        "id": "kanji:kanji:U+706B:A",
+        "itemType": "kanji",
+        "itemId": "kanji:U+706B",
+        "mode": "A",
+        "state": "LEARNING",
+        "interval": 1440,
+        "ease": 2500,
+        "due": 1791688260000,
+        "reviewCount": 2,
+        "correctCount": 1,
+        "incorrectCount": 1,
+        "lastReviewed": 1791601860000,
+        "algorithmVersion": "srs-v1"
+      }
+    ],
+    "reviewLogs": [
+      {
+        "id": "kanji:kanji:U+5C71:B#1",
+        "cardId": "kanji:kanji:U+5C71:B",
+        "rating": "EASY",
+        "reviewedAt": 1791601320000,
+        "durationMs": 1860,
+        "stateBefore": "NEW",
+        "stateAfter": "REVIEW",
+        "datasetVersion": "n5-2026.10.11"
+      },
+      {
+        "id": "kanji:kanji:U+65E5:C#1",
+        "cardId": "kanji:kanji:U+65E5:C",
+        "rating": "HARD",
+        "reviewedAt": 1791601380000,
+        "durationMs": 2040,
+        "stateBefore": "NEW",
+        "stateAfter": "LEARNING",
+        "datasetVersion": "n5-2026.10.11"
+      },
+      {
+        "id": "kanji:kanji:U+6708:A#1",
+        "cardId": "kanji:kanji:U+6708:A",
+        "rating": "GOOD",
+        "reviewedAt": 1791601500000,
+        "durationMs": 2400,
+        "stateBefore": "NEW",
+        "stateAfter": "LEARNING",
+        "datasetVersion": "n5-2026.10.11"
+      },
+      {
+        "id": "kanji:kanji:U+6C34:A#1",
+        "cardId": "kanji:kanji:U+6C34:A",
+        "rating": "GOOD",
+        "reviewedAt": 1791601200000,
+        "durationMs": 1500,
+        "stateBefore": "NEW",
+        "stateAfter": "LEARNING",
+        "datasetVersion": "n5-2026.10.11"
+      },
+      {
+        "id": "kanji:kanji:U+6C34:A#2",
+        "cardId": "kanji:kanji:U+6C34:A",
+        "rating": "GOOD",
+        "reviewedAt": 1791687600000,
+        "durationMs": 2477,
+        "stateBefore": "LEARNING",
+        "stateAfter": "REVIEW",
+        "datasetVersion": "n5-2026.10.11"
+      },
+      {
+        "id": "kanji:kanji:U+6C34:B#1",
+        "cardId": "kanji:kanji:U+6C34:B",
+        "rating": "GOOD",
+        "reviewedAt": 1791601440000,
+        "durationMs": 2220,
+        "stateBefore": "NEW",
+        "stateAfter": "LEARNING",
+        "datasetVersion": "n5-2026.10.11"
+      },
+      {
+        "id": "kanji:kanji:U+706B:A#1",
+        "cardId": "kanji:kanji:U+706B:A",
+        "rating": "AGAIN",
+        "reviewedAt": 1791601260000,
+        "durationMs": 1680,
+        "stateBefore": "NEW",
+        "stateAfter": "LEARNING",
+        "datasetVersion": "n5-2026.10.11"
+      },
+      {
+        "id": "kanji:kanji:U+706B:A#2",
+        "cardId": "kanji:kanji:U+706B:A",
+        "rating": "GOOD",
+        "reviewedAt": 1791601860000,
+        "durationMs": 2483,
+        "stateBefore": "LEARNING",
+        "stateAfter": "LEARNING",
+        "datasetVersion": "n5-2026.10.11"
+      }
+    ],
+    "studySessions": [
+      {
+        "id": "session-1791601200000",
+        "startedAt": 1791601200000,
+        "endedAt": 1791601600000,
+        "cardIds": [
+          "kanji:kanji:U+6C34:A",
+          "kanji:kanji:U+706B:A"
+        ],
+        "summary": {
+          "reviewedCount": 4,
+          "correctCount": 3,
+          "incorrectCount": 1
+        }
+      }
+    ],
+    "userSettings": {
+      "dailyNewCards": 20,
+      "dailyReviewLimit": 20,
+      "theme": "dark",
+      "uiLanguage": "th",
+      "soundEnabled": false,
+      "autoPlay": false,
+      "studyMode": "A",
+      "animationsEnabled": true
+    }
+  }
+}

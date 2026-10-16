@@ -10,11 +10,14 @@ export type AppDatabase = IDBPDatabase<AppSchema>;
 export type MigrationDatabase = IDBPDatabase<unknown>;
 export type UpgradeTransaction = IDBPTransaction<unknown, string[], 'versionchange'>;
 
-/** A migration moves the schema up to `version`. */
+/**
+ * A migration moves the schema up to `version`. It may return a promise when it must read/rewrite records; it may
+ * then await ONLY requests on `tx` (anything else would let the upgrade transaction commit early).
+ */
 export interface Migration {
   readonly version: number;
   readonly description: string;
-  readonly migrate: (db: MigrationDatabase, tx: UpgradeTransaction) => void;
+  readonly migrate: (db: MigrationDatabase, tx: UpgradeTransaction) => void | Promise<void>;
 }
 
 /** Versions must be exactly 1, 2, 3 ... with no gaps or duplicates. */
@@ -57,17 +60,42 @@ export async function openAppDatabase(
   if (version < 1) {
     throw new StorageError('No migrations registered; database cannot be opened');
   }
+  let migrationFailure: unknown = null;
   try {
     const db = await openDB<unknown>(name, version, {
       upgrade(upgradeDb, oldVersion, newVersion, tx) {
-        for (const m of selectPendingMigrations(migrations, oldVersion, newVersion ?? version)) {
-          m.migrate(upgradeDb, tx);
+        const pending = selectPendingMigrations(migrations, oldVersion, newVersion ?? version);
+        // Synchronous migrations run synchronously; from the first asynchronous one on, the rest are chained.
+        // Any failure aborts the whole versionchange transaction: the database stays at oldVersion, data untouched.
+        const fail = (error: unknown) => {
+          migrationFailure = error;
+          tx.done.catch(() => undefined); // the abort is reported once, by openDB rejecting
+          try {
+            tx.abort();
+          } catch {
+            // already aborted
+          }
+        };
+        let chain: Promise<void> | null = null;
+        for (const m of pending) {
+          if (chain === null) {
+            try {
+              const result = m.migrate(upgradeDb, tx);
+              if (result !== undefined) chain = result;
+            } catch (error) {
+              fail(error);
+              return;
+            }
+          } else {
+            chain = chain.then(() => m.migrate(upgradeDb, tx));
+          }
         }
+        chain?.catch(fail);
       },
     });
     // The single point where the untyped handle becomes the typed handle for the latest schema.
     return db as unknown as AppDatabase;
   } catch (cause) {
-    throw new StorageError('Failed to open the database', { cause });
+    throw new StorageError('Failed to open the database', { cause: migrationFailure ?? cause });
   }
 }

@@ -48,7 +48,7 @@ describe('export', () => {
   it('builds a versioned envelope from the stored user data and changes nothing', async () => {
     const before = await seedSample();
     const { backup, fileName } = await createBackup(deps(new Date(2026, 9, 4, 9).getTime()));
-    expect(backup).toMatchObject({ format: 'n5-kanji-review-backup', formatVersion: 1, databaseSchemaVersion: 2, datasetVersion: CURRENT_DATASET_VERSION, algorithmVersion: 'srs-v1' });
+    expect(backup).toMatchObject({ format: 'n5-kanji-review-backup', formatVersion: 2, databaseSchemaVersion: 3, datasetVersion: CURRENT_DATASET_VERSION, algorithmVersion: 'srs-v1' });
     expect(backup.exportedAt).toBe(new Date(2026, 9, 4, 9).toISOString());
     expect(fileName).toBe('n5-kanji-backup-2026-10-04.json');
     expect(backup.data.reviewCards).toEqual(before.reviewCards);
@@ -254,7 +254,7 @@ describe('reset', () => {
   it('reset settings writes the approved defaults and keeps progress', async () => {
     const before = await seedSample();
     await resetSettings(repos.settings);
-    expect(await repos.settings.get()).toEqual(DEFAULT_USER_SETTINGS);
+    expect(await repos.settings.get()).toEqual({ ...DEFAULT_USER_SETTINGS, updatedAt: expect.any(Number) as number }); // an explicit save: stamped
     expect((await read()).reviewCards).toEqual(before.reviewCards);
   });
 });

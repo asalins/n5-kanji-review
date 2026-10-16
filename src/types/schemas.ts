@@ -11,7 +11,7 @@ import {
   UI_LANGUAGES,
 } from './common';
 import type { ContentBundle, ContentMeta, ExampleSentence, Kanji, KanjiReading, Vocabulary } from './content';
-import type { ReviewCard, ReviewLog, StreakState, StudySession, UserSettings } from './user';
+import type { DeviceMeta, ReviewCard, ReviewLog, StreakState, StudySession, UserSettings } from './user';
 
 /** Compile-time guarantee that each schema produces exactly its entity type. */
 function conform<T>(schema: z.ZodType<T>): z.ZodType<T> {
@@ -108,7 +108,14 @@ export const reviewLogSchema = conform<ReviewLog>(
     stateBefore: z.enum(LEARNING_STATES),
     stateAfter: z.enum(LEARNING_STATES),
     datasetVersion: z.string().min(1).nullable(),
-  }),
+    deviceId: text.nullable(),
+    originalId: id.nullable(),
+  })
+    // A renamed log keeps a traceable link to the id it came from (collision resolver rule).
+    .refine((log) => log.originalId === null || log.id.startsWith(`${log.originalId}~`), {
+      message: 'a renamed log id must be originalId~<suffix>',
+      path: ['id'],
+    }),
 );
 
 export const studySessionSchema = conform<StudySession>(
@@ -133,8 +140,11 @@ export const userSettingsSchema = conform<UserSettings>(
     autoPlay: z.boolean(),
     studyMode: z.enum(STUDY_MODES),
     animationsEnabled: z.boolean(),
+    updatedAt: epochMs,
   }),
 );
+
+export const deviceMetaSchema = conform<DeviceMeta>(z.object({ deviceId: text, createdAt: epochMs }));
 
 export const streakStateSchema = conform<StreakState>(
   z.object({

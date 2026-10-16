@@ -30,7 +30,7 @@ describe('backup envelope and records (Zod, before any write)', () => {
     expect(code(v({ ...b, format: 'some-other-app' }))).toBe('INVALID_BACKUP_FORMAT');
   });
   it('unsupported formatVersion', () => {
-    expect(code(v({ ...b, formatVersion: 2 }))).toBe('UNSUPPORTED_FORMAT_VERSION');
+    expect(code(v({ ...b, formatVersion: 3 }))).toBe('UNSUPPORTED_FORMAT_VERSION');
     expect(code(v({ ...b, formatVersion: 0 }))).toBe('UNSUPPORTED_FORMAT_VERSION');
   });
   it('invalid envelope fields: timestamp, schema version, missing data', () => {

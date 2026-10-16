@@ -4,7 +4,7 @@ import { localDay } from '../../utils/localDay';
 import { DEFAULT_USER_SETTINGS } from '../settings/defaults';
 import { assertCompatible, CURRENT_ALGORITHM_VERSION, type DatasetWarning } from './backupCompatibility';
 import { BackupError } from './backupErrors';
-import { BACKUP_FORMAT, BACKUP_FORMAT_VERSION, type BackupV1 } from './backupSchema';
+import { BACKUP_FORMAT, BACKUP_FORMAT_VERSION, type Backup } from './backupSchema';
 import { parseBackupText, validateBackup } from './validateBackup';
 
 /** The dataset level whose kanji ids backups are checked against. */
@@ -16,11 +16,11 @@ export interface BackupDeps {
   readonly now: () => number;
 }
 
-/** Export: reads the user data (one snapshot) and wraps it in a versioned envelope. Changes nothing. */
-export async function createBackup(deps: BackupDeps): Promise<{ readonly backup: BackupV1; readonly fileName: string }> {
+/** Export: reads the user data (one snapshot) and wraps it in a versioned envelope (format 2). Changes nothing. Never includes DeviceMeta. */
+export async function createBackup(deps: BackupDeps): Promise<{ readonly backup: Backup; readonly fileName: string }> {
   const [data, datasetVersion] = await Promise.all([deps.backup.readUserData(), deps.kanji.getDatasetVersion()]);
   const nowMs = deps.now();
-  const backup: BackupV1 = {
+  const backup: Backup = {
     format: BACKUP_FORMAT,
     formatVersion: BACKUP_FORMAT_VERSION,
     exportedAt: new Date(nowMs).toISOString(),
@@ -70,7 +70,10 @@ export async function prepareImport(deps: BackupDeps, text: string): Promise<Imp
   };
 }
 
-/** Replace/Restore after confirmation: one atomic transaction; on failure nothing has changed. */
+/**
+ * Replace/Restore after confirmation: one atomic transaction; on failure nothing has changed. Replaces user data
+ * only: this installation's identity (DeviceMeta) is never touched.
+ */
 export async function applyImport(deps: BackupDeps, plan: ImportPlan): Promise<void> {
   const current = await deps.kanji.getDatasetVersion();
   if (current !== plan.checkedDatasetVersion) {

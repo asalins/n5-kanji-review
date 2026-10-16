@@ -37,6 +37,16 @@ export interface ReviewLog {
   readonly stateAfter: LearningState;
   /** Version of the content dataset the card was shown from; null when unknown. */
   readonly datasetVersion: string | null;
+  /**
+   * Provenance: the installation (DeviceMeta.deviceId) that recorded this review. null for logs recorded before
+   * schema v3 / backup format v2, whose origin is unknown. Kept in backups (it describes the event, not this device).
+   */
+  readonly deviceId: string | null;
+  /**
+   * null for every log as recorded. Set only by the collision resolver (services/sync/logCollision): the id this
+   * log had before it was renamed because another, different log already used that id. Then id = `${originalId}~<hash>`.
+   */
+  readonly originalId: string | null;
 }
 
 export interface StudySessionSummary {
@@ -64,6 +74,21 @@ export interface UserSettings {
   readonly autoPlay: boolean;
   readonly studyMode: StudyMode;
   readonly animationsEnabled: boolean;
+  /**
+   * Device wall-clock time (epoch ms) of the user's last explicit save of these settings on the device that saved
+   * them; stamped by SettingsRepository.save only. 0 = unknown / oldest (defaults, schema-v2 data, backup format v1).
+   * Informational for a future merge only: clocks differ between devices, so it never proves which change came first.
+   */
+  readonly updatedAt: EpochMs;
+}
+
+/**
+ * Identity of THIS installation (one record, schema v3). Created once by migration v3 (or on first read if missing).
+ * Never exported in a backup, never replaced by Import (Replace) and never cleared by Reset progress or Reset settings.
+ */
+export interface DeviceMeta {
+  readonly deviceId: string;
+  readonly createdAt: EpochMs;
 }
 
 export interface StreakState {

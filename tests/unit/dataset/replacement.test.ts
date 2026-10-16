@@ -65,7 +65,7 @@ describe('dataset replacement', () => {
     expect(await repos.review.getCard(card.id)).toEqual(card);
     expect(await repos.review.getLogs({ from: new Date(0), to: new Date(8.64e15) })).toEqual([log]);
     expect(await repos.review.getStreakState()).toEqual(streak);
-    expect(await repos.settings.get()).toEqual(settings);
+    expect(await repos.settings.get()).toEqual({ ...settings, updatedAt: expect.any(Number) as number });
   });
 
   it('keeps the old content when the new dataset is invalid', async () => {

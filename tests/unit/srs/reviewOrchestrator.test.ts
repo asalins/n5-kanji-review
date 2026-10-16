@@ -30,10 +30,21 @@ const request = (over: Partial<ReviewRequest> = {}): ReviewRequest => ({
   durationMs: 1_234,
   ...over,
 });
+const DEVICE = '0b5f2c9e-7a41-4d3b-9c2e-5f1a8b7c6d4e';
 const make = (recorder: ReviewRecorder, version: string | null = 'n5-2026.10.01') =>
-  createReviewOrchestrator({ recorder, getDatasetVersion: () => Promise.resolve(version) });
+  createReviewOrchestrator({ recorder, getDatasetVersion: () => Promise.resolve(version), getDeviceId: () => Promise.resolve(DEVICE) });
 
 describe('review orchestrator (rating intent -> SRS -> card + log)', () => {
+  it('gives every new log a fresh log:<UUID v4> id (unique across devices) and this device as its provenance', async () => {
+    const { recorder, logs } = fakeRecorder();
+    const orchestrator = make(recorder);
+    for (let i = 0; i < 5; i += 1) await orchestrator.submit(request({ answeredAt: NOW + i * 60_000 }));
+    const ids = logs.map((l) => l.id);
+    expect(new Set(ids).size).toBe(5);
+    expect(ids.every((id) => /^log:[0-9a-f-]{36}$/.test(id))).toBe(true);
+    expect(logs.every((l) => l.deviceId === DEVICE && l.originalId === null)).toBe(true);
+  });
+
   it('starts a NEW card on the first review and stores card and log together', async () => {
     const { recorder, cards, logs } = fakeRecorder();
     await make(recorder).submit(request());
@@ -47,7 +58,7 @@ describe('review orchestrator (rating intent -> SRS -> card + log)', () => {
     const { recorder, logs } = fakeRecorder();
     await make(recorder, 'n5-2026.10.01').submit(request({ rating: 'EASY', durationMs: 900 }));
     expect(logs[0]).toEqual({
-      id: 'kanji:kanji:U+6C34:A#1',
+      id: expect.stringMatching(/^log:[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/) as string,
       cardId: 'kanji:kanji:U+6C34:A',
       rating: 'EASY',
       reviewedAt: NOW,
@@ -55,6 +66,8 @@ describe('review orchestrator (rating intent -> SRS -> card + log)', () => {
       stateBefore: 'NEW',
       stateAfter: 'REVIEW',
       datasetVersion: 'n5-2026.10.01',
+      deviceId: DEVICE,
+      originalId: null,
     });
     expect(logs[0]!.stateBefore).not.toBe(logs[0]!.stateAfter);
   });
@@ -64,7 +77,9 @@ describe('review orchestrator (rating intent -> SRS -> card + log)', () => {
     const orchestrator = make(recorder);
     await orchestrator.submit(request({ rating: 'AGAIN', answeredAt: NOW }));
     await orchestrator.submit(request({ rating: 'GOOD', answeredAt: NOW + 10 * MS_PER_MINUTE }));
-    expect(logs.map((l) => l.id)).toEqual(['kanji:kanji:U+6C34:A#1', 'kanji:kanji:U+6C34:A#2']);
+    expect(logs).toHaveLength(2);
+    expect(new Set(logs.map((l) => l.id)).size).toBe(2);
+    expect(logs.every((l) => l.cardId === 'kanji:kanji:U+6C34:A')).toBe(true);
     expect(logs[1]).toMatchObject({ stateBefore: 'LEARNING', stateAfter: 'LEARNING' });
     expect(cards.get('kanji:kanji:U+6C34:A')).toMatchObject({ reviewCount: 2, correctCount: 1, incorrectCount: 1 });
   });

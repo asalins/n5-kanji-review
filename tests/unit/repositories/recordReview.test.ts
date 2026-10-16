@@ -120,8 +120,9 @@ describe('production wiring: rating -> SRS -> atomic write (real repositories, r
   it('a failing write rejects the review and leaves no card behind', async () => {
     const real = await openRealRepositories();
     try {
-      await real.repos.review.appendLog(makeLog({ id: 'kanji:kanji:U+6C34:A#1', cardId: 'kanji:kanji:U+6C34:A' })); // collides with the first log id
-      const services = buildAppServices(real.repos);
+      await real.repos.review.appendLog(makeLog({ id: 'log:taken', cardId: 'kanji:kanji:U+6C34:A' }));
+      const services = buildAppServices(real.repos, { newLogId: () => 'log:taken' }); // the new log collides
+
       await expect(
         services.reviewOrchestrator!.submit({ item: { itemType: 'kanji', itemId: 'kanji:U+6C34' }, mode: 'A', rating: 'GOOD', answeredAt: 1_800_000_000_000, durationMs: 1 }),
       ).rejects.toBeInstanceOf(RepositoryError);

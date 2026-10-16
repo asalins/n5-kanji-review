@@ -30,6 +30,8 @@ export function logAt(n: number, reviewedAt: number, stateBefore: LearningState,
     stateBefore,
     stateAfter: 'LEARNING',
     datasetVersion: CURRENT_DATASET_VERSION,
+    deviceId: null,
+    originalId: null,
     ...over,
   };
 }

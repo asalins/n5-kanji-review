@@ -1,7 +1,15 @@
 import { z } from 'zod';
 import { isValidSettings } from '../settings/settingsRules';
 import { BackupError } from './backupErrors';
-import { BACKUP_FORMAT, BACKUP_FORMAT_VERSION, backupHeaderSchema, backupV1Schema, type BackupV1 } from './backupSchema';
+import {
+  BACKUP_FORMAT,
+  SUPPORTED_BACKUP_FORMAT_VERSIONS,
+  backupHeaderSchema,
+  backupV1Schema,
+  backupV2Schema,
+  upgradeBackupV1,
+  type Backup,
+} from './backupSchema';
 
 /** Untrusted text -> JSON value. Nothing in it is ever executed or rendered as HTML. */
 export function parseBackupText(text: string): unknown {
@@ -25,17 +33,19 @@ function findDuplicate(ids: readonly string[]): string | null {
  * Envelope -> every record -> integrity. Throws BackupError; returns a fully validated backup.
  * Integrity: no duplicate id in any collection, every ReviewLog.cardId is one of the backup's cards,
  * settings follow the product rules. StudySession.cardIds are deliberately not enforced.
+ * Format version 1 is validated against its own frozen schema, then converted (upgradeBackupV1); integrity is
+ * checked on the converted backup, so both versions follow exactly the same rules.
  */
-export function validateBackup(raw: unknown): BackupV1 {
+export function validateBackup(raw: unknown): Backup {
   const header = backupHeaderSchema.safeParse(raw);
   if (!header.success || header.data.format !== BACKUP_FORMAT) {
     throw new BackupError('INVALID_BACKUP_FORMAT', 'This file is not a backup of this application');
   }
-  if (header.data.formatVersion !== BACKUP_FORMAT_VERSION) {
+  if (!SUPPORTED_BACKUP_FORMAT_VERSIONS.includes(header.data.formatVersion)) {
     throw new BackupError('UNSUPPORTED_FORMAT_VERSION', `Unsupported backup format version ${header.data.formatVersion}`);
   }
 
-  const parsed = backupV1Schema.safeParse(raw);
+  const parsed = header.data.formatVersion === 1 ? backupV1Schema.safeParse(raw) : backupV2Schema.safeParse(raw);
   if (!parsed.success) {
     // data.<collection>.<index>... (or data.userSettings.<field>) is a bad record; anything shallower is a broken envelope.
     const inData = parsed.error.issues.some((issue) => issue.path[0] === 'data' && issue.path.length >= 3);
@@ -43,7 +53,7 @@ export function validateBackup(raw: unknown): BackupV1 {
       cause: parsed.error,
     });
   }
-  const backup = parsed.data;
+  const backup: Backup = parsed.data.formatVersion === 1 ? upgradeBackupV1(parsed.data) : parsed.data;
   const { reviewCards, reviewLogs, studySessions, userSettings } = backup.data;
 
   for (const [what, ids] of [

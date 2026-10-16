@@ -1,7 +1,7 @@
 // The only SRS import allowed here: the version label. Import never runs the algorithm.
 import { SRS_ALGORITHM_VERSION } from '../srs/constants';
 import { BackupError } from './backupErrors';
-import type { BackupV1 } from './backupSchema';
+import type { Backup } from './backupSchema';
 
 export const CURRENT_ALGORITHM_VERSION = SRS_ALGORITHM_VERSION;
 
@@ -33,7 +33,7 @@ export interface CompatibilityResult {
  *    a single missing item -> DATASET_MISMATCH;
  *  - the backup's algorithm version, and every card's, must equal the current one (unchanged).
  */
-export function assertCompatible(backup: BackupV1, current: CurrentEnvironment): CompatibilityResult {
+export function assertCompatible(backup: Backup, current: CurrentEnvironment): CompatibilityResult {
   if (backup.datasetVersion === null || current.datasetVersion === null) {
     throw new BackupError(
       'DATASET_MISMATCH',

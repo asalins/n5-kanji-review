@@ -1,6 +1,7 @@
 import type { ReviewCard, ReviewLog } from '../../types/entities';
 import { buildReviewCardId } from '../../utils/reviewCardId';
 import { srsV1, type SrsAlgorithm } from '../../services/srs';
+import { newReviewLogId } from '../../utils/uuid';
 import type { ReviewOrchestrator, ReviewRequest } from './reviewBoundary';
 
 /**
@@ -16,6 +17,10 @@ export interface ReviewOrchestratorDeps {
   readonly recorder: ReviewRecorder;
   /** Dataset version loaded at review time (KanjiRepository.getDatasetVersion). */
   readonly getDatasetVersion: () => Promise<string | null>;
+  /** This installation's id (DeviceRepository.getDeviceId): stored on each log as its provenance. */
+  readonly getDeviceId: () => Promise<string>;
+  /** New log ids; default `log:<UUID v4>`, unique across devices. Injected only by tests. */
+  readonly newLogId?: () => string;
   readonly algorithm?: SrsAlgorithm;
 }
 
@@ -27,6 +32,8 @@ export interface ReviewOrchestratorDeps {
 export function createReviewOrchestrator({
   recorder,
   getDatasetVersion,
+  getDeviceId,
+  newLogId = () => newReviewLogId(),
   algorithm = srsV1,
 }: ReviewOrchestratorDeps): ReviewOrchestrator {
   return {
@@ -36,8 +43,9 @@ export function createReviewOrchestrator({
       const before = existing ?? algorithm.createNewCard(request.item, request.mode, request.answeredAt);
       const result = algorithm.updateCardState(before, request.rating, request.answeredAt);
       const log: ReviewLog = {
-        // unique per card because reviewCount only grows; the repository adds (never overwrites) logs
-        id: `${result.card.id}#${result.card.reviewCount}`,
+        // Globally unique (schema v3). Logs recorded earlier keep their `${cardId}#${reviewCount}` ids.
+        // The repository adds (never overwrites) logs.
+        id: newLogId(),
         cardId: result.card.id,
         rating: request.rating,
         reviewedAt: request.answeredAt,
@@ -45,6 +53,8 @@ export function createReviewOrchestrator({
         stateBefore: result.stateBefore,
         stateAfter: result.stateAfter,
         datasetVersion: await getDatasetVersion(),
+        deviceId: await getDeviceId(),
+        originalId: null,
       };
       await recorder.recordReview(result.card, log);
     },

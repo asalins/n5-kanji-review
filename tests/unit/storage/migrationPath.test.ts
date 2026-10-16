@@ -4,6 +4,7 @@ import { deleteDB, openDB } from 'idb';
 import { afterEach, describe, expect, it } from 'vitest';
 import { createIndexedDbRepositories } from '../../../src/repositories/indexeddb';
 import { openAppDatabase, type AppDatabase } from '../../../src/services/storage/database';
+import { CURRENT_DB_VERSION } from '../../../src/services/storage/appDatabase';
 import { APP_MIGRATIONS } from '../../../src/services/storage/migrations';
 import { migrationV1 } from '../../../src/services/storage/migrations/v1Initial';
 import { DEFAULT_USER_SETTINGS } from '../../../src/services/settings/defaults';
@@ -21,8 +22,8 @@ afterEach(async () => {
 /** The v1 schema exactly as released (Phase 2). If v1 ever creates something else, history was rewritten. */
 const V1_STORES = ['exampleSentences', 'kanji', 'kanjiReadings', 'reviewCards', 'reviewLogs', 'streakState', 'studySessions', 'userSettings', 'vocabulary'];
 
-describe('real upgrade path: a v1 database with user data, opened by the current app (v1 -> v2)', () => {
-  it('keeps every card, log, session, setting, streak record and content record, and adds contentMeta', async () => {
+describe('real upgrade path: a v1 database with user data, opened by the current app (v1 -> v2 -> v3)', () => {
+  it('keeps every card, log, session, setting, streak record and content record, and adds contentMeta and deviceMeta', async () => {
     name = uniqueDatabaseName();
     const v1 = await openAppDatabase([migrationV1], name);
     opened.push(v1);
@@ -30,8 +31,10 @@ describe('real upgrade path: a v1 database with user data, opened by the current
     expect([...v1.objectStoreNames].sort()).toEqual(V1_STORES);
 
     // realistic user data written the way v1 stored it (raw stores: the v1 era had no contentMeta)
-    const { cards, logs, sessions } = sampleRecords();
-    const settings = { ...DEFAULT_USER_SETTINGS, dailyNewCards: 30 };
+    const { cards, logs: currentLogs, sessions } = sampleRecords();
+    // v1-era shapes: logs without deviceId/originalId, settings without updatedAt
+    const logs = currentLogs.map(({ deviceId: _d, originalId: _o, ...log }) => log);
+    const { updatedAt: _u, ...settings } = { ...DEFAULT_USER_SETTINGS, dailyNewCards: 30 };
     const raw = v1 as unknown as { put: (store: string, value: unknown, key?: string) => Promise<unknown> };
     for (const card of cards) await raw.put('reviewCards', card);
     for (const log of logs) await raw.put('reviewLogs', log);
@@ -44,16 +47,16 @@ describe('real upgrade path: a v1 database with user data, opened by the current
 
     const current = await openAppDatabase(APP_MIGRATIONS, name);
     opened.push(current);
-    expect(current.version).toBe(2);
-    expect([...current.objectStoreNames].sort()).toEqual([...V1_STORES, 'contentMeta'].sort());
+    expect(current.version).toBe(CURRENT_DB_VERSION);
+    expect([...current.objectStoreNames].sort()).toEqual([...V1_STORES, 'contentMeta', 'deviceMeta'].sort());
 
     const repos = createIndexedDbRepositories(current);
     const data = await repos.backup.readUserData();
     const byId = <T extends { id: string }>(list: readonly T[]) => [...list].sort((a, b) => (a.id < b.id ? -1 : 1));
     expect(data.reviewCards).toEqual(byId(cards));
-    expect(data.reviewLogs).toEqual(byId(logs));
+    expect(data.reviewLogs).toEqual(byId(logs.map((log) => ({ ...log, deviceId: null, originalId: null }))));
     expect(data.studySessions).toEqual(byId(sessions));
-    expect(data.userSettings).toEqual(settings);
+    expect(data.userSettings).toEqual({ ...settings, updatedAt: 0 });
     expect(await repos.review.getStreakState()).toEqual(streak);
     expect(await repos.kanji.getById(contentBundle.kanji[0]!.id)).toEqual(contentBundle.kanji[0]);
     expect(await repos.kanji.getDatasetVersion()).toBeNull(); // contentMeta is new and empty: the loader fills it
@@ -68,13 +71,13 @@ describe('real upgrade path: a v1 database with user data, opened by the current
     first.close();
     const again = await openAppDatabase(APP_MIGRATIONS, name);
     opened.push(again);
-    expect(again.version).toBe(2);
+    expect(again.version).toBe(CURRENT_DB_VERSION);
     expect(await createIndexedDbRepositories(again).review.getCard(sampleRecords().cards[0]!.id)).toEqual(sampleRecords().cards[0]);
   });
 
   it('a database newer than the app is not silently downgraded or wiped (open fails, data stays)', async () => {
     name = uniqueDatabaseName();
-    const future = await openDB(name, 3, { upgrade: (db) => void db.createObjectStore('reviewCards', { keyPath: 'id' }) });
+    const future = await openDB(name, CURRENT_DB_VERSION + 1, { upgrade: (db) => void db.createObjectStore('reviewCards', { keyPath: 'id' }) });
     await future.put('reviewCards', { id: 'kept' });
     future.close();
     await expect(openAppDatabase(APP_MIGRATIONS, name)).rejects.toThrow();

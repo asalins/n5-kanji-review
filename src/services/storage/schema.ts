@@ -1,6 +1,7 @@
 import type { DBSchema } from 'idb';
 import type {
   ContentMeta,
+  DeviceMeta,
   ExampleSentence,
   JlptLevel,
   Kanji,
@@ -28,9 +29,11 @@ export const STORES = {
   studySessions: 'studySessions',
   userSettings: 'userSettings',
   streakState: 'streakState',
+  // installation identity (v3); not user data, never in a backup
+  deviceMeta: 'deviceMeta',
 } as const;
 
-/** Out-of-line key for the single-record stores (userSettings, streakState). */
+/** Out-of-line key for the single-record stores (userSettings, streakState, contentMeta, deviceMeta). */
 export const SINGLETON_KEY = 'current';
 
 /**
@@ -56,4 +59,5 @@ export interface AppSchema extends DBSchema {
   studySessions: { key: string; value: StudySession };
   userSettings: { key: string; value: UserSettings };
   streakState: { key: string; value: StreakState };
+  deviceMeta: { key: string; value: DeviceMeta };
 }

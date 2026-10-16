@@ -59,6 +59,8 @@ export function makeLog(overrides: Partial<ReviewLog> = {}): ReviewLog {
     stateBefore: 'NEW',
     stateAfter: 'LEARNING',
     datasetVersion: 'test-dataset-1',
+    deviceId: null,
+    originalId: null,
     ...overrides,
   };
 }
@@ -80,6 +82,7 @@ export const settings: UserSettings = {
   autoPlay: false,
   studyMode: 'A',
   animationsEnabled: true,
+  updatedAt: 0,
 };
 
 export const streak: StreakState = { lastStudyDate: 9_000, currentStreak: 3, longestStreak: 7 };

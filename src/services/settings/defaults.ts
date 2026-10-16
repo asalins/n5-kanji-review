@@ -18,4 +18,5 @@ export const DEFAULT_USER_SETTINGS: UserSettings = {
   autoPlay: false,
   studyMode: 'A',
   animationsEnabled: true,
+  updatedAt: 0, // never saved
 };

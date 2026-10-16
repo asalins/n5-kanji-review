@@ -1,4 +1,4 @@
-import type { BackupV1 } from '../../src/services/backup/backupSchema';
+import type { BackupV1, BackupV2 } from '../../src/services/backup/backupSchema';
 import { DEFAULT_USER_SETTINGS } from '../../src/services/settings/defaults';
 import type { ReviewCard, ReviewLog, StudySession } from '../../src/types/entities';
 import { NOON, logAt, storedCard } from './sessionFixtures';
@@ -24,8 +24,26 @@ export function sampleRecords(): { cards: ReviewCard[]; logs: ReviewLog[]; sessi
   return { cards, logs, sessions };
 }
 
-export function validBackup(over: Partial<BackupV1> = {}, data: Partial<BackupV1['data']> = {}): BackupV1 {
+/** A current (format 2) backup. */
+export function validBackup(over: Partial<BackupV2> = {}, data: Partial<BackupV2['data']> = {}): BackupV2 {
   const { cards, logs, sessions } = sampleRecords();
+  return {
+    format: 'n5-kanji-review-backup',
+    formatVersion: 2,
+    exportedAt: '2026-10-02T05:00:00.000Z',
+    databaseSchemaVersion: 3,
+    datasetVersion: CURRENT_DATASET_VERSION,
+    algorithmVersion: 'srs-v1',
+    data: { reviewCards: cards, reviewLogs: logs, studySessions: sessions, userSettings: { ...DEFAULT_USER_SETTINGS, dailyNewCards: 20 }, ...data },
+    ...over,
+  };
+}
+
+/** A format 1 backup exactly as the production app (schema v2) wrote it: no deviceId/originalId/updatedAt. */
+export function validBackupV1(over: Partial<BackupV1> = {}): BackupV1 {
+  const { cards, logs, sessions } = sampleRecords();
+  const legacyLogs = logs.map(({ deviceId: _d, originalId: _o, ...log }) => log);
+  const { updatedAt: _u, ...legacySettings } = { ...DEFAULT_USER_SETTINGS, dailyNewCards: 20 };
   return {
     format: 'n5-kanji-review-backup',
     formatVersion: 1,
@@ -33,7 +51,7 @@ export function validBackup(over: Partial<BackupV1> = {}, data: Partial<BackupV1
     databaseSchemaVersion: 2,
     datasetVersion: CURRENT_DATASET_VERSION,
     algorithmVersion: 'srs-v1',
-    data: { reviewCards: cards, reviewLogs: logs, studySessions: sessions, userSettings: { ...DEFAULT_USER_SETTINGS, dailyNewCards: 20 }, ...data },
+    data: { reviewCards: cards, reviewLogs: legacyLogs, studySessions: sessions, userSettings: legacySettings },
     ...over,
   };
 }

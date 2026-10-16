@@ -6,8 +6,13 @@ import { createProjectListSource } from '../services/content/projectList';
 import { requestPersistentStorage } from '../services/persistence/persistentStorage';
 import { openDefaultDatabase } from '../services/storage/appDatabase';
 
+export interface AppServiceOptions {
+  /** Test-only: deterministic ReviewLog ids (e.g. to force an id collision inside the write transaction). */
+  readonly newLogId?: () => string;
+}
+
 /** Wires repositories and the review orchestrator (rating -> SRS -> atomic card + log write). */
-export function buildAppServices(repositories: Repositories): AppRepositories {
+export function buildAppServices(repositories: Repositories, options: AppServiceOptions = {}): AppRepositories {
   return {
     kanji: repositories.kanji,
     review: repositories.review,
@@ -17,6 +22,8 @@ export function buildAppServices(repositories: Repositories): AppRepositories {
     reviewOrchestrator: createReviewOrchestrator({
       recorder: repositories.review,
       getDatasetVersion: () => repositories.kanji.getDatasetVersion(),
+      getDeviceId: () => repositories.device.getDeviceId(),
+      ...(options.newLogId === undefined ? {} : { newLogId: options.newLogId }),
     }),
   };
 }

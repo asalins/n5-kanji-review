@@ -135,7 +135,7 @@ describe('SettingsRepository', () => {
   it('returns null before first save, then round-trips', async () => {
     expect(await repos.settings.get()).toBeNull();
     await repos.settings.save(settings);
-    expect(await repos.settings.get()).toEqual(settings);
+    expect(await repos.settings.get()).toEqual({ ...settings, updatedAt: expect.any(Number) as number });
   });
 
   it('keeps a single settings record (save overwrites)', async () => {
