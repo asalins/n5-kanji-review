@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-export type Screen = 'home' | 'review' | 'practice' | 'search' | 'settings' | 'about' | 'detail';
+export type Screen = 'home' | 'review' | 'practice' | 'search' | 'settings' | 'about' | 'privacy' | 'detail';
 type ChildScreen = Exclude<Screen, 'home' | 'detail'>;
 
-const CHILD_SCREENS: readonly ChildScreen[] = ['review', 'practice', 'search', 'settings', 'about'];
+const CHILD_SCREENS: readonly ChildScreen[] = ['review', 'practice', 'search', 'settings', 'about', 'privacy'];
 const KANJI_ID = /^kanji:U\+[0-9A-F]{4,6}$/;
 
 interface Location {

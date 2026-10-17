@@ -129,3 +129,7 @@ Locked by tests: released migrations (`v1Initial`, `v2ContentMeta`) are fingerpr
 - **Back navigation (Simple Home boundary):** opening a screen from Home adds one history entry; system/browser Back returns Home; screen-to-screen moves replace that entry; Back on Home leaves the app normally.
 - **New-card order:** the same new cards, spread so one kanji's modes are not back to back (deterministic; due cards keep their due order).
 - **Release:** `docs/release/release-readiness.md`, `docs/release/android-checklist.md`.
+
+## Optional account (L2)
+
+Settings → Account: Google sign-in (popup), sign out on this device, Delete Account, Privacy (Thai/English, contact `n5kanjireview.support@gmail.com`). Only when the Firebase web config `VITE_FIREBASE_*` is set (Cloudflare Pages Preview env); production has none, so the app is unchanged. Firebase is loaded lazily, never for users who do not sign in. No learning data leaves the device. Details: `docs/sync/l2-account.md`.

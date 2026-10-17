@@ -44,6 +44,8 @@ describe('service worker configuration: assets only, user-controlled updates', (
   it('precaches the app shell, the bundled dataset chunks, icons and the bundled kanji fonts; caches no network/API responses', () => {
     expect(pwaOptions.workbox?.globPatterns).toEqual(['**/*.{js,css,html,svg,png,webmanifest,woff2}']);
     expect(pwaOptions.workbox?.runtimeCaching).toEqual([]);
+    // L2: the optional account's Firebase chunk is never precached (a user who never signs in never downloads it)
+    expect(pwaOptions.workbox?.globIgnores).toEqual(['assets/firebaseAdapter-*.js']);
     expect(pwaOptions.workbox?.navigateFallback).toBe('index.html');
     expect(JSON.stringify(pwaOptions.workbox)).not.toMatch(/json/); // backups are local .json files, never cached
   });

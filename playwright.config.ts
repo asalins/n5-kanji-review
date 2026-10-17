@@ -25,6 +25,14 @@ export default defineConfig({
   // The production build is served: the service worker and offline mode only exist there.
   webServer: {
     command: `npm run build && npm run preview -- --port ${PORT} --strictPort`,
+    // L2: a FAKE Firebase config, so the optional account section exists in the E2E build. It points at an
+    // unresolvable domain and the specs block every Google/Firebase request: no real sign-in ever happens in E2E.
+    env: {
+      VITE_FIREBASE_API_KEY: 'e2e-fake-key',
+      VITE_FIREBASE_AUTH_DOMAIN: 'e2e-auth.invalid',
+      VITE_FIREBASE_PROJECT_ID: 'e2e-project',
+      VITE_FIREBASE_APP_ID: '1:0:web:e2e',
+    },
     url: `http://localhost:${PORT}`,
     reuseExistingServer: true,
     timeout: 120_000,

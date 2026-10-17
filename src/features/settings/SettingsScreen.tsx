@@ -7,6 +7,7 @@ import { THEMES, type Theme, type UserSettings } from '../../types/entities';
 import { IMPORT_ERROR, TEXT, THEME_LABEL } from './strings';
 import { useSettings } from './SettingsProvider';
 import { useBackup, type BackupStatus } from './useBackup';
+import { AccountSection } from '../account/AccountSection';
 import { KANJI_FONTS, applyKanjiFont, isKanjiFontId, readKanjiFont, saveKanjiFont, type KanjiFontId } from '../../services/display/kanjiFont';
 
 const SELECT = `min-h-12 w-full rounded-xl border border-stone-300 bg-white px-3 text-base text-stone-900 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-100 ${FOCUS_RING}`;
@@ -143,7 +144,7 @@ function statusMessage(status: BackupStatus): { text: string; error: boolean } |
   }
 }
 
-export function SettingsScreen({ onExit, onAbout }: { onExit: () => void; onAbout?: () => void }) {
+export function SettingsScreen({ onExit, onAbout, onPrivacy }: { onExit: () => void; onAbout?: () => void; onPrivacy?: () => void }) {
   const backup = useBackup();
   const [confirming, setConfirming] = useState<'progress' | 'settings' | null>(null);
   const [fileKey, setFileKey] = useState(0);
@@ -206,6 +207,8 @@ export function SettingsScreen({ onExit, onAbout }: { onExit: () => void; onAbou
           </button>
         </Section>
       )}
+
+      {onPrivacy !== undefined && <AccountSection onPrivacy={onPrivacy} />}
 
       <Section title={TEXT.danger}>
         {confirming === 'progress' ? (

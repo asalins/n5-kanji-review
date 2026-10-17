@@ -26,6 +26,9 @@ export const pwaManifest = {
   ],
 } satisfies Partial<VitePWAOptions['manifest']>;
 
+/** The lazily loaded Firebase chunk of the optional account (src/services/account/firebaseAdapter.ts). */
+export const ACCOUNT_SDK_CHUNK_GLOB = 'assets/firebaseAdapter-*.js';
+
 export const pwaOptions: Partial<VitePWAOptions> = {
   // 'prompt': a new version waits until the user accepts it; nothing reloads by itself (approved).
   registerType: 'prompt',
@@ -37,9 +40,14 @@ export const pwaOptions: Partial<VitePWAOptions> = {
   workbox: {
     // App shell + bundled dataset chunks + icons: the app works offline after the first successful load.
     globPatterns: ['**/*.{js,css,html,svg,png,webmanifest,woff2}'],
+    // L2: the optional account's Firebase chunk is NOT precached, so installing or opening the app never downloads
+    // Firebase for a user who does not sign in (D-L2-1).
+    globIgnores: [ACCOUNT_SDK_CHUNK_GLOB],
     navigateFallback: 'index.html',
     cleanupOutdatedCaches: true,
     // No runtime caching: no API or network response is ever cached (backups are local files, never fetched).
+    // Consequence for the optional account: offline, a signed-in user whose browser has not kept the Firebase chunk
+    // sees "checking (offline)" until back online; the session and the hint are kept (C1), study works as usual.
     runtimeCaching: [],
   },
 };

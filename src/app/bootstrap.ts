@@ -5,6 +5,8 @@ import { loadBundledDataset } from '../services/content/bundledDataset';
 import { createProjectListSource } from '../services/content/projectList';
 import { requestPersistentStorage } from '../services/persistence/persistentStorage';
 import { openDefaultDatabase } from '../services/storage/appDatabase';
+import { createDefaultAccountService } from '../services/account';
+import { logError } from '../utils/userMessage';
 
 export interface AppServiceOptions {
   /** Test-only: deterministic ReviewLog ids (e.g. to force an id collision inside the write transaction). */
@@ -18,6 +20,7 @@ export function buildAppServices(repositories: Repositories, options: AppService
     review: repositories.review,
     settings: repositories.settings,
     backup: repositories.backup,
+    account: createDefaultAccountService(() => repositories.backup.resetProgress(), logError),
     newItems: createProjectListSource(),
     reviewOrchestrator: createReviewOrchestrator({
       recorder: repositories.review,
@@ -35,7 +38,10 @@ async function start(): Promise<AppRepositories> {
   await loadBundledDataset({ writer: repositories.contentWriter, reader: repositories.kanji, now: Date.now });
   // Ask the browser not to evict the learning data. Not awaited: start-up never waits for or fails on it.
   void requestPersistentStorage();
-  return buildAppServices(repositories);
+  const services = buildAppServices(repositories);
+  // Optional account: loads Firebase only if this browser had a session (hint). Never blocks or fails start-up.
+  services.account?.start();
+  return services;
 }
 
 let started: Promise<AppRepositories> | null = null;

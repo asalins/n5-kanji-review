@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { KanjiDetailPage } from '../pages/KanjiDetailPage';
 import { AboutPage } from '../pages/AboutPage';
+import { PrivacyPage } from '../pages/PrivacyPage';
 import { useScreenNavigation } from './navigation';
 import { StateMessage } from '../components/StateMessage';
 import { RepositoriesProvider, type AppRepositories } from '../hooks/useRepositories';
@@ -134,8 +135,9 @@ export function App({ bootstrap = bootstrapApp, useUpdate = usePwaUpdate }: AppP
           notice={<UpdateBanner visible={update.updateReady} onUpdate={update.applyUpdate} onDismiss={update.dismiss} />}
         />
       )}
-      {screen === 'settings' && <SettingsPage onExit={goHome} onAbout={() => open('about')} />}
+      {screen === 'settings' && <SettingsPage onExit={goHome} onAbout={() => open('about')} onPrivacy={() => open('privacy')} />}
       {screen === 'about' && <AboutPage onBack={() => open('settings')} />}
+      {screen === 'privacy' && <PrivacyPage onBack={() => open('settings')} />}
       {(screen === 'search' || screen === 'detail') && (
         <SearchPage onExit={goHome} onOpenDetail={openKanjiDetail} hidden={screen === 'detail'} />
       )}

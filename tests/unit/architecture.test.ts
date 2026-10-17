@@ -292,4 +292,18 @@ describe('architecture boundaries', () => {
     expect(hook.text).toMatch(/isDueCard\(/);
     expect(hook.text).not.toMatch(/state\s*[!=]==?\s*'NEW'\s*&&[^;]*\.due/); // no hand-made Due rule
   });
+
+  it('L2: only the account adapter imports Firebase, and only through a dynamic import (lazy chunk)', () => {
+    const firebaseUsers = files.filter((f) => /from ['"]firebase\//.test(f.text)).map((f) => f.rel);
+    expect(firebaseUsers).toEqual(['services/account/firebaseAdapter.ts']);
+    const staticAdapter = files.filter((f) => /from ['"][^'"]*firebaseAdapter['"]/.test(f.text)).map((f) => f.rel);
+    expect(staticAdapter).toEqual([]);
+    const dynamicAdapter = files.filter((f) => /import\(\s*['"]\.\/firebaseAdapter['"]\s*\)/.test(f.text)).map((f) => f.rel);
+    expect(dynamicAdapter).toEqual(['services/account/index.ts']);
+  });
+  it('L2: the account hint is the only localStorage use of the account; UI never reads storage or Firebase directly', () => {
+    const ui = files.filter((f) => /^(pages|components|hooks|features)\//.test(f.rel));
+    // (the Privacy text may NAME Firebase; what is checked is code: storage access and Firebase imports)
+    expect(ui.filter((f) => /\blocalStorage\b|from ['"]firebase|import\(['"]firebase/.test(f.text)).map((f) => f.rel)).toEqual([]);
+  });
 });
