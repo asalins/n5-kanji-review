@@ -61,8 +61,7 @@ describe('sync scheduler', () => {
     const { service, cloud } = await setup({ progress: true });
     expect(service.getStatus()).toEqual({ kind: 'off' });
     service.setActive(true);
-    await settle();
-    expect(service.getStatus().kind).toBe('idle');
+    await expect.poll(() => service.getStatus().kind).toBe('idle');
     expect(cloud.logsOf('u')).toHaveLength(sampleRecords().logs.length);
   });
 
@@ -93,6 +92,19 @@ describe('sync scheduler', () => {
     env.fire();
     await settle();
     expect(service.getStatus().kind).toBe('idle');
+  });
+
+  it('F6: hiding the page during a back-off does NOT retry (tab switches must not escalate the back-off)', async () => {
+    const { service, env, cloud } = await setup();
+    cloud.failure = new CloudError('denied', 'permission-denied');
+    service.setActive(true);
+    await settle();
+    expect(env.delays()).toEqual([BACKOFF_MS[0]]);
+    const pullsBefore = cloud.ops.pulls;
+    for (let i = 0; i < 5; i += 1) env.hide();
+    await settle();
+    expect(cloud.ops.pulls).toBe(pullsBefore); // no extra attempt
+    expect(env.delays()).toEqual([BACKOFF_MS[0]]); // still the first back-off step
   });
 
   it('quota exhausted -> "paused" for an hour; local data untouched', async () => {

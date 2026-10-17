@@ -105,6 +105,8 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
   let again = false;
   let failures = 0;
   let timer: unknown = null;
+  /** F6: is the pending timer the 30 s debounce of a local change (not a back-off / quota retry)? */
+  let debouncePending = false;
   let remoteResetEpoch: number | null = null;
   const listeners = new Set<() => void>();
   const dataListeners = new Set<(change: DataChange) => void>();
@@ -117,16 +119,19 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
     for (const listener of listeners) listener();
   };
 
-  const schedule = (ms: number) => {
+  const schedule = (ms: number, debounce = false) => {
     if (timer !== null) env.clearTimer(timer);
+    debouncePending = debounce;
     timer = env.setTimer(() => {
       timer = null;
+      debouncePending = false;
       void run();
     }, ms);
   };
   const cancelTimer = () => {
     if (timer !== null) env.clearTimer(timer);
     timer = null;
+    debouncePending = false;
   };
 
   async function cycle(): Promise<void> {
@@ -229,7 +234,9 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
       }
     });
     env.onHidden(() => {
-      if (active && timer !== null) void run(); // a debounced upload is waiting: send it before the page may be closed
+      // Only a debounced upload is flushed early (the page may be closed). A back-off / quota wait is NOT shortened:
+      // otherwise every tab switch would retry and escalate the back-off (F6, found in G1 T5).
+      if (active && debouncePending) void run();
     });
   };
 
@@ -257,7 +264,7 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
     notifyLocalChange() {
       if (!active || suspended) return;
       if (status.kind === 'paused-quota' || status.kind === 'error') return; // its retry timer will pick it up
-      schedule(CHANGE_DEBOUNCE_MS);
+      schedule(CHANGE_DEBOUNCE_MS, true);
     },
     syncNow() {
       failures = 0;

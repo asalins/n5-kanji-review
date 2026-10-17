@@ -137,3 +137,30 @@ Fixes in this commit:
 - Tests: regression of the whole T1–T4 session (two profiles, two tabs, real bootstrap wiring) asserting the epoch
   only rises on Reset / Import and the log names the origin; F1/F3 UI; log ring buffer. Mutation checks: making
   "accept" leave a pending replace, or not blocking Reset during the notice, each fails a test.
+
+## G1 re-run after `cc760e7` (2026-10-17, Preview, uid `wGFnw9…`)
+
+| Step | Result |
+|---|---|
+| T6 F1: bound device, Reset confirmation shows the account / every-device warning (bold, TH+EN); Import confirmation likewise | PASS |
+| T7 F3: during an unanswered remote-reset notice, Import file input disabled + pointer text; Reset progress disabled + pointer text (click does nothing) | PASS (the disabled Reset button did not look dimmed → fixed below) |
+| T7 F5: log shows `[xkdy] Reset progress on this device…` → `raising the cloud epoch 3 -> 4` → `REPLACED the cloud`; other window `remote reset detected: cloud epoch 4, knew 3; nothing uploaded` → `user accepted…` with **no** raise after it (also 3 tabs at 15:03–15:04 accepted epoch 3 without raising) | PASS |
+| T4 two tabs, 1 review, Sync now in both at once: 1 cloud log, epoch unchanged (4), both tabs show 1, no error | PASS (manual check shows no duplicate/no error; the lock itself is proven by unit test) |
+| T5 rules edited to `&& false` (log create denied): "Sync failed, retries automatically", local review kept, epoch unchanged, nothing deleted; rules restored → Sync now → pending log uploaded (2 logs) | PASS, with **F6** |
+| Quota exceeded | **BLOCKED** (cannot be produced on the Spark plan; unit test only) |
+
+**F6** (found in T5, fixed here): the "page hidden" flush also fired while a back-off timer was pending, so every
+tab switch retried and escalated the back-off (log: 7 denied attempts in 80 s; next retry 1 h). Now only a pending
+30 s debounce of a local change is flushed on hide. Regression test added (fails on the old code). Also: disabled
+secondary buttons are now visibly dimmed.
+
+## G3 — security of the Dev data (live project `n5-kanji-review-dev`, separate from the emulator results)
+- Emulator (CI): rules suite 24/24 on every run since `a335afc` (#2–#5).
+- Live: the published rules were saved from the Console (Notepad, UTF-8) and compared with `firestore.rules` of
+  `cc760e7`: `git diff --no-index --ignore-cr-at-eol --ignore-blank-lines` showed one hunk at line 1 only, identical
+  text (`rules_version = '2';`) = the UTF-8 BOM PowerShell 5 adds; lines 2–101 identical.
+- Live Rules Playground, `get /users/wGFnw9…/logs/log:0c530852…`, authenticated google.com:
+  uid `wGFnw9…` → **allowed** (`isOwner`); uid `attacker-uid` → **denied**.
+- Live stale epoch: not separately provable by hand — the app stops before sending (T3/T7: "nothing uploaded"), and
+  the Playground cannot satisfy `uploadedAt == request.time`. Covered by: rules identical to the CI-tested file +
+  emulator rules test "D6 stale/future epoch refused" + T5 showing the live rules do reject creates. **BLOCKED (live).**

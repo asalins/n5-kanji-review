@@ -6,7 +6,7 @@ export const PRIMARY_BUTTON =
   `min-h-14 w-full rounded-xl bg-red-700 px-6 text-lg font-semibold text-white active:bg-red-800 ${FOCUS_RING}`;
 
 export const SECONDARY_BUTTON =
-  `min-h-12 rounded-xl border border-stone-300 bg-white px-4 text-base font-medium text-stone-900 active:bg-stone-100 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-100 dark:active:bg-neutral-700 ${FOCUS_RING}`;
+  `min-h-12 rounded-xl border border-stone-300 bg-white px-4 text-base font-medium text-stone-900 active:bg-stone-100 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-100 dark:active:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-50 ${FOCUS_RING}`;
 
 /**
  * Page padding that respects display cut-outs, rounded corners and the Android navigation area
