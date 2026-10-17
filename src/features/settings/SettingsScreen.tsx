@@ -8,6 +8,7 @@ import { IMPORT_ERROR, TEXT, THEME_LABEL } from './strings';
 import { useSettings } from './SettingsProvider';
 import { useBackup, type BackupStatus } from './useBackup';
 import { AccountSection } from '../account/AccountSection';
+import { useSync, useSyncBound } from '../account/useSync';
 import { KANJI_FONTS, applyKanjiFont, isKanjiFontId, readKanjiFont, saveKanjiFont, type KanjiFontId } from '../../services/display/kanjiFont';
 
 const SELECT = `min-h-12 w-full rounded-xl border border-stone-300 bg-white px-3 text-base text-stone-900 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-100 ${FOCUS_RING}`;
@@ -151,6 +152,10 @@ export function SettingsScreen({ onExit, onAbout, onPrivacy }: { onExit: () => v
   const fileId = useId();
   const busy = backup.status.kind === 'BUSY';
   const message = statusMessage(backup.status);
+  // F1: Reset / Import on a bound device also replace the account's cloud data — say so.
+  const bound = useSyncBound() === true;
+  // F3: while another device's reset is unanswered, Reset / Import here would replace the account again: blocked.
+  const blocked = useSync().status.kind === 'remote-reset';
 
   return (
     <div className="flex flex-col gap-4">
@@ -181,13 +186,19 @@ export function SettingsScreen({ onExit, onAbout, onPrivacy }: { onExit: () => v
               id={fileId}
               type="file"
               accept=".json,application/json"
-              disabled={busy}
+              disabled={busy || blocked}
               // The browser's own "Choose file" button, styled like the app's secondary buttons (bordered, 48 px).
               className={`w-full rounded-xl text-sm ${FOCUS_RING} file:mr-3 file:min-h-12 file:cursor-pointer file:rounded-xl file:border file:border-solid file:border-stone-400 file:bg-white file:px-4 file:text-base file:font-medium file:text-stone-900 active:file:bg-stone-100 disabled:file:opacity-50 dark:file:border-neutral-500 dark:file:bg-neutral-800 dark:file:text-neutral-100`}
               onChange={(e) => void backup.chooseFile(e.target.files?.[0])}
             />
+            {blocked && (
+              <p role="note" data-testid="import-blocked" className="text-sm font-medium">
+                {TEXT.blockedByRemoteReset}
+              </p>
+            )}
             {backup.status.kind === 'CONFIRM_IMPORT' && (
               <ImportConfirm
+                bound={bound}
                 status={backup.status}
                 onConfirm={(plan) => void backup.confirmImport(plan)}
                 onCancel={() => {
@@ -225,6 +236,11 @@ export function SettingsScreen({ onExit, onAbout, onPrivacy }: { onExit: () => v
             onCancel={() => setConfirming(null)}
           >
             <p>{TEXT.resetProgressWarning}</p>
+            {bound && (
+              <p role="alert" data-testid="bound-reset-warning" className="mt-2 font-semibold">
+                {TEXT.boundResetWarning}
+              </p>
+            )}
           </ConfirmPanel>
         ) : confirming === 'settings' ? (
           <ConfirmPanel
@@ -243,9 +259,14 @@ export function SettingsScreen({ onExit, onAbout, onPrivacy }: { onExit: () => v
           </ConfirmPanel>
         ) : (
           <div className="flex flex-col gap-2">
-            <button type="button" className={SECONDARY_BUTTON} disabled={busy || !backup.available} onClick={() => setConfirming('progress')}>
+            <button type="button" className={SECONDARY_BUTTON} disabled={busy || !backup.available || blocked} onClick={() => setConfirming('progress')}>
               {TEXT.resetProgress}
             </button>
+            {blocked && (
+              <p role="note" data-testid="reset-blocked" className="text-sm font-medium">
+                {TEXT.blockedByRemoteReset}
+              </p>
+            )}
             <button type="button" className={SECONDARY_BUTTON} disabled={busy} onClick={() => setConfirming('settings')}>
               {TEXT.resetSettings}
             </button>
@@ -261,10 +282,12 @@ export function SettingsScreen({ onExit, onAbout, onPrivacy }: { onExit: () => v
 }
 
 function ImportConfirm({
+  bound,
   status,
   onConfirm,
   onCancel,
 }: {
+  bound: boolean;
   status: Extract<BackupStatus, { kind: 'CONFIRM_IMPORT' }>;
   onConfirm: (plan: Extract<BackupStatus, { kind: 'CONFIRM_IMPORT' }>['plan']) => void;
   onCancel: () => void;
@@ -273,6 +296,11 @@ function ImportConfirm({
   return (
     <ConfirmPanel title={TEXT.importWarningTitle} acknowledge={TEXT.understand} confirmLabel={TEXT.importConfirm} cancelLabel={TEXT.cancel} onConfirm={() => onConfirm(plan)} onCancel={onCancel}>
       <p className="mb-2 font-medium">{TEXT.importWarning}</p>
+      {bound && (
+        <p role="alert" data-testid="bound-import-warning" className="mb-2 font-semibold">
+          {TEXT.boundImportWarning}
+        </p>
+      )}
       {plan.datasetWarning !== null && (
         <p role="alert" className="mb-2 rounded-lg border-2 border-amber-600 bg-amber-50 p-2 font-medium text-amber-950 dark:border-amber-400 dark:bg-amber-950/40 dark:text-amber-100">
           ⚠ {TEXT.datasetWarning(plan.datasetWarning.backupVersion, plan.datasetWarning.currentVersion)}

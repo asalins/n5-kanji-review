@@ -5,8 +5,9 @@ import { loadBundledDataset } from '../services/content/bundledDataset';
 import { createProjectListSource } from '../services/content/projectList';
 import { requestPersistentStorage } from '../services/persistence/persistentStorage';
 import { openDefaultDatabase } from '../services/storage/appDatabase';
-import { createDefaultAccountService } from '../services/account';
+import { createDefaultAccountService, type AccountService } from '../services/account';
 import { browserSyncEnvironment, createSyncService, type SyncEnvironment, type SyncService } from '../services/sync/syncService';
+import { createSyncLog, type SyncLog } from '../services/sync/syncLog';
 import { logError } from '../utils/userMessage';
 
 export interface AppServiceOptions {
@@ -14,6 +15,10 @@ export interface AppServiceOptions {
   readonly newLogId?: () => string;
   /** Test-only: the sync scheduler's environment (timers, network, locks). */
   readonly syncEnv?: SyncEnvironment;
+  /** Test-only: the F5 diagnostic log. */
+  readonly syncLog?: SyncLog;
+  /** Test-only: an account service instead of the Firebase one (to exercise the real sync wiring). */
+  readonly account?: AccountService;
 }
 
 /** Wires repositories and the review orchestrator (rating -> SRS -> atomic card + log write). */
@@ -21,7 +26,7 @@ export function buildAppServices(repositories: Repositories, options: AppService
   // Account <-> sync are built together: Delete Account asks sync to delete the cloud data first (D-L2-6),
   // and sync reads the cloud of the account's lazily loaded SDK.
   let sync: SyncService | null = null;
-  const account = createDefaultAccountService(
+  const account = options.account ?? createDefaultAccountService(
     // Sign-out / Delete Account "also delete progress on this device": the progress AND its binding to the account.
     () => repositories.sync.forgetLocalProgress(),
     logError,
@@ -32,7 +37,13 @@ export function buildAppServices(repositories: Repositories, options: AppService
   );
   const accountUsed = account.getStatus().kind !== 'unavailable';
   if (accountUsed) {
-    sync = createSyncService({ repo: repositories.sync, getCloud: () => account.getCloud(), env: options.syncEnv ?? browserSyncEnvironment(), logError });
+    sync = createSyncService({
+      repo: repositories.sync,
+      getCloud: () => account.getCloud(),
+      env: options.syncEnv ?? browserSyncEnvironment(),
+      logError,
+      syncLog: options.syncLog ?? createSyncLog(),
+    });
     const follow = () => {
       const kind = account.getStatus().kind;
       sync?.setActive(kind === 'signed-in' || kind === 'signed-in-offline');
@@ -40,6 +51,12 @@ export function buildAppServices(repositories: Repositories, options: AppService
     account.subscribe(follow);
   }
   const changed = () => sync?.notifyLocalChange();
+  /** F5: record WHO asked for a replacement of the account's cloud data (Reset / Import on this device). */
+  const noteReplace = async (what: string) => {
+    if (sync === null) return;
+    const bound = await sync.isBound().catch(() => false);
+    sync.log.add(bound ? `${what} on this device: the account's cloud data will be replaced on the next sync` : `${what} on this device (not bound to an account: local only)`);
+  };
   const orchestrator = createReviewOrchestrator({
     recorder: repositories.review,
     getDatasetVersion: () => repositories.kanji.getDatasetVersion(),
@@ -61,10 +78,12 @@ export function buildAppServices(repositories: Repositories, options: AppService
       // Reset / Import mark a bound account's cloud for replacement (same transaction); sync it soon.
       replaceUserData: async (snapshot) => {
         await repositories.backup.replaceUserData(snapshot);
+        await noteReplace('Import (Replace)');
         changed();
       },
       resetProgress: async () => {
         await repositories.backup.resetProgress();
+        await noteReplace('Reset progress');
         changed();
       },
     },

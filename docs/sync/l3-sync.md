@@ -98,3 +98,42 @@ From the job summary (Vitest reports):
 Not tested by hand (covered by unit + emulator tests only): Import (Replace) while bound, binding prompt with
 existing progress / another account, quota pause, cross-tab lock.
 Production unchanged throughout: `ui-import-button` = `c6fdf23` (deployment `90ae9e05`).
+
+## G1 findings and fixes (owner decision (ก), 2026-10-17)
+
+Coordinator verdict on L3: CONDITIONAL ACCEPTANCE; G1–G3 to close. While running G1 (Preview, new test uid
+`wGFnw9Bgz0MsBbiRi5TmLL5x5tQ2`; the earlier test uid was deleted by the Delete Account test):
+
+| G1 step | Result |
+|---|---|
+| T1 binding prompt (Incognito, 2 reviews): prompt shown with e-mail and 3 choices; **Firestore empty until "Upload and sync"**; then root epoch 0 + 2 logs | PASS |
+| T2 progress bound to another (deleted) uid: "belongs to another account", **no upload button**; cloud stays 2 logs; "delete this device's progress and use the account's data" → 2 | PASS |
+| T3 Import (Replace) while bound (done in Incognito): cloud epoch 0→1, the 3 epoch-0 logs deleted, the 2 file logs re-uploaded with `epoch 1`, `uploadedAt` 1 s after `resetAt` | PASS |
+| T3 another device after a replace: no upload, notice with time and unsynced count | PASS (shown twice, 14:30:17 and 14:35:13) |
+
+Findings:
+- **F1** (defect, C2): the Reset progress / Import confirmations still had the L1 local-only text; on a bound device
+  they also replace the account's cloud data and every synced device. The tester pressed Reset progress expecting a
+  local clear.
+- **F2** (decision for the Coordinator): a device that has not yet seen another device's replace can still Reset /
+  Import and replace the account again (by design: an explicit, confirmed action).
+- **F3** (usability): the sync notice's "clear this device" and Danger-zone "Reset progress" sit on one page with
+  similar wording and the same "I understand" box; while the notice was open the account was replaced again.
+- **Unresolved**: the 14:35:13 raise (epoch 2→3) was made by the Incognito profile (it knew epoch 3 afterwards);
+  the tester remembers only the notice's button, which cannot raise the epoch (code + regression test). The cloud
+  was empty afterwards, which matches Reset progress, not Import. **Cause not provable: the app kept no record.**
+- **F4** (risk found in review): a Firestore transaction re-run after a lost commit response would have raised the
+  epoch twice.
+
+Fixes in this commit:
+- F1: on a bound device the Reset / Import confirmations add "the account's progress in the cloud is deleted /
+  replaced and every synced device will be asked to clear" (+ how to clear only this device: sign out with the box).
+- F3: while the remote-reset notice is unanswered, Reset progress and Import are disabled with a pointer to it.
+- F4: `bumpEpoch` treats a re-run that finds exactly `from + 1` as its own commit (residual: a concurrent replace by
+  another device in the same instant would be taken as ours; the lost-commit case cannot be produced in tests).
+- F5: local sync log (last 40 entries, every tab of the origin, localStorage, never uploaded, no uid / e-mail /
+  review data), shown under Account → Sync. Records Reset / Import requests (and whether they will replace the
+  cloud), every epoch raise, remote resets, binding answers, accepted resets, failures, Delete Account.
+- Tests: regression of the whole T1–T4 session (two profiles, two tabs, real bootstrap wiring) asserting the epoch
+  only rises on Reset / Import and the log names the origin; F1/F3 UI; log ring buffer. Mutation checks: making
+  "accept" leave a pending replace, or not blocking Reset during the notice, each fails a test.

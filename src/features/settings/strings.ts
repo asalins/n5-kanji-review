@@ -37,6 +37,12 @@ export const TEXT = {
   resetProgress: 'ลบความคืบหน้าทั้งหมด · Reset progress',
   resetProgressWarning:
     'การ์ดทบทวน ประวัติ และรอบการเรียนทั้งหมดจะถูกลบถาวร (การตั้งค่าและชุดคันจิยังอยู่) กู้คืนได้เฉพาะจากไฟล์สำรองที่ส่งออกไว้ · This will permanently delete your learning progress. It cannot be undone unless you have an exported backup.',
+  boundResetWarning:
+    'เครื่องนี้ sync กับบัญชีอยู่: ความคืบหน้าของบัญชีนี้บน Cloud จะถูกลบด้วย และทุกอุปกรณ์ที่ sync กับบัญชีนี้จะถูกถามให้ล้างความคืบหน้าของตัวเอง ถ้าต้องการล้างเฉพาะเครื่องนี้ ให้ออกจากระบบแล้วติ๊ก "ลบความคืบหน้าในเครื่องนี้ด้วย" · This device syncs with an account: the account\'s progress in the cloud is deleted too, and every device synced with it will be asked to clear its progress. To clear only this device, sign out and tick "Also delete learning progress on this device".',
+  boundImportWarning:
+    'เครื่องนี้ sync กับบัญชีอยู่: ความคืบหน้าของบัญชีนี้บน Cloud จะถูกแทนที่ด้วยไฟล์นี้ และทุกอุปกรณ์ที่ sync กับบัญชีนี้จะถูกถามให้ล้างความคืบหน้าของตัวเอง · This device syncs with an account: the account\'s progress in the cloud is replaced by this file, and every device synced with it will be asked to clear its progress.',
+  blockedByRemoteReset:
+    'ตอบกรอบ Sync ในหัวข้อบัญชีก่อน: ความคืบหน้าในบัญชีถูก reset หรือแทนที่จากอุปกรณ์อื่น · First answer the sync notice in the Account section: the account was reset or replaced from another device.',
   resetSettings: 'คืนค่าการตั้งค่าเริ่มต้น · Reset settings',
   resetSettingsWarning: 'การตั้งค่าจะกลับเป็นค่าเริ่มต้น (10 / 20, ธีมตามระบบ) ความคืบหน้าไม่ถูกลบ · Settings go back to the defaults; progress is kept.',
   understand: 'ฉันเข้าใจ · I understand',

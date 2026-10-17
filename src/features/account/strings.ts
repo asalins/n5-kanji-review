@@ -80,6 +80,9 @@ export const SYNC_TEXT = {
   understand: 'ฉันเข้าใจ · I understand',
   cancel: 'ยกเลิก · Cancel',
   failed: 'ทำไม่สำเร็จ · ลองใหม่อีกครั้ง · That did not work. Please try again.',
+  logTitle: 'บันทึก sync ของเครื่องนี้ (สำหรับตรวจสอบ) · Sync log of this device (for checking)',
+  logNote: 'เก็บเฉพาะในเครื่องนี้ ไม่ถูกส่งไปที่ใด ไม่มีอีเมลหรือข้อมูลการทบทวน · Kept on this device only; never sent anywhere; no e-mail or review data.',
+  logEmpty: 'ยังไม่มีรายการ · No entries yet',
 } as const;
 
 export const PRIVACY_LINKS = {

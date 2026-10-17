@@ -31,6 +31,8 @@ export interface SyncEngineDeps {
   readonly repo: SyncRepository;
   readonly cloud: CloudStore;
   readonly now: () => number;
+  /** F5: diagnostic log of decisions (no uid, e-mail or review content). */
+  readonly log?: (event: string) => void;
 }
 
 async function pull(deps: SyncEngineDeps, uid: string, meta: SyncMeta, epoch: number) {
@@ -91,12 +93,14 @@ async function startReplace(deps: SyncEngineDeps, uid: string, root: CloudRoot):
   let from = root.epoch;
   for (let attempt = 0; ; attempt += 1) {
     try {
+      deps.log?.(`replace: raising the cloud epoch ${from} -> ${from + 1} (a Reset / Import on this device is pending)`);
       const epoch = await deps.cloud.bumpEpoch(uid, from);
       await deps.repo.updateMeta({ knownEpoch: epoch, pendingReplace: false, cleanupBelow: epoch, pushSettings: true, pullCursor: null });
       return epoch;
     } catch (error) {
       if (!(error instanceof CloudError) || error.kind !== 'conflict' || attempt > 0) throw error;
       from = (await deps.cloud.readOrCreateRoot(uid)).epoch;
+      deps.log?.(`replace: the epoch moved meanwhile (now ${from}); retrying once`);
     }
   }
 }
@@ -108,11 +112,13 @@ export async function runSyncCycle(deps: SyncEngineDeps): Promise<SyncOutcome> {
   if (uid === null) return { kind: 'no-user' };
 
   let meta = await repo.getMeta();
+  const log = deps.log ?? (() => undefined);
   if (meta.declinedUid === uid) return { kind: 'declined', uid };
   if (meta.uid === null) {
     // D-L3-8: progress on this device is uploaded only after the user agreed. No progress: nothing to ask.
     if (await repo.hasLocalProgress()) return { kind: 'needs-binding', reason: 'unbound', uid };
     await repo.bind(uid);
+    log('bound to the signed-in account (this device had no progress)');
     meta = await repo.getMeta();
   } else if (meta.uid !== uid) {
     // Never upload account A's progress into account B.
@@ -129,14 +135,17 @@ export async function runSyncCycle(deps: SyncEngineDeps): Promise<SyncOutcome> {
     root = { ...root, epoch: meta.knownEpoch!, created: false };
   } else if (meta.knownEpoch === null) {
     meta = await repo.updateMeta({ knownEpoch: root.epoch, pullCursor: null });
+    log(`first sync of this binding: following cloud epoch ${root.epoch}`);
   } else if (root.epoch !== meta.knownEpoch || (root.created && meta.lastSyncAt !== null)) {
     // Another device reset / imported (or the cloud data was deleted). Upload nothing; the user decides.
+    log(`remote reset detected: cloud epoch ${root.epoch}${root.created ? ' (cloud data was missing)' : ''}, this device knew ${meta.knownEpoch}; nothing uploaded`);
     return { kind: 'remote-reset', uid, epoch: root.epoch, resetAt: root.resetAt, unsynced: (await repo.pendingLogs()).length };
   }
   const epoch = meta.knownEpoch!;
 
   if (meta.cleanupBelow !== null) {
-    await cloud.deleteLogsBelow(uid, meta.cleanupBelow);
+    const deleted = await cloud.deleteLogsBelow(uid, meta.cleanupBelow);
+    log(`replace: deleted ${deleted} cloud logs of epochs below ${meta.cleanupBelow}`);
     meta = await repo.updateMeta({ cleanupBelow: null });
   }
 
@@ -147,6 +156,7 @@ export async function runSyncCycle(deps: SyncEngineDeps): Promise<SyncOutcome> {
   } catch (error) {
     if (!(error instanceof CloudError) || error.kind !== 'denied') throw error;
     // Refused: the epoch moved (a reset elsewhere) or another device took a legacy id meanwhile.
+    log('upload refused by the cloud: re-checking the epoch, pulling, retrying once');
     const now = await cloud.readOrCreateRoot(uid);
     if (now.epoch !== epoch) return { kind: 'remote-reset', uid, epoch: now.epoch, resetAt: now.resetAt, unsynced: (await repo.pendingLogs()).length };
     const again = await pull(deps, uid, await repo.getMeta(), epoch);
@@ -158,5 +168,8 @@ export async function runSyncCycle(deps: SyncEngineDeps): Promise<SyncOutcome> {
 
   const settings = await syncSettings(deps, uid, meta.pushSettings);
   await repo.updateMeta({ pushSettings: false, lastSyncAt: deps.now() });
+  if (replaced || pulled.pulled > 0 || pushed > 0 || pulled.renamed > 0 || settings !== 'kept') {
+    log(`synced (epoch ${epoch}): pulled ${pulled.pulled}, pushed ${pushed}, renamed ${pulled.renamed}, settings ${settings}${replaced ? ', REPLACED the cloud' : ''}`);
+  }
   return { kind: 'synced', uid, ...pulled, pushed, settings, replaced };
 }

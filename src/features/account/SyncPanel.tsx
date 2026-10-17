@@ -3,7 +3,7 @@ import { ConfirmPanel } from '../../components/ConfirmPanel';
 import { PRIMARY_BUTTON, SECONDARY_BUTTON } from '../../components/styles';
 import type { BindingChoice } from '../../services/sync/syncService';
 import { SYNC_TEXT as T } from './strings';
-import { useSync } from './useSync';
+import { useSync, useSyncLog } from './useSync';
 
 const time = (ms: number) => new Date(ms).toLocaleString();
 
@@ -118,6 +118,29 @@ export function SyncPanel({ email }: { email: string }) {
           {T.failed}
         </p>
       )}
+      <SyncLogView />
     </div>
+  );
+}
+
+/** F5: what sync decided on this device (local diagnostics). */
+function SyncLogView() {
+  const entries = useSyncLog();
+  return (
+    <details data-testid="sync-log" className="text-xs">
+      <summary className="min-h-11 cursor-pointer py-3 underline underline-offset-4">{T.logTitle}</summary>
+      <p className="mb-2">{T.logNote}</p>
+      {entries.length === 0 ? (
+        <p>{T.logEmpty}</p>
+      ) : (
+        <ol className="flex flex-col gap-1 font-mono">
+          {entries.map((e, i) => (
+            <li key={`${e.at}-${i}`}>
+              {new Date(e.at).toLocaleString()} [{e.tab}] {e.event}
+            </li>
+          ))}
+        </ol>
+      )}
+    </details>
   );
 }

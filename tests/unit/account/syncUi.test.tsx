@@ -6,6 +6,7 @@ import { SyncPanel } from '../../../src/features/account/SyncPanel';
 import { ACCOUNT_TEXT, SYNC_TEXT } from '../../../src/features/account/strings';
 import { RepositoriesProvider, type AppRepositories } from '../../../src/hooks/useRepositories';
 import type { BindingChoice, SyncService, SyncStatus } from '../../../src/services/sync/syncService';
+import { createSyncLog } from '../../../src/services/sync/syncLog';
 
 function fakeSync(status: SyncStatus) {
   const calls: string[] = [];
@@ -21,6 +22,8 @@ function fakeSync(status: SyncStatus) {
     enable: async () => void calls.push('enable'),
     deleteCloudData: async () => 'deleted',
     resume: () => undefined,
+    isBound: async () => true,
+    log: createSyncLog(null),
   };
   return { service, calls };
 }

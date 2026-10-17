@@ -1,6 +1,7 @@
 import type { SyncRepository } from '../../repositories/interfaces';
 import { CloudError, type CloudStore } from './cloudTypes';
 import { runSyncCycle, type SyncOutcome } from './syncEngine';
+import { createSyncLog, type SyncLog } from './syncLog';
 
 /**
  * L3b sync scheduler. When to sync, never what (that is syncEngine):
@@ -50,6 +51,8 @@ export interface SyncServiceDeps {
   readonly getCloud: () => CloudStore | null;
   readonly env: SyncEnvironment;
   readonly logError?: (error: unknown) => void;
+  /** F5: local diagnostic log (default: in memory only). */
+  readonly syncLog?: SyncLog;
 }
 
 export interface DataChange {
@@ -76,6 +79,10 @@ export interface SyncService {
   deleteCloudData(uid: string): Promise<'deleted' | 'failed'>;
   /** After a failed Delete Account: syncing may continue. */
   resume(): void;
+  /** Is this device's progress bound to an account (Reset / Import then also replace that account's cloud data)? */
+  isBound(): Promise<boolean>;
+  /** F5: what sync decided on this device, newest last. */
+  readonly log: SyncLog;
 }
 
 const errorReason = (error: unknown): 'network' | 'auth' | 'denied' | 'unknown' | 'quota' => {
@@ -89,6 +96,8 @@ const errorReason = (error: unknown): 'network' | 'auth' | 'denied' | 'unknown' 
 export function createSyncService(deps: SyncServiceDeps): SyncService {
   const { repo, env } = deps;
   const log = deps.logError ?? (() => undefined);
+  const syncLog = deps.syncLog ?? createSyncLog(null);
+  const note = (event: string) => syncLog.add(event);
   let status: SyncStatus = { kind: 'off' };
   let active = false;
   let suspended = false;
@@ -129,10 +138,11 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
     set({ kind: 'syncing' });
     let outcome: SyncOutcome;
     try {
-      outcome = await runSyncCycle({ repo, cloud, now: env.now });
+      outcome = await runSyncCycle({ repo, cloud, now: env.now, log: note });
     } catch (error) {
       const reason = errorReason(error);
       if (reason === 'unknown') log(error);
+      note(`sync failed: ${reason}${env.isOnline() ? '' : ' (offline)'}`);
       if (!env.isOnline()) {
         failures = 0;
         set({ kind: 'offline' }); // retried on `online`
@@ -155,6 +165,7 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
         set({ kind: 'off' });
         return;
       case 'needs-binding':
+        if (status.kind !== 'needs-binding') note(`asking before binding (${outcome.reason}); nothing uploaded`);
         set({ kind: 'needs-binding', reason: outcome.reason });
         return;
       case 'declined':
@@ -256,6 +267,7 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
       const cloud = deps.getCloud();
       const uid = cloud === null ? null : await cloud.confirmedUid().catch(() => null);
       if (uid === null) return;
+      note(`binding answered by the user: ${choice}`);
       if (choice === 'skip') {
         await repo.updateMeta({ declinedUid: uid });
         set({ kind: 'declined' });
@@ -268,12 +280,14 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
     },
     async acceptRemoteReset() {
       if (remoteResetEpoch === null) return;
+      note(`user accepted the remote reset: local progress cleared, following epoch ${remoteResetEpoch}`);
       await repo.acceptRemoteReset(remoteResetEpoch);
       remoteResetEpoch = null;
       dataChanged({ cards: true, settings: false });
       await run();
     },
     async enable() {
+      note('sync turned back on by the user');
       await repo.updateMeta({ declinedUid: null });
       await run();
     },
@@ -286,9 +300,11 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
       const task = async () => {
         try {
           await cloud.deleteAll(uid);
+          note('Delete Account: cloud data deleted');
           return 'deleted' as const;
         } catch (error) {
           log(error);
+          note('Delete Account: deleting the cloud data FAILED (account kept)');
           return 'failed' as const;
         }
       };
@@ -298,6 +314,8 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
     resume() {
       suspended = false;
     },
+    isBound: async () => (await repo.getMeta()).uid !== null,
+    log: syncLog,
   };
 }
 
