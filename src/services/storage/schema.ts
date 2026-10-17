@@ -11,6 +11,8 @@ import type {
   ReviewLog,
   StreakState,
   StudySession,
+  SyncLedgerEntry,
+  SyncMeta,
   UserSettings,
   Vocabulary,
 } from '../../types/entities';
@@ -31,6 +33,9 @@ export const STORES = {
   streakState: 'streakState',
   // installation identity (v3); not user data, never in a backup
   deviceMeta: 'deviceMeta',
+  // multi-device sync state of this installation (v4); never in a backup
+  syncLedger: 'syncLedger',
+  syncMeta: 'syncMeta',
 } as const;
 
 /** Out-of-line key for the single-record stores (userSettings, streakState, contentMeta, deviceMeta). */
@@ -60,4 +65,6 @@ export interface AppSchema extends DBSchema {
   userSettings: { key: string; value: UserSettings };
   streakState: { key: string; value: StreakState };
   deviceMeta: { key: string; value: DeviceMeta };
+  syncLedger: { key: string; value: SyncLedgerEntry };
+  syncMeta: { key: string; value: SyncMeta };
 }

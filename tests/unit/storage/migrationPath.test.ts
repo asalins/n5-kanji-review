@@ -22,7 +22,7 @@ afterEach(async () => {
 /** The v1 schema exactly as released (Phase 2). If v1 ever creates something else, history was rewritten. */
 const V1_STORES = ['exampleSentences', 'kanji', 'kanjiReadings', 'reviewCards', 'reviewLogs', 'streakState', 'studySessions', 'userSettings', 'vocabulary'];
 
-describe('real upgrade path: a v1 database with user data, opened by the current app (v1 -> v2 -> v3)', () => {
+describe('real upgrade path: a v1 database with user data, opened by the current app (v1 -> v2 -> v3 -> v4)', () => {
   it('keeps every card, log, session, setting, streak record and content record, and adds contentMeta and deviceMeta', async () => {
     name = uniqueDatabaseName();
     const v1 = await openAppDatabase([migrationV1], name);
@@ -48,7 +48,7 @@ describe('real upgrade path: a v1 database with user data, opened by the current
     const current = await openAppDatabase(APP_MIGRATIONS, name);
     opened.push(current);
     expect(current.version).toBe(CURRENT_DB_VERSION);
-    expect([...current.objectStoreNames].sort()).toEqual([...V1_STORES, 'contentMeta', 'deviceMeta'].sort());
+    expect([...current.objectStoreNames].sort()).toEqual([...V1_STORES, 'contentMeta', 'deviceMeta', 'syncLedger', 'syncMeta'].sort());
 
     const repos = createIndexedDbRepositories(current);
     const data = await repos.backup.readUserData();
@@ -92,6 +92,8 @@ describe('released migrations are immutable', () => {
   const RELEASED: Record<string, string> = {
     'src/services/storage/migrations/v1Initial.ts': '74ae1ab918aa4cbcc28476ad47fb46ec759125143468c71108f7c624be6ca9ab',
     'src/services/storage/migrations/v2ContentMeta.ts': 'a944a7e05bf2ba496d7aa94f493fc3791833f4d0e1139df4d1c6f2c68ec9760c',
+    // v3: on Preview since L1 (0ad6257); devices there already run it.
+    'src/services/storage/migrations/v3SyncReadyLocal.ts': 'beddbf9fe0379e5a704fad95d1d4ca8bc408f3f83baf362845b78dd8a9ede13f',
   };
   it.each(Object.entries(RELEASED))('%s is unchanged since release', (path, fingerprint) => {
     const actual = createHash('sha256').update(readFileSync(path)).digest('hex');

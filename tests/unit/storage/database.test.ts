@@ -28,7 +28,7 @@ describe('database', () => {
   it('opens at the current version', async () => {
     const { db, dispose } = await openTestDatabase();
     disposers.push(dispose);
-    expect(CURRENT_DB_VERSION).toBe(3); // v1 initial stores, v2 contentMeta, v3 deviceMeta + log provenance + settings updatedAt
+    expect(CURRENT_DB_VERSION).toBe(4); // v1 initial stores, v2 contentMeta, v3 deviceMeta + log provenance + settings updatedAt, v4 sync state
     expect(db.version).toBe(CURRENT_DB_VERSION);
   });
 

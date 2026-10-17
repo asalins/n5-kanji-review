@@ -81,13 +81,13 @@ async function rawInfo(page: Page): Promise<{ version: number; deviceMeta: { dev
 
 const byId = <T extends { id: string }>(list: readonly T[]) => [...list].sort((a, b) => (a.id < b.id ? -1 : 1));
 
-test('production data (schema v2) survives the upgrade to v3 unchanged; new reviews use the new ids; identity is stable', async ({ page }) => {
+test('production data (schema v2) survives the upgrade to v3 (and v4) unchanged; new reviews use the new ids; identity is stable', async ({ page }) => {
   await seedProductionV2(page);
   await openHome(page);
 
   const db = await readDatabase(page);
   const info = await rawInfo(page);
-  expect(info.version).toBe(3);
+  expect(info.version).toBe(4); // v3 (this test's subject), then v4 (empty sync stores)
   expect(info.deviceMeta).toHaveLength(1);
   expect(info.deviceMeta[0]!.deviceId).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
   expect(byId(db.reviewCards as { id: string }[])).toEqual(byId(PRODUCTION.data.reviewCards));
@@ -128,7 +128,8 @@ test('production data (schema v2) survives the upgrade to v3 unchanged; new revi
   // export is format 2 and carries no installation identity
   const [download] = await Promise.all([page.waitForEvent('download'), page.getByRole('button', { name: /Export backup/ }).tap()]);
   const exported = readFileSync((await download.path())!, 'utf8');
-  expect(JSON.parse(exported)).toMatchObject({ formatVersion: 2, databaseSchemaVersion: 3 });
+  expect(JSON.parse(exported)).toMatchObject({ formatVersion: 2, databaseSchemaVersion: 4 });
   expect(exported).not.toContain('deviceMeta');
+  expect(exported).not.toMatch(/syncLedger|syncMeta/); // sync state is never in a backup
   expect(exported).not.toContain(deviceId); // the only log from this device was replaced by the import
 });

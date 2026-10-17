@@ -294,12 +294,20 @@ describe('architecture boundaries', () => {
   });
 
   it('L2: only the account adapter imports Firebase, and only through a dynamic import (lazy chunk)', () => {
-    const firebaseUsers = files.filter((f) => /from ['"]firebase\//.test(f.text)).map((f) => f.rel);
-    expect(firebaseUsers).toEqual(['services/account/firebaseAdapter.ts']);
+    const firebaseUsers = files.filter((f) => /from ['"]firebase\//.test(f.text)).map((f) => f.rel).sort();
+    // L3b: firestoreCloud.ts is imported only by the adapter (next test), so it is in the same lazy chunk.
+    expect(firebaseUsers).toEqual(['services/account/firebaseAdapter.ts', 'services/account/firestoreCloud.ts']);
     const staticAdapter = files.filter((f) => /from ['"][^'"]*firebaseAdapter['"]/.test(f.text)).map((f) => f.rel);
     expect(staticAdapter).toEqual([]);
     const dynamicAdapter = files.filter((f) => /import\(\s*['"]\.\/firebaseAdapter['"]\s*\)/.test(f.text)).map((f) => f.rel);
     expect(dynamicAdapter).toEqual(['services/account/index.ts']);
+  });
+  it('L3b: Firestore code is only in firestoreCloud.ts, imported only by the (lazy) adapter; sync logic never imports Firebase', () => {
+    const firestoreUsers = files.filter((f) => /from ['"]firebase\/firestore['"]/.test(f.text)).map((f) => f.rel).sort();
+    expect(firestoreUsers).toEqual(['services/account/firebaseAdapter.ts', 'services/account/firestoreCloud.ts']);
+    const cloudImporters = files.filter((f) => /from ['"][^'"]*firestoreCloud['"]/.test(f.text)).map((f) => f.rel);
+    expect(cloudImporters).toEqual(['services/account/firebaseAdapter.ts']);
+    expect(files.filter((f) => f.rel.startsWith('services/sync/') && /firebase/.test(f.text.replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, ''))).map((f) => f.rel)).toEqual([]);
   });
   it('L2: the account hint is the only localStorage use of the account; UI never reads storage or Firebase directly', () => {
     const ui = files.filter((f) => /^(pages|components|hooks|features)\//.test(f.rel));

@@ -103,3 +103,19 @@ export function mergeReviewLogs(existing: readonly ReviewLog[], incoming: readon
 
   return { logs: out.sort((a, b) => compare(a.id, b.id)), renamed, duplicatesMerged: total - distinct };
 }
+
+/**
+ * Sync (L3b): a cloud log already owns `rootId`, and a DIFFERENT local review used the same id. Cloud ids are
+ * final (logs are create-only there), so the local one moves: the same rename rule as mergeReviewLogs
+ * (`${rootId}~<sha256 of the event>`, longer on a clash), deterministic for the same (rootId, event).
+ */
+export function renameForCollision(log: ReviewLog, taken: ReadonlySet<string>): ReviewLog {
+  const rootId = rootIdOf(log);
+  const hash = sha256Hex(canonicalEvent(log));
+  for (const candidate of renamedIdCandidates(rootId, hash)) {
+    if (!taken.has(candidate)) return { ...log, id: candidate, originalId: rootId };
+  }
+  throw new Error('unreachable');
+}
+
+export { rootIdOf };

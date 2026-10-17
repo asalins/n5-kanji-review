@@ -52,7 +52,7 @@ describe('backup format 2', () => {
     await importText(JSON.stringify(validBackup()));
     await repos.settings.save({ ...DEFAULT_USER_SETTINGS, dailyNewCards: 30 });
     const { backup } = await createBackup(deps());
-    expect(backup).toMatchObject({ formatVersion: 2, databaseSchemaVersion: 3 });
+    expect(backup).toMatchObject({ formatVersion: 2, databaseSchemaVersion: 4 });
     expect(Object.keys(backup).sort()).toEqual(['algorithmVersion', 'data', 'databaseSchemaVersion', 'datasetVersion', 'exportedAt', 'format', 'formatVersion']);
     expect(Object.keys(backup.data).sort()).toEqual(['reviewCards', 'reviewLogs', 'studySessions', 'userSettings']);
     expect(backup.data.reviewLogs.every((l) => 'deviceId' in l && 'originalId' in l)).toBe(true);

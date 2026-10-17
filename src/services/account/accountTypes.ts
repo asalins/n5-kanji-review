@@ -1,3 +1,5 @@
+import type { CloudStore } from '../sync/cloudTypes';
+
 /** L2 account types. The account is optional: the app works fully without it (local-first). */
 
 export interface AccountUser {
@@ -10,7 +12,8 @@ export interface AccountUser {
  * the local account hint only decides whether the SDK is loaded at start-up.
  *  - unavailable: no Firebase config or no privacy contact e-mail -> the account section is not shown at all.
  *  - signed-out: no user (notice explains why, when the app ended the session itself).
- *  - checking: a hint exists and the SDK is loading / the cached session is being read (offline: cannot load yet).
+ *  - checking: a hint exists and the SDK is loading / the cached session is being read (offline: cannot load yet),
+ *    or a cached user is being checked with the server (L-1: never shown as signed-in before the server answers).
  *  - signed-in: Firebase has a user and the server accepted it (or it was just signed in).
  *  - signed-in-offline: Firebase has a cached user, but the server could not be reached to check it.
  */
@@ -38,13 +41,14 @@ export interface SignOutResult {
 /**
  * Delete Account outcome, reported part by part (C2). Nothing is ever summarised as "everything deleted".
  *  - account: deleted | not-deleted (cancelled before anything happened) | failed (an error; nothing local touched)
- *  - cloudData: 'none' in L2 — the app stores no learning data in the cloud yet (D-L2-6 is for L3)
+ *  - cloudData (L3b, D-L2-6): deleted BEFORE the account. 'failed' = the cloud data could not be deleted, so the
+ *    account was NOT deleted either (try again). 'none' = no cloud store is wired (tests only).
  *  - localData: only touched after the account was deleted, and only if the user asked for it
  */
 export interface DeleteAccountResult {
   readonly account: 'deleted' | 'not-deleted' | 'failed';
   readonly reason: AuthErrorClass | null;
-  readonly cloudData: 'none';
+  readonly cloudData: 'none' | 'deleted' | 'failed';
   readonly localData: LocalDataResult;
 }
 
@@ -58,6 +62,8 @@ export interface AuthAdapter {
   reload(): Promise<void>;
   signOut(): Promise<void>;
   deleteUser(): Promise<void>;
+  /** L3b: the user's cloud data (Firestore, same lazy chunk). null when no cloud is configured (tests). */
+  cloud(): CloudStore | null;
 }
 
 export type AdapterLoader = () => Promise<AuthAdapter>;

@@ -17,7 +17,7 @@ test.skip(() => BASELINE === '' || !existsSync(join(BASELINE, 'sw.js')), 'N5_BAS
 
 const PORT = 4191;
 
-test('production build data -> Update to this build: every record kept, schema v3, identity created once', async ({ page }) => {
+test('production build data -> Update to this build: every record kept, schema v4, identity created once, not bound to any account', async ({ page }) => {
   const work = mkdtempSync(join(tmpdir(), 'n5-l1-'));
   const production = join(work, 'production');
   const next = join(work, 'next');
@@ -62,22 +62,26 @@ test('production build data -> Update to this build: every record kept, schema v
     await Promise.all([page.waitForEvent('framenavigated'), page.getByRole('button', { name: /Update/ }).tap()]);
     await expect(page.getByRole('heading', { name: 'N5 Kanji Review' })).toBeVisible();
 
-    const { version, devices } = await page.evaluate(
+    const { version, devices, syncRecords } = await page.evaluate(
       () =>
-        new Promise<{ version: number; devices: number }>((resolve) => {
+        new Promise<{ version: number; devices: number; syncRecords: number }>((resolve) => {
           const r = indexedDB.open('n5-kanji-review');
           r.onsuccess = () => {
             const db = r.result;
-            const count = db.transaction('deviceMeta').objectStore('deviceMeta').count();
-            count.onsuccess = () => {
-              resolve({ version: db.version, devices: count.result });
+            const tx = db.transaction(['deviceMeta', 'syncLedger', 'syncMeta']);
+            const count = tx.objectStore('deviceMeta').count();
+            const ledger = tx.objectStore('syncLedger').count();
+            const meta = tx.objectStore('syncMeta').count();
+            tx.oncomplete = () => {
+              resolve({ version: db.version, devices: count.result, syncRecords: ledger.result + meta.result });
               db.close();
             };
           };
         }),
     );
-    expect(version).toBe(3);
+    expect(version).toBe(4); // v2 -> v3 (L1) -> v4 (L3b sync state)
     expect(devices).toBe(1);
+    expect(syncRecords).toBe(0); // not bound to any account: nothing will ever be uploaded without the user
     const after = await readDatabase(page);
     expect(after.reviewCards).toEqual(before.reviewCards);
     expect(after.studySessions).toEqual(before.studySessions);

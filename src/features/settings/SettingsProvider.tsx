@@ -29,7 +29,7 @@ const SettingsContext = createContext<SettingsContextValue | null>(null);
  * a read error keeps the app usable with the defaults and is shown on the settings page.
  */
 export function SettingsProvider({ children }: { children: ReactNode }) {
-  const { settings: repository } = useRepositories();
+  const { settings: repository, sync } = useRepositories();
   const [status, setStatus] = useState<SettingsLoad>(repository === undefined ? 'READY' : 'LOADING');
   const [stored, setStored] = useState<UserSettings | null>(null);
   const token = useRef(0);
@@ -54,6 +54,11 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     void reload();
   }, [reload]);
+
+  // L3b: settings downloaded by a sync are shown without a restart.
+  useEffect(() => sync?.subscribeDataChanged((change) => {
+    if (change.settings) void reload();
+  }), [sync, reload]);
 
   const save = useCallback(
     async (next: UserSettings) => {

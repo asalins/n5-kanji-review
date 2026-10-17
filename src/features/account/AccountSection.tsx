@@ -3,6 +3,7 @@ import { ConfirmPanel } from '../../components/ConfirmPanel';
 import { FOCUS_RING, PRIMARY_BUTTON, SECONDARY_BUTTON } from '../../components/styles';
 import type { DeleteAccountResult, SignInResult, SignOutResult } from '../../services/account';
 import { ACCOUNT_TEXT as T } from './strings';
+import { SyncPanel } from './SyncPanel';
 import { useAccount } from './useAccount';
 
 type Message = { readonly lines: readonly string[]; readonly error: boolean; readonly retryLocal?: boolean };
@@ -21,8 +22,11 @@ function localLine(local: SignOutResult['localData']): string {
 /** C2: one line per part; never "everything deleted". */
 export function deleteMessage(result: DeleteAccountResult): Message {
   if (result.account === 'not-deleted') return { lines: [T.deleteCancelled], error: false };
+  if (result.cloudData === 'failed') return { lines: [T.cloudFailed], error: true };
+  if (result.account === 'failed' && result.cloudData === 'deleted') return { lines: [T.cloudDeleted, T.accountFailedAfterCloud], error: true };
   if (result.account === 'failed') return { lines: [result.reason === 'network' ? T.deleteNetwork : T.deleteFailed], error: true };
-  return { lines: [T.accountDeleted, T.noCloudData, localLine(result.localData)], error: result.localData === 'failed', retryLocal: result.localData === 'failed' };
+  const cloud = result.cloudData === 'deleted' ? T.cloudDeleted : T.noCloudData;
+  return { lines: [T.accountDeleted, cloud, localLine(result.localData)], error: result.localData === 'failed', retryLocal: result.localData === 'failed' };
 }
 
 function LocalChoice({ checked, onChange }: { checked: boolean; onChange: (value: boolean) => void }) {
@@ -93,6 +97,7 @@ export function AccountSection({ onPrivacy }: { onPrivacy: () => void }) {
             {T.signedInAs} <strong data-testid="account-email">{status.user.email ?? status.user.uid}</strong>
           </p>
           {status.kind === 'signed-in-offline' && <p className="text-sm">{T.offlineSignedIn}</p>}
+          <SyncPanel email={status.user.email ?? status.user.uid} />
           {confirming === null && (
             <>
               <button type="button" className={SECONDARY_BUTTON} disabled={busy} onClick={() => setConfirming('signout')}>

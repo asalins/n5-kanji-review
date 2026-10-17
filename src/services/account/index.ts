@@ -1,13 +1,13 @@
 import { PRIVACY_CONTACT_EMAIL, isAccountAvailable, readFirebaseConfig } from './accountConfig';
 import { createAccountHint } from './accountHint';
-import { browserNetwork, createAccountService, type AccountService } from './accountService';
+import { browserNetwork, createAccountService, type AccountService, type CloudDataDeleter } from './accountService';
 
 export type { AccountService } from './accountService';
 export type { AccountStatus, AccountUser, DeleteAccountResult, LocalDataResult, SignInResult, SignOutResult } from './accountTypes';
 export { PRIVACY_CONTACT_EMAIL } from './accountConfig';
 
 /** Production wiring. The Firebase chunk is imported lazily, only when it is needed. */
-export function createDefaultAccountService(resetLocalProgress: () => Promise<void>, logError?: (error: unknown) => void): AccountService {
+export function createDefaultAccountService(resetLocalProgress: () => Promise<void>, logError?: (error: unknown) => void, cloudData?: CloudDataDeleter): AccountService {
   const config = readFirebaseConfig(import.meta.env);
   const available = isAccountAvailable(config, PRIVACY_CONTACT_EMAIL);
   return createAccountService({
@@ -21,5 +21,6 @@ export function createDefaultAccountService(resetLocalProgress: () => Promise<vo
     network: browserNetwork,
     resetLocalProgress,
     ...(logError === undefined ? {} : { logError }),
+    ...(cloudData === undefined ? {} : { cloudData }),
   });
 }

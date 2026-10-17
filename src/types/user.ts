@@ -100,3 +100,36 @@ export interface StreakState {
   readonly currentStreak: number;
   readonly longestStreak: number;
 }
+
+/**
+ * L3 sync state of THIS installation (schema v4). Never in a backup; never replaced by Import.
+ * syncLedger (key = ReviewLog id): the log is on the cloud, uploaded in `epoch`. A log without an entry is unsynced.
+ */
+export interface SyncLedgerEntry {
+  readonly epoch: number;
+}
+
+/** Position in the cloud log stream: (uploadedAt as a Firestore timestamp, document id). */
+export interface SyncCursor {
+  readonly seconds: number;
+  readonly nanoseconds: number;
+  readonly id: string;
+}
+
+/** syncMeta (one record, key 'current'). Absent = DEFAULT_SYNC_META. */
+export interface SyncMeta {
+  /** The account this device's learning progress belongs to; null = not bound to any account. */
+  readonly uid: string | null;
+  /** The cloud epoch this device's data belongs to; null = bound but not yet seen the cloud. */
+  readonly knownEpoch: number | null;
+  readonly pullCursor: SyncCursor | null;
+  /** Reset progress / Import (Replace) happened while bound: the cloud must be replaced by this device's data. */
+  readonly pendingReplace: boolean;
+  /** The epoch was raised for a replace; logs of older epochs still have to be deleted from the cloud. */
+  readonly cleanupBelow: number | null;
+  /** After a replace, this device's settings win once (they came with the reset / imported file). */
+  readonly pushSettings: boolean;
+  /** The user chose not to sync this device with this account. */
+  readonly declinedUid: string | null;
+  readonly lastSyncAt: EpochMs | null;
+}

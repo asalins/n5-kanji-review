@@ -14,7 +14,7 @@ if (dist === undefined) {
   console.error('usage: accountIsolation.ts <distDir>');
   process.exit(2);
 }
-const FIREBASE = /identitytoolkit\.googleapis|securetoken\.googleapis|@firebase\/auth|firebaseapp\.com/;
+const FIREBASE = /identitytoolkit\.googleapis|securetoken\.googleapis|firestore\.googleapis|@firebase\/auth|@firebase\/firestore|firebaseapp\.com/;
 const CHUNK = /^assets\/firebaseAdapter-[^/]+\.js$/;
 const walk = (dir: string): string[] => readdirSync(dir).flatMap((n) => (statSync(join(dir, n)).isDirectory() ? walk(join(dir, n)) : [join(dir, n)]));
 const files = walk(dist).map((p) => relative(dist, p).split('\\').join('/')).filter((f) => /\.(js|html|css|webmanifest)$/.test(f));

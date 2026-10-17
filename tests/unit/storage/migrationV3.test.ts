@@ -5,7 +5,11 @@ import { openAppDatabase, type Migration } from '../../../src/services/storage/d
 import { APP_MIGRATIONS } from '../../../src/services/storage/migrations';
 import { migrationV1 } from '../../../src/services/storage/migrations/v1Initial';
 import { migrationV2 } from '../../../src/services/storage/migrations/v2ContentMeta';
+import { migrationV3 } from '../../../src/services/storage/migrations/v3SyncReadyLocal';
 import { createMigrationV3 } from '../../../src/services/storage/migrations/v3SyncReadyLocal';
+
+/** This file tests v3 itself: open with the history up to v3 (v4 has its own tests). */
+const UP_TO_V3 = [migrationV1, migrationV2, migrationV3];
 import { srsV1 } from '../../../src/services/srs';
 import { buildAppServices } from '../../../src/app/bootstrap';
 import { DEFAULT_USER_SETTINGS } from '../../../src/services/settings/defaults';
@@ -63,7 +67,7 @@ async function dump(stores: readonly string[]): Promise<Record<string, unknown[]
 describe('migration v3 on a production-shaped v2 database', () => {
   it('keeps every record and key; logs gain deviceId/originalId null; settings gain updatedAt 0; deviceMeta is created', async () => {
     const before = await seedV2();
-    const db = await openAppDatabase(APP_MIGRATIONS, name);
+    const db = await openAppDatabase(UP_TO_V3, name);
     open.push(db);
     expect(db.version).toBe(3);
     db.close();
@@ -129,7 +133,7 @@ describe('migration v3 on a production-shaped v2 database', () => {
     expect(after.__stores).toEqual(V2_STORES); // no deviceMeta
     expect(after).toEqual(before);
     // and the real migration still succeeds afterwards
-    const db = await openAppDatabase(APP_MIGRATIONS, name);
+    const db = await openAppDatabase(UP_TO_V3, name);
     open.push(db);
     expect(db.version).toBe(3);
   });

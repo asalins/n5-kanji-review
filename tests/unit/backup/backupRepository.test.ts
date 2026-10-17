@@ -48,7 +48,7 @@ describe('export', () => {
   it('builds a versioned envelope from the stored user data and changes nothing', async () => {
     const before = await seedSample();
     const { backup, fileName } = await createBackup(deps(new Date(2026, 9, 4, 9).getTime()));
-    expect(backup).toMatchObject({ format: 'n5-kanji-review-backup', formatVersion: 2, databaseSchemaVersion: 3, datasetVersion: CURRENT_DATASET_VERSION, algorithmVersion: 'srs-v1' });
+    expect(backup).toMatchObject({ format: 'n5-kanji-review-backup', formatVersion: 2, databaseSchemaVersion: 4, datasetVersion: CURRENT_DATASET_VERSION, algorithmVersion: 'srs-v1' });
     expect(backup.exportedAt).toBe(new Date(2026, 9, 4, 9).toISOString());
     expect(fileName).toBe('n5-kanji-backup-2026-10-04.json');
     expect(backup.data.reviewCards).toEqual(before.reviewCards);

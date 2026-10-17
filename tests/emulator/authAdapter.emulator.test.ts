@@ -131,4 +131,47 @@ describe('real Firebase Auth (emulator) through the app adapter', () => {
     expect(((await lookup.json()) as { users?: unknown[] }).users ?? []).toEqual([]);
     expect(hint).toBe(false);
   });
+
+  it('L-1 with real Auth: a cached session is "checking" until the server answered; never signed-in before', async () => {
+    const { auth } = await signedInAuth();
+    const adapter = adapterForAuth(auth);
+    let reloaded = false;
+    const watched = { ...adapter, reload: async () => {
+      await adapter.reload();
+      reloaded = true;
+    } };
+    const seen: { kind: string; reloaded: boolean }[] = [];
+    const service = createAccountService({
+      available: true,
+      loadAdapter: async () => watched,
+      hint: { read: () => true, set: () => undefined, clear: () => undefined, subscribe: () => () => undefined },
+      network: { isOnline: () => true, onOnline: () => () => undefined },
+      resetLocalProgress: async () => undefined,
+    });
+    service.subscribe(() => seen.push({ kind: service.getStatus().kind, reloaded }));
+    service.start();
+    await expect.poll(() => service.getStatus().kind).toBe('signed-in');
+    expect(seen.some((s) => s.kind === 'checking')).toBe(true);
+    expect(seen.filter((s) => s.kind === 'signed-in').every((s) => s.reloaded)).toBe(true);
+  });
+
+  it('L-1 with real Auth: the server unreachable -> signed-in-offline, never signed-in', async () => {
+    const { auth } = await signedInAuth();
+    const adapter = adapterForAuth(auth);
+    const unreachable = { ...adapter, reload: async () => {
+      throw Object.assign(new Error('offline'), { code: 'auth/network-request-failed' });
+    } };
+    const kinds: string[] = [];
+    const service = createAccountService({
+      available: true,
+      loadAdapter: async () => unreachable,
+      hint: { read: () => true, set: () => undefined, clear: () => undefined, subscribe: () => () => undefined },
+      network: { isOnline: () => true, onOnline: () => () => undefined },
+      resetLocalProgress: async () => undefined,
+    });
+    service.subscribe(() => kinds.push(service.getStatus().kind));
+    service.start();
+    await expect.poll(() => service.getStatus().kind).toBe('signed-in-offline');
+    expect(kinds).not.toContain('signed-in');
+  });
 });

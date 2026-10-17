@@ -3,6 +3,7 @@ import type { ReviewOrchestrator } from '../features/review/reviewBoundary';
 import type { BackupRepository, KanjiRepository, ReviewRepository, SettingsRepository } from '../repositories/interfaces';
 import type { NewItemSource } from '../services/session/types';
 import type { AccountService } from '../services/account';
+import type { SyncService } from '../services/sync/syncService';
 
 /** What the UI is allowed to know: repository INTERFACES only, never an implementation. */
 export interface AppRepositories {
@@ -18,6 +19,8 @@ export interface AppRepositories {
   readonly backup?: BackupRepository;
   /** Optional account (L2). Absent in tests that do not need it; `unavailable` without config. */
   readonly account?: AccountService;
+  /** Multi-device sync (L3b). Absent in tests that do not need it and when the account is unavailable. */
+  readonly sync?: SyncService;
 }
 
 const RepositoriesContext = createContext<AppRepositories | null>(null);

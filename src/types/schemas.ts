@@ -11,7 +11,7 @@ import {
   UI_LANGUAGES,
 } from './common';
 import type { ContentBundle, ContentMeta, ExampleSentence, Kanji, KanjiReading, Vocabulary } from './content';
-import type { DeviceMeta, ReviewCard, ReviewLog, StreakState, StudySession, UserSettings } from './user';
+import type { DeviceMeta, ReviewCard, ReviewLog, StreakState, StudySession, SyncLedgerEntry, SyncMeta, UserSettings } from './user';
 
 /** Compile-time guarantee that each schema produces exactly its entity type. */
 function conform<T>(schema: z.ZodType<T>): z.ZodType<T> {
@@ -156,4 +156,19 @@ export const streakStateSchema = conform<StreakState>(
 
 export const contentMetaSchema = conform<ContentMeta>(
   z.object({ datasetVersion: text, loadedAt: epochMs }),
+);
+
+export const syncLedgerEntrySchema = conform<SyncLedgerEntry>(z.object({ epoch: count }));
+
+export const syncMetaSchema = conform<SyncMeta>(
+  z.object({
+    uid: text.nullable(),
+    knownEpoch: count.nullable(),
+    pullCursor: z.object({ seconds: z.number().int(), nanoseconds: count, id: text }).nullable(),
+    pendingReplace: z.boolean(),
+    cleanupBelow: count.nullable(),
+    pushSettings: z.boolean(),
+    declinedUid: text.nullable(),
+    lastSyncAt: epochMs.nullable(),
+  }),
 );

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { classifyAuthError } from '../../../src/services/account/authErrors';
 import { USER, authError, settle, setup } from './fakeAuth';
+import { VERIFY_TIMEOUT_MS } from '../../../src/services/account/accountService';
 
 describe('availability and lazy loading (D-L2-1, D-L2-8)', () => {
   it('unavailable (no config or no contact e-mail): nothing is ever loaded, sign-in is refused', async () => {
@@ -111,14 +112,14 @@ describe('C1: the hint is never proof of a sign-in', () => {
     expect(service.getStatus()).toEqual({ kind: 'signed-in', user: USER });
   });
 
-  it('unknown error on the check -> the state is kept (never signed out on a guess)', async () => {
+  it('unknown error on the check -> never signed out on a guess, and never shown as confirmed (L-1)', async () => {
     const { service, hint, auth } = setup();
     hint.value = true;
     auth.persisted = USER;
     auth.reloadError = authError('auth/something-new');
     service.start();
     await settle();
-    expect(service.getStatus()).toEqual({ kind: 'signed-in', user: USER });
+    expect(service.getStatus()).toEqual({ kind: 'signed-in-offline', user: USER });
     expect(hint.value).toBe(true);
   });
 
@@ -241,5 +242,117 @@ describe('C2: Delete Account reports every part separately', () => {
   it('cloud data is always reported as "none" in L2 (nothing is claimed to be deleted in the cloud)', async () => {
     const { service } = await signedIn();
     expect((await service.deleteAccount({ deleteLocalProgress: false })).cloudData).toBe('none');
+  });
+});
+
+describe('L-1: a cached session is never shown as signed-in before the server answered', () => {
+  it('checking until reload succeeds, then signed-in', async () => {
+    const { service, hint, auth } = setup();
+    hint.value = true;
+    auth.persisted = USER;
+    let answer!: () => void;
+    auth.reloadGate = new Promise<void>((r) => (answer = r));
+    service.start();
+    await settle();
+    expect(auth.calls).toContain('reload');
+    expect(service.getStatus()).toEqual({ kind: 'checking', offline: false });
+    answer();
+    await settle();
+    expect(service.getStatus()).toEqual({ kind: 'signed-in', user: USER });
+  });
+
+  it(`no answer within ${VERIFY_TIMEOUT_MS / 1000} s -> signed-in-offline; a late answer still confirms`, async () => {
+    const { service, hint, auth, timers } = setup();
+    hint.value = true;
+    auth.persisted = USER;
+    let answer!: () => void;
+    auth.reloadGate = new Promise<void>((r) => (answer = r));
+    service.start();
+    await settle();
+    expect([...timers.pending.values()].map((t) => t.ms)).toEqual([VERIFY_TIMEOUT_MS]);
+    timers.fireAll();
+    expect(service.getStatus()).toEqual({ kind: 'signed-in-offline', user: USER });
+    answer();
+    await settle();
+    expect(service.getStatus()).toEqual({ kind: 'signed-in', user: USER });
+  });
+
+  it('a network error on the check -> signed-in-offline (not signed-in), then confirmed when back online', async () => {
+    const { service, hint, auth, network } = setup();
+    hint.value = true;
+    auth.persisted = USER;
+    auth.reloadError = authError('auth/network-request-failed');
+    service.start();
+    await settle();
+    expect(service.getStatus()).toEqual({ kind: 'signed-in-offline', user: USER });
+    auth.reloadError = null;
+    network.goOnline();
+    await settle();
+    expect(service.getStatus()).toEqual({ kind: 'signed-in', user: USER });
+  });
+
+  it('going offline downgrades a confirmed session to signed-in-offline', async () => {
+    const { service, hint, auth, network } = setup();
+    hint.value = true;
+    auth.persisted = USER;
+    service.start();
+    await settle();
+    expect(service.getStatus().kind).toBe('signed-in');
+    network.goOffline();
+    expect(service.getStatus()).toEqual({ kind: 'signed-in-offline', user: USER });
+  });
+
+  it('a popup sign-in is the server answer: signed-in at once, no extra checking state', async () => {
+    const { service, auth } = setup();
+    service.start();
+    const seen: string[] = [];
+    service.subscribe(() => seen.push(service.getStatus().kind));
+    expect(await service.signIn()).toEqual({ ok: true });
+    await settle();
+    expect(service.getStatus()).toEqual({ kind: 'signed-in', user: USER });
+    expect(seen).not.toContain('checking');
+    expect(auth.calls.filter((c) => c === 'reload')).toEqual([]);
+  });
+});
+
+describe('D-L2-6 (L3b): Delete Account deletes the cloud learning data first', () => {
+  const signedIn = async (cloud: 'deleted' | 'failed') => {
+    const order: string[] = [];
+    const deleter = {
+      delete: async (uid: string) => {
+        order.push(`cloud:${uid}`);
+        return cloud;
+      },
+      resume: () => order.push('resume'),
+    };
+    const ctx = setup({ cloudData: deleter });
+    ctx.service.start();
+    await ctx.service.signIn();
+    return { ...ctx, order };
+  };
+
+  it('re-authenticate -> cloud data -> account -> (local); reported part by part', async () => {
+    const { service, auth, order } = await signedIn('deleted');
+    const result = await service.deleteAccount({ deleteLocalProgress: false });
+    expect(result).toEqual({ account: 'deleted', reason: null, cloudData: 'deleted', localData: 'kept' });
+    expect(auth.calls.slice(-2)).toEqual(['reauth', 'deleteUser']);
+    expect(order).toEqual([`cloud:${USER.uid}`, 'resume']);
+  });
+
+  it('cloud deletion fails -> STOP: the account is not deleted and nothing local is touched', async () => {
+    const { service, auth, events, order } = await signedIn('failed');
+    const result = await service.deleteAccount({ deleteLocalProgress: true });
+    expect(result).toEqual({ account: 'failed', reason: 'unknown', cloudData: 'failed', localData: 'kept' });
+    expect(auth.calls).not.toContain('deleteUser');
+    expect(events.resets).toBe(0);
+    expect(order).toEqual([`cloud:${USER.uid}`, 'resume']);
+    expect(service.getStatus().kind).toBe('signed-in');
+  });
+
+  it('cancelled re-authentication -> the cloud data is not touched', async () => {
+    const { service, auth, order } = await signedIn('deleted');
+    auth.reauthError = authError('auth/popup-closed-by-user');
+    expect((await service.deleteAccount({ deleteLocalProgress: true })).account).toBe('not-deleted');
+    expect(order).toEqual([]);
   });
 });

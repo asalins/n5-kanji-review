@@ -2,7 +2,7 @@ import { PRIVACY_CONTACT_EMAIL } from '../../services/account';
 
 export const ACCOUNT_TEXT = {
   title: 'บัญชี · Account',
-  optional: 'ไม่บังคับ: ใช้แอปได้ครบโดยไม่ต้องเข้าสู่ระบบ ตอนนี้ยังไม่มีการ sync ข้อมูลการเรียน · Optional: the app works fully without an account. Learning data is not synced yet.',
+  optional: 'ไม่บังคับ: ใช้แอปได้ครบโดยไม่ต้องเข้าสู่ระบบ ถ้าเข้าสู่ระบบ จะ sync ความคืบหน้าการเรียนระหว่างอุปกรณ์ของคุณได้ (ถามก่อนอัปโหลด) · Optional: the app works fully without an account. Signed in, your learning progress can be synced between your devices (you are asked before anything is uploaded).',
   readPrivacy: 'อ่านความเป็นส่วนตัวก่อนเข้าสู่ระบบ · Read the privacy notice before signing in',
   privacy: 'ความเป็นส่วนตัว · Privacy',
   signIn: 'เข้าสู่ระบบด้วย Google · Sign in with Google',
@@ -17,7 +17,7 @@ export const ACCOUNT_TEXT = {
   deleteAccount: 'ลบบัญชี · Delete account',
   deleteConfirm: 'ยืนยันตัวตนและลบบัญชี · Verify and delete',
   deleteExplain:
-    'ระบบจะขอให้ยืนยันตัวตนกับ Google อีกครั้ง แล้วลบบัญชีของแอปนี้ แอปยังไม่ได้เก็บข้อมูลการเรียนบน Cloud ข้อมูลการเรียนในเครื่องจะยังอยู่ เว้นแต่คุณเลือกลบ · You will verify with Google again, then the account for this app is deleted. The app stores no learning data in the cloud. Learning data on this device stays unless you choose to delete it.',
+    'ระบบจะขอให้ยืนยันตัวตนกับ Google อีกครั้ง แล้วลบข้อมูลการเรียนของบัญชีนี้บน Cloud ก่อน (ถ้าลบไม่สำเร็จ จะหยุดและยังไม่ลบบัญชี) จากนั้นจึงลบบัญชี อุปกรณ์อื่นจะหยุด sync ข้อมูลการเรียนในเครื่องนี้จะยังอยู่ เว้นแต่คุณเลือกลบ · You will verify with Google again. The learning data of this account in the cloud is deleted first (if that fails, everything stops and the account is kept); then the account is deleted. Other devices stop syncing. Learning data on this device stays unless you choose to delete it.',
   understand: 'ฉันเข้าใจ · I understand',
   cancel: 'ยกเลิก · Cancel',
   deleteLocal: 'ลบความคืบหน้าการเรียนในเครื่องนี้ด้วย · Also delete learning progress on this device',
@@ -35,9 +35,51 @@ export const ACCOUNT_TEXT = {
   retryLocal: 'ลองลบข้อมูลในเครื่องอีกครั้ง · Try deleting the data on this device again',
   accountDeleted: 'ลบบัญชีแล้ว · The account was deleted.',
   noCloudData: 'แอปยังไม่ได้เก็บข้อมูลการเรียนบน Cloud · The app stored no learning data in the cloud.',
+  cloudDeleted: 'ลบข้อมูลการเรียนบน Cloud แล้ว · The learning data in the cloud was deleted.',
+  accountFailedAfterCloud:
+    'แต่ลบบัญชีไม่สำเร็จ · บัญชียังอยู่ ข้อมูลในเครื่องไม่ถูกแตะ ลองลบบัญชีอีกครั้งได้ · But deleting the account failed: the account still exists and nothing on this device was touched. You can try again.',
+  cloudFailed:
+    'ลบข้อมูลการเรียนบน Cloud ไม่สำเร็จ (บางส่วนอาจถูกลบไปแล้ว) · ยังไม่ได้ลบบัญชี ข้อมูลในเครื่องไม่ถูกแตะ ลองใหม่ได้ · Deleting the learning data in the cloud failed (part of it may already be deleted). The account was NOT deleted and nothing on this device was touched. You can try again.',
   deleteCancelled: 'ยังไม่ได้ลบบัญชี (ยกเลิกการยืนยันตัวตน) · The account was not deleted (verification cancelled).',
   deleteFailed: 'ลบบัญชีไม่สำเร็จ · ไม่มีข้อมูลใดถูกลบ ลองใหม่ได้ · Deleting the account failed; nothing was deleted. You can try again.',
   deleteNetwork: 'ออฟไลน์หรือเชื่อมต่อไม่ได้ · ยังไม่ได้ลบบัญชี · Offline or no connection; the account was not deleted.',
+} as const;
+
+/** L3b sync panel (Settings → Account, signed in). */
+export const SYNC_TEXT = {
+  title: 'Sync ระหว่างอุปกรณ์ · Sync between devices',
+  syncing: 'กำลัง sync… · Syncing…',
+  synced: 'Sync ล่าสุด · Last synced',
+  never: 'ยังไม่เคย sync · Not synced yet',
+  waiting: 'รอการยืนยันบัญชีกับเซิร์ฟเวอร์ · Waiting for the server to confirm the account',
+  offline: 'ออฟไลน์ · จะ sync เมื่อออนไลน์ ใช้แอปได้ตามปกติ · Offline: syncs when you are back online. Study as usual.',
+  quota: 'Sync หยุดชั่วคราว (เกินโควตาของบริการ) · ข้อมูลในเครื่องไม่ได้รับผลกระทบ จะลองใหม่เวลา · Sync is paused (service quota reached). Data on this device is not affected. Next try at',
+  error: 'Sync ไม่สำเร็จ · จะลองใหม่อัตโนมัติเวลา · Sync failed; it retries automatically at',
+  syncNow: 'Sync ตอนนี้ · Sync now',
+  bindTitle: 'อัปโหลดความคืบหน้าในเครื่องนี้เข้าบัญชี? · Upload this device’s progress to the account?',
+  bindExplain:
+    'เครื่องนี้มีความคืบหน้าการเรียนที่ยังไม่ได้อยู่ในบัญชี ถ้าอัปโหลด จะรวมกับข้อมูลจากอุปกรณ์อื่นของบัญชีนี้ (ไม่มีรายการใดหาย) · This device has learning progress that is not in the account. Uploading merges it with your other devices of this account (nothing is lost).',
+  bindUpload: 'อัปโหลดและ sync · Upload and sync',
+  otherTitle: 'ความคืบหน้าในเครื่องนี้เป็นของบัญชีอื่น · This device’s progress belongs to another account',
+  otherExplain:
+    'จะไม่อัปโหลดความคืบหน้าของบัญชีอื่นเข้าบัญชีนี้ เลือกได้ว่าจะไม่ sync เครื่องนี้ หรือลบความคืบหน้าในเครื่องนี้แล้วใช้ข้อมูลของบัญชีนี้ · Progress of another account is never uploaded into this one. Either do not sync this device, or delete this device’s progress and use this account’s data.',
+  replaceLocal: 'ลบความคืบหน้าในเครื่องนี้ แล้วใช้ข้อมูลของบัญชีนี้ · Delete this device’s progress and use the account’s data',
+  replaceLocalExplain:
+    'ความคืบหน้าการเรียนในเครื่องนี้ (การ์ด ประวัติการทบทวน และ session) จะถูกลบ แล้วดึงข้อมูลของบัญชีลงมา Export backup ก่อนได้ที่หัวข้อ Backup · This device’s learning progress (cards, review history, sessions) is deleted, then the account’s data is downloaded. You can export a backup first (Backup section).',
+  skip: 'ไม่ sync เครื่องนี้ · Do not sync this device',
+  declined: 'ไม่ sync เครื่องนี้กับบัญชีนี้ · This device is not synced with this account.',
+  enable: 'เปิด sync เครื่องนี้ · Turn on sync for this device',
+  resetTitle: 'ความคืบหน้าในบัญชีถูก reset หรือแทนที่จากอุปกรณ์อื่น · The account’s progress was reset or replaced from another device',
+  resetWhen: 'เมื่อ · At',
+  resetUnknownWhen: 'ข้อมูลบน Cloud ถูก reset หรือถูกลบ · The cloud data was reset or deleted.',
+  resetUnsynced: 'รายการในเครื่องนี้ที่ยังไม่ได้ sync (จะไม่ถูกอัปโหลด) · Reviews on this device not yet synced (they will NOT be uploaded):',
+  resetExplain:
+    'Sync หยุดไว้จนกว่าคุณจะเลือก ถ้าต้องการเก็บข้อมูลของเครื่องนี้ ให้ Export backup ก่อน (หัวข้อ Backup) · Sync is stopped until you decide. To keep this device’s data, export a backup first (Backup section).',
+  resetAccept: 'ล้างความคืบหน้าในเครื่องนี้และใช้ข้อมูลของบัญชี · Clear this device’s progress and use the account’s data',
+  resetAcceptExplain: 'ความคืบหน้าการเรียนในเครื่องนี้จะถูกลบ แล้วใช้ข้อมูลปัจจุบันของบัญชี · This device’s learning progress is deleted and the account’s current data is used.',
+  understand: 'ฉันเข้าใจ · I understand',
+  cancel: 'ยกเลิก · Cancel',
+  failed: 'ทำไม่สำเร็จ · ลองใหม่อีกครั้ง · That did not work. Please try again.',
 } as const;
 
 export const PRIVACY_LINKS = {
@@ -52,11 +94,11 @@ export const PRIVACY_TEXT = {
   th: {
     heading: 'ภาษาไทย',
     sections: [
-      ['ไม่ต้องมีบัญชี', 'การเข้าสู่ระบบเป็นทางเลือก ใช้แอปได้ครบโดยไม่มีบัญชี ข้อมูลการเรียนเก็บในเครื่องของคุณ และตอนนี้ยังไม่มีการ sync ขึ้น Cloud'],
-      ['เก็บอะไร', 'เมื่อเข้าสู่ระบบด้วย Google บริการ Firebase Authentication ของ Google จะเก็บข้อมูลบัญชี ได้แก่ รหัสผู้ใช้ (uid), อีเมล, ชื่อและรูปโปรไฟล์ตามที่ Google ส่งมา และเวลาที่สร้างบัญชีและเข้าสู่ระบบล่าสุด แอปแสดงเฉพาะอีเมล แอปไม่เก็บข้อมูลการเรียนบน Cloud ไม่มี Analytics และไม่ส่งรหัสอุปกรณ์ไปที่ใด'],
-      ['ใช้ทำอะไร', 'ใช้ระบุตัวคุณเพื่อเตรียมรองรับการใช้งานหลายเครื่องในอนาคต ซึ่งจะแจ้งให้ทราบก่อนเปิดใช้ ไม่ใช้เพื่อโฆษณาและไม่ขายข้อมูล'],
-      ['เก็บนานเท่าไร', 'เก็บจนกว่าคุณจะลบบัญชีในแอป (ตั้งค่า → บัญชี → ลบบัญชี) หรือขอให้ลบผ่านอีเมลด้านล่าง การออกจากระบบไม่ได้ลบบัญชี'],
-      ['การลบบัญชี', 'ลบบัญชีของแอปนี้ออกจาก Firebase Authentication ถ้าเข้าสู่ระบบอีกครั้งจะได้บัญชีใหม่ ข้อมูลการเรียนในเครื่องจะถูกลบเฉพาะเมื่อคุณเลือก การลบบัญชีในแอปไม่ได้ลบบัญชี Google ของคุณ'],
+      ['ไม่ต้องมีบัญชี', 'การเข้าสู่ระบบเป็นทางเลือก ใช้แอปได้ครบโดยไม่มีบัญชี ข้อมูลการเรียนเก็บในเครื่องของคุณเสมอ ถ้าเข้าสู่ระบบและตกลง sync สำเนาของข้อมูลการเรียนจะถูกเก็บบน Cloud ด้วย แอปจะถามก่อนอัปโหลดความคืบหน้าที่มีอยู่ในเครื่อง'],
+      ['เก็บอะไร', 'บัญชี: เมื่อเข้าสู่ระบบด้วย Google บริการ Firebase Authentication ของ Google จะเก็บรหัสผู้ใช้ (uid), อีเมล, ชื่อและรูปโปรไฟล์ตามที่ Google ส่งมา และเวลาที่สร้างบัญชีและเข้าสู่ระบบล่าสุด แอปแสดงเฉพาะอีเมล ข้อมูลการเรียน (เมื่อ sync): Cloud Firestore ของ Google เก็บภายใต้บัญชีของคุณ ได้แก่ ประวัติการทบทวนแต่ละครั้ง (การ์ดที่ทบทวน, ปุ่มที่กด, เวลา, เวลาที่ใช้ตอบ, สถานะก่อนและหลัง, เวอร์ชันชุดข้อมูล และรหัสอุปกรณ์แบบสุ่มที่แอปสร้างขึ้นเอง ซึ่งไม่ผูกกับฮาร์ดแวร์) และการตั้งค่าของแอป การ์ดและสถิติคำนวณใหม่จากประวัตินี้ ไม่มี Analytics'],
+      ['ใช้ทำอะไร', 'ใช้ระบุตัวคุณ และ sync ความคืบหน้าการเรียนระหว่างอุปกรณ์ของคุณเท่านั้น ไม่ใช้เพื่อโฆษณาและไม่ขายข้อมูล ผู้ใช้อื่นอ่านหรือเขียนข้อมูลของคุณไม่ได้ (บังคับด้วย Security Rules)'],
+      ['เก็บนานเท่าไร', 'เก็บจนกว่าคุณจะลบบัญชีในแอป (ตั้งค่า → บัญชี → ลบบัญชี) หรือขอให้ลบผ่านอีเมลด้านล่าง การออกจากระบบไม่ได้ลบบัญชีหรือข้อมูลบน Cloud การ Reset ความคืบหน้าหรือ Import (แทนที่) บนอุปกรณ์ที่ sync อยู่ จะแทนที่ข้อมูลการเรียนบน Cloud ด้วย'],
+      ['การลบบัญชี', 'ลบข้อมูลการเรียนบน Cloud ก่อน ถ้าลบไม่สำเร็จจะหยุดและยังไม่ลบบัญชี จากนั้นลบบัญชีของแอปนี้ออกจาก Firebase Authentication ถ้าเข้าสู่ระบบอีกครั้งจะได้บัญชีใหม่ ข้อมูลการเรียนในเครื่องจะถูกลบเฉพาะเมื่อคุณเลือก การลบบัญชีในแอปไม่ได้ลบบัญชี Google ของคุณ'],
       ['สิ่งที่แอปรับรองไม่ได้', 'Google / Firebase อาจเก็บข้อมูลบางส่วนต่อตามนโยบายของตนเอง เช่น log และ backup ของระบบ ซึ่งอยู่นอกการควบคุมของแอป ตามที่ Firebase ระบุ ข้อมูล Authentication จะถูกลบออกจากระบบหลักและ backup ภายใน 180 วันหลังลบผู้ใช้ แอปรับรองได้เฉพาะสิ่งที่ระบบของแอปทำ'],
       ['ติดต่อ', `เรื่องความเป็นส่วนตัวหรือการลบบัญชี: ${PRIVACY_CONTACT_EMAIL}`],
     ],
@@ -64,11 +106,11 @@ export const PRIVACY_TEXT = {
   en: {
     heading: 'English',
     sections: [
-      ['No account needed', 'Signing in is optional; the app works fully without an account. Your learning data stays on your device and is not synced to the cloud yet.'],
-      ['What is stored', "When you sign in with Google, Google's Firebase Authentication stores your account data: user id (uid), e-mail, the name and profile picture Google provides, and when the account was created and last used. The app shows only the e-mail. The app stores no learning data in the cloud, has no analytics, and sends the device id nowhere."],
-      ['Why', 'To identify you, in preparation for using the app on several devices in the future (you will be told before that is switched on). Never for advertising; never sold.'],
-      ['How long', 'Until you delete the account in the app (Settings → Account → Delete account) or ask for deletion at the e-mail below. Signing out does not delete the account.'],
-      ['Deleting the account', 'Removes this app’s account from Firebase Authentication; signing in again creates a new account. Learning data on your device is deleted only if you choose so. Deleting the account here does not delete your Google account.'],
+      ['No account needed', 'Signing in is optional; the app works fully without an account. Your learning data always stays on your device. If you sign in and agree to sync, a copy of your learning data is also stored in the cloud. The app asks before uploading progress that is already on a device.'],
+      ['What is stored', "Account: when you sign in with Google, Google's Firebase Authentication stores your user id (uid), e-mail, the name and profile picture Google provides, and when the account was created and last used. The app shows only the e-mail. Learning data (when syncing): Google's Cloud Firestore stores, under your account, each review (which card, the button pressed, the time, how long the answer took, the state before and after, the dataset version, and a random device id created by the app, not tied to the hardware) and the app settings. Cards and statistics are recomputed from this history. No analytics."],
+      ['Why', 'Only to identify you and to sync your learning progress between your devices. Never for advertising; never sold. Other users cannot read or write your data (enforced by Security Rules).'],
+      ['How long', 'Until you delete the account in the app (Settings → Account → Delete account) or ask for deletion at the e-mail below. Signing out deletes neither the account nor the cloud data. Reset progress or Import (Replace) on a syncing device also replaces the learning data in the cloud.'],
+      ['Deleting the account', 'First deletes your learning data in the cloud; if that fails, everything stops and the account is kept. Then removes this app’s account from Firebase Authentication; signing in again creates a new account. Learning data on your device is deleted only if you choose so. Deleting the account here does not delete your Google account.'],
       ['What the app cannot promise', 'Google / Firebase may keep some data under their own policies, such as system logs and backups, outside the app’s control. Firebase states that Authentication data is removed from live and backup systems within 180 days after the user is deleted. The app can only vouch for what its own system does.'],
       ['Contact', `Privacy or account deletion: ${PRIVACY_CONTACT_EMAIL}`],
     ],
