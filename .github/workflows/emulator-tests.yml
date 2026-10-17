@@ -1,0 +1,35 @@
+# L3: Firebase Emulator tests (Auth + Firestore Security Rules). Runs ONLY against local emulators on the CI
+# machine: no Firebase project is contacted and nothing is deployed. The sandbox used for development cannot
+# download the Firestore emulator, so this job is the place where those tests PASS or FAIL.
+# A missing emulator makes the suites fail with "... EMULATOR BLOCKED" (never a silent pass).
+name: emulator-tests
+
+on:
+  push:
+    branches: ['l3-*', 'l4-*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  emulators:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - run: npm ci
+      - name: Firebase CLI (pinned)
+        run: npm install --no-save firebase-tools@14.27.0
+      - name: Unit tests + typecheck (same as local)
+        run: npm run typecheck && npm test
+      - name: Emulator tests (Auth + Firestore rules)
+        run: npx firebase emulators:exec --only auth,firestore --project demo-n5 "npm run test:auth-emulator && npm run test:rules"

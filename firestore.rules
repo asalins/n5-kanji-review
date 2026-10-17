@@ -1,0 +1,101 @@
+rules_version = '2';
+
+// L3 (Preview / n5-kanji-review-dev only). Layout: docs/sync/l3-sync.md
+//   users/{uid}                 { schema: 1, epoch, resetAt, createdAt }
+//   users/{uid}/logs/{logId}    ReviewLog (10 fields) + epoch + uploadedAt   (create-only)
+//   users/{uid}/meta/settings   UserSettings + uploadedAt
+// Default: everything denied. Only the signed-in owner reaches users/{uid}/**.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+    function userDoc(uid) {
+      return get(/databases/$(database)/documents/users/$(uid));
+    }
+    function text(v, max) {
+      return v is string && v.size() > 0 && v.size() <= max;
+    }
+    function nullableText(v, max) {
+      return v == null || text(v, max);
+    }
+    function count(v) {
+      return v is int && v >= 0;
+    }
+    function isState(v) {
+      return v in ['NEW', 'LEARNING', 'REVIEW', 'RELEARNING', 'MASTERED'];
+    }
+
+    // A ReviewLog exactly as the app stores it (schema v3), plus the sync fields. Nothing else.
+    function validLog(logId) {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['id', 'cardId', 'rating', 'reviewedAt', 'durationMs', 'stateBefore', 'stateAfter',
+                               'datasetVersion', 'deviceId', 'originalId', 'epoch', 'uploadedAt'])
+        && d.keys().hasAll(['id', 'cardId', 'rating', 'reviewedAt', 'durationMs', 'stateBefore', 'stateAfter',
+                            'datasetVersion', 'deviceId', 'originalId', 'epoch', 'uploadedAt'])
+        && logId.size() <= 300
+        && d.id == logId
+        && text(d.cardId, 120)
+        && d.rating in ['AGAIN', 'HARD', 'GOOD', 'EASY']
+        && count(d.reviewedAt)
+        && count(d.durationMs)
+        && isState(d.stateBefore)
+        && isState(d.stateAfter)
+        && nullableText(d.datasetVersion, 64)
+        && nullableText(d.deviceId, 64)
+        && nullableText(d.originalId, 300)
+        && (d.originalId == null || logId.matches('^.+~.+$'))
+        && d.epoch is int
+        && d.uploadedAt == request.time;
+    }
+
+    function validSettings() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['dailyNewCards', 'dailyReviewLimit', 'theme', 'uiLanguage', 'soundEnabled', 'autoPlay',
+                               'studyMode', 'animationsEnabled', 'updatedAt', 'uploadedAt'])
+        && d.keys().hasAll(['dailyNewCards', 'dailyReviewLimit', 'theme', 'uiLanguage', 'soundEnabled', 'autoPlay',
+                            'studyMode', 'animationsEnabled', 'updatedAt', 'uploadedAt'])
+        && d.dailyNewCards in [5, 10, 20, 30]
+        && d.dailyReviewLimit in [10, 20, 50, 100]
+        && d.theme in ['light', 'dark', 'system']
+        && d.uiLanguage in ['th', 'en']
+        && d.soundEnabled is bool
+        && d.autoPlay is bool
+        && d.studyMode in ['A', 'B', 'C', 'D']
+        && d.animationsEnabled is bool
+        && count(d.updatedAt)
+        && d.uploadedAt == request.time;
+    }
+
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+      allow create: if isOwner(uid)
+        && request.resource.data.keys().hasOnly(['schema', 'epoch', 'resetAt', 'createdAt'])
+        && request.resource.data.schema == 1
+        && request.resource.data.epoch == 0
+        && request.resource.data.resetAt == null
+        && request.resource.data.createdAt == request.time;
+      // Reset / Import: the epoch only ever goes up by exactly one (D6).
+      allow update: if isOwner(uid)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['epoch', 'resetAt'])
+        && request.resource.data.epoch == resource.data.epoch + 1
+        && request.resource.data.resetAt == request.time;
+      allow delete: if isOwner(uid);
+
+      match /logs/{logId} {
+        allow read: if isOwner(uid);
+        // A device that has not learned about a reset cannot bring old data back: its epoch is stale.
+        allow create: if isOwner(uid) && validLog(logId) && request.resource.data.epoch == userDoc(uid).data.epoch;
+        allow update: if false;
+        allow delete: if isOwner(uid);
+      }
+
+      match /meta/{docId} {
+        allow read: if isOwner(uid);
+        allow create, update: if isOwner(uid) && docId == 'settings' && validSettings();
+        allow delete: if isOwner(uid);
+      }
+    }
+  }
+}

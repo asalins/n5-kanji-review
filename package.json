@@ -16,7 +16,9 @@
     "verify:all": "npm run verify && tsx scripts/qa/e2e.ts",
     "qa:mutations": "tsx scripts/qa/mutations.ts",
     "dataset:thai-audit": "tsx scripts/dataset/thaiAudit.ts",
-    "test:auth-emulator": "vitest run --config vitest.emulator.config.ts"
+    "test:auth-emulator": "vitest run --config vitest.emulator.config.ts",
+    "test:rules": "vitest run --config vitest.rules.config.ts",
+    "test:emulators": "firebase emulators:exec --only auth,firestore --project demo-n5 \"npm run test:auth-emulator && npm run test:rules\""
   },
   "dependencies": {
     "firebase": "12.19.0",
@@ -27,6 +29,7 @@
     "zustand": "^5.0.15"
   },
   "devDependencies": {
+    "@firebase/rules-unit-testing": "5.0.2",
     "@playwright/test": "^1.63.0",
     "@tailwindcss/vite": "^4.3.3",
     "@testing-library/dom": "^10.4.2",
