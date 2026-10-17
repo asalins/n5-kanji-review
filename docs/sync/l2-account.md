@@ -55,3 +55,38 @@ in a tab → the other tab and the PWA follow; offline at start-up → not signe
 out, no error; delete the user in the Firebase Console → reopen → "expired or deleted" and signed out; in-app Delete
 Account: cancel the verification → nothing deleted; complete it → account deleted, local data kept, other tab follows;
 learning figures on Home unchanged in every case.
+
+## Results (2026-10-17)
+
+Commit `9874b80`, Preview `l2-account` (`l2-account.n5-kanji-review.pages.dev`, added to the authorized domains of
+`n5-kanji-review-dev`; production domain not added). Chrome on Windows (PC) and Android. Tester: project owner.
+Evidence: **shot** = screenshot, **owner** = reported by the tester without a screenshot.
+
+| Test | PC tab | PC PWA | Android tab | Android PWA |
+|---|---|---|---|---|
+| Privacy before sign-in (TH + EN + contact e-mail) | PASS (shot) | — | — | — |
+| Cancel the sign-in popup → still signed out, no error | PASS (owner) | — | PASS (owner) | — |
+| Sign in (popup) → e-mail shown | PASS (shot) | PASS (shot) | PASS (owner) | PASS (owner) |
+| Close / reopen → still signed in | PASS (owner) | PASS (shot) | PASS (owner) | PASS (owner) |
+| Sign out in one tab → other tab / the PWA follows | PASS (shot) | PASS (shot: tab → PWA) | — | PASS (owner) |
+| Sign out keeps local data (box not pre-ticked) | PASS (shot) | PASS (shot) | PASS (owner) | — |
+| Offline start-up → not signed out, study works | — | PASS with limitation L-1 (shot) | — | — |
+| Learning figures unchanged | PASS (shot) | PASS (shot) | PASS (owner) | — |
+
+Account deletion (PC tab, once)
+- Deleted in the Firebase Console, then reload → signed out, hint removed: **PASS (shot), limitation L-2** (no notice).
+- In-app Delete Account: confirm disabled until "I understand", delete-local box not pre-ticked (shot); verification
+  completed → three separate lines "account deleted / the app stored no learning data in the cloud / learning data on
+  this device is kept" (shot); the second tab signed out by itself (shot); Firebase Console → Users: "No users for this
+  project yet" (shot); Home figures unchanged 2 · 2 · 0 · 2/10 (shot).
+- Cancelling the re-authentication popup: **not evidenced manually**; covered by unit tests only.
+
+Limitations (kept on record)
+- **L-1** Offline start-up of the PWA showed "Signed in as …" instead of the offline wording: the cached session is
+  shown as signed in before the server check finishes, and Windows can still report `navigator.onLine === true` in
+  airplane mode. The user is not signed out and studying works. The owner decided **not to fix** it in L2.
+- **L-2** A user deleted in the Console while the app is closed is signed out **silently** on the next start: the
+  Firebase SDK itself checks the restored session and drops it, so the app only sees "hint but no user", which C1
+  requires to end without an error. The notice "expired or deleted" appears only when the app's own check detects it
+  (shown by the emulator test). Documentation only; no code change.
+- The test user `HQKn66…` kept after L0 no longer exists (deleted during these tests); the project has no users.
