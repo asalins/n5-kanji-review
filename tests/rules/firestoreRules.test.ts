@@ -77,10 +77,20 @@ describe('users/{uid}', () => {
   });
   it('the epoch only goes up by exactly one (reset / import), never down or by jumps', async () => {
     await withUser('alice', 2);
-    await assertFails(updateDoc(doc(as('alice'), 'users/alice'), { epoch: 1, resetAt: serverTimestamp() }));
-    await assertFails(updateDoc(doc(as('alice'), 'users/alice'), { epoch: 4, resetAt: serverTimestamp() }));
+    const tag = { replacedBy: '0b5f2c9e-7a41-4d3b-9c2e-5f1a8b7c6d4e' };
+    await assertFails(updateDoc(doc(as('alice'), 'users/alice'), { epoch: 1, resetAt: serverTimestamp(), ...tag }));
+    await assertFails(updateDoc(doc(as('alice'), 'users/alice'), { epoch: 4, resetAt: serverTimestamp(), ...tag }));
     await assertFails(updateDoc(doc(as('alice'), 'users/alice'), { schema: 2 }));
-    await assertSucceeds(updateDoc(doc(as('alice'), 'users/alice'), { epoch: 3, resetAt: serverTimestamp() }));
+    await assertSucceeds(updateDoc(doc(as('alice'), 'users/alice'), { epoch: 3, resetAt: serverTimestamp(), ...tag }));
+  });
+  it('L4-C1: an epoch raise must carry its attempt token (replacedBy, 8-64 chars) and nothing else', async () => {
+    await withUser('alice', 0);
+    await assertFails(updateDoc(doc(as('alice'), 'users/alice'), { epoch: 1, resetAt: serverTimestamp() }));
+    await assertFails(updateDoc(doc(as('alice'), 'users/alice'), { epoch: 1, resetAt: serverTimestamp(), replacedBy: 'short' }));
+    await assertFails(updateDoc(doc(as('alice'), 'users/alice'), { epoch: 1, resetAt: serverTimestamp(), replacedBy: 'x'.repeat(65) }));
+    await assertFails(updateDoc(doc(as('alice'), 'users/alice'), { epoch: 1, resetAt: serverTimestamp(), replacedBy: 'token-123456', extra: 1 }));
+    await assertFails(updateDoc(doc(as('bob'), 'users/alice'), { epoch: 1, resetAt: serverTimestamp(), replacedBy: 'token-123456' }));
+    await assertSucceeds(updateDoc(doc(as('alice'), 'users/alice'), { epoch: 1, resetAt: serverTimestamp(), replacedBy: 'token-123456' }));
   });
 });
 

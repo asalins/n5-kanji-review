@@ -6,6 +6,7 @@ import { CloudError, PUSH_BATCH } from '../../../src/services/sync/cloudTypes';
 import { replayAll } from '../../../src/services/sync/replay';
 import { runSyncCycle, type SyncOutcome } from '../../../src/services/sync/syncEngine';
 import type { ReviewLog, ReviewRating, StudyMode } from '../../../src/types/entities';
+import type { AccountReplace } from '../../../src/repositories/interfaces';
 import { MemoryCloud } from '../../helpers/memoryCloud';
 import { openTestDatabase } from '../../helpers/testDatabase';
 
@@ -27,6 +28,12 @@ async function device(cloud: MemoryCloud, signedInAs: () => string | null) {
     async review(k: number, mode: StudyMode, rating: ReviewRating) {
       clock += 60_000;
       await services.reviewOrchestrator!.submit({ item: { itemType: 'kanji', itemId: `kanji:${KANJI[k]!}` }, mode, rating, answeredAt: clock, durationMs: 900 });
+    },
+    /** L4-C1 order: the cloud epoch is raised from this device's known epoch FIRST, then the local write. */
+    async replace(write: (r: AccountReplace) => Promise<void>) {
+      const uid = signedInAs()!;
+      const epoch = await cloud.as(signedInAs).bumpEpoch(uid, (await repos.sync.getMeta()).knownEpoch!, `test-${Math.random()}`);
+      await write({ uid, epoch });
     },
     sync: (): Promise<SyncOutcome> => runSyncCycle({ repo: repos.sync, cloud: cloud.as(signedInAs), now: () => clock }),
     data: () => repos.backup.readUserData(),
@@ -142,9 +149,9 @@ describe('sync engine (in-memory cloud mirroring the rules; the real rules are t
     synced(await b.sync());
     await b.review(1, 'A', 'GOOD'); // offline review on B, before it learns about the reset
 
-    await a.repos.backup.resetProgress();
+    await a.replace((r) => a.repos.backup.resetProgress(r));
     const replaced = synced(await a.sync());
-    expect(replaced.replaced).toBe(true);
+    expect(replaced.kind).toBe("synced");
     expect(cloud.logsOf('u')).toEqual([]); // old epoch deleted
     await a.review(2, 'A', 'EASY');
     synced(await a.sync());
@@ -182,15 +189,15 @@ describe('sync engine (in-memory cloud mirroring the rules; the real rules are t
     synced(await a.sync());
     synced(await b.sync());
     const imported = (await b.data()).reviewLogs.map((l) => ({ ...l, rating: 'EASY' as const, id: `${l.id}-file` }));
-    await a.repos.backup.replaceUserData({ reviewCards: [...replayAll(imported).values()], reviewLogs: imported, studySessions: [], userSettings: { ...DEFAULT_USER_SETTINGS, dailyNewCards: 30, updatedAt: 1 } });
+    await a.replace((r) => a.repos.backup.replaceUserData({ reviewCards: [...replayAll(imported).values()], reviewLogs: imported, studySessions: [], userSettings: { ...DEFAULT_USER_SETTINGS, dailyNewCards: 30, updatedAt: 1 } }, r));
     const out = synced(await a.sync());
-    expect(out.replaced).toBe(true);
+    expect(out.kind).toBe("synced");
     expect(out.settings).toBe('uploaded'); // the imported settings win once, despite their old updatedAt
     expect(cloud.logsOf('u')).toEqual(imported);
     expect(cloud.account('u').settings?.dailyNewCards).toBe(30);
     expect((await b.sync()).kind).toBe('remote-reset');
     // importing the same file again: one more epoch, still exactly that data
-    await a.repos.backup.replaceUserData({ reviewCards: [...replayAll(imported).values()], reviewLogs: imported, studySessions: [], userSettings: null });
+    await a.replace((r) => a.repos.backup.replaceUserData({ reviewCards: [...replayAll(imported).values()], reviewLogs: imported, studySessions: [], userSettings: null }, r));
     synced(await a.sync());
     expect(cloud.logsOf('u')).toEqual(imported);
     expect(cloud.epochsOf('u')).toEqual([2]);

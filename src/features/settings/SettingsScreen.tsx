@@ -134,6 +134,8 @@ function statusMessage(status: BackupStatus): { text: string; error: boolean } |
         text: { EXPORTED: TEXT.exported, IMPORTED: TEXT.imported, RESET_PROGRESS: TEXT.resetDone, RESET_SETTINGS: TEXT.resetSettingsDone }[status.message],
         error: false,
       };
+    case 'REPLACE_ERROR':
+      return { text: TEXT.replaceError[status.code], error: true };
     case 'IMPORT_ERROR':
       return { text: `${IMPORT_ERROR[status.code]} ${TEXT.unchanged}`, error: true };
     case 'ERROR':

@@ -23,6 +23,7 @@ function fakeSync(status: SyncStatus) {
     deleteCloudData: async () => 'deleted',
     resume: () => undefined,
     isBound: async () => true,
+    replaceAccount: async () => undefined,
     log: createSyncLog(null),
   };
   return { service, calls };

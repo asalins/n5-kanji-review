@@ -1,5 +1,15 @@
 import type { ReviewCard, ReviewLog, StudySession, UserSettings } from '../../types/entities';
 
+/**
+ * L4-C1 (F2): the cloud side of a Reset / Import on a device bound to an account has ALREADY been committed
+ * (epoch raised in a Firestore transaction from this device's known epoch). The local write must name it.
+ */
+export interface AccountReplace {
+  readonly uid: string;
+  /** The new cloud epoch this device's data now belongs to. */
+  readonly epoch: number;
+}
+
 /** All user-owned learning data (never the read-only content dataset, never the legacy streakState). */
 export interface UserDataSnapshot {
   readonly reviewCards: readonly ReviewCard[];
@@ -23,9 +33,10 @@ export interface BackupRepository {
   readUserData(): Promise<UserDataExport>;
   /**
    * One readwrite transaction: clears reviewCards, reviewLogs, studySessions and userSettings, then writes the
-   * snapshot. All or nothing - a failure anywhere rolls the whole transaction back and the previous data stays.
+   * snapshot. Bound to an account: refused unless `replace` names that account (the cloud was replaced first);
+   * then, in the same transaction, the sync state follows the new epoch. All or nothing - a failure anywhere rolls the whole transaction back and the previous data stays.
    */
-  replaceUserData(snapshot: UserDataSnapshot): Promise<void>;
+  replaceUserData(snapshot: UserDataSnapshot, replace?: AccountReplace): Promise<void>;
   /** One readwrite transaction: clears reviewCards, reviewLogs and studySessions. Settings and content stay. */
-  resetProgress(): Promise<void>;
+  resetProgress(replace?: AccountReplace): Promise<void>;
 }

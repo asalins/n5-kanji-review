@@ -26,6 +26,10 @@ export class MemoryCloud {
   failure: CloudError | null = null;
   /** Throws once, at the next call of this operation. */
   failOnce: { op: keyof CloudStore; error: CloudError } | null = null;
+  /** Runs inside bumpEpoch before its check (another device acting between "read" and "commit"). */
+  beforeBump: (() => void) | null = null;
+  /** Tokens of every successful epoch raise. */
+  readonly bumps: string[] = [];
 
   account(uid: string): Account {
     let a = this.accounts.get(uid);
@@ -73,11 +77,15 @@ export class MemoryCloud {
           a.root = { epoch: 0, resetAt: null };
           return { epoch: 0, resetAt: null, created: true };
         }),
-      bumpEpoch: (uid, from) =>
+      bumpEpoch: (uid, from, token) =>
         gate('bumpEpoch', () => {
+          this.beforeBump?.();
           const a = owner(uid);
+          // one atomic check-and-write, like the Firestore transaction (+ the rule: exactly +1, with a token)
           if (a.root === null || a.root.epoch !== from) throw new CloudError('conflict', 'epoch moved');
+          if (token.length < 8) throw new CloudError('denied', 'replacedBy missing');
           a.root = { epoch: from + 1, resetAt: tick().seconds };
+          this.bumps.push(token);
           return from + 1;
         }),
       pullLogs: (uid, cursor, limit) =>

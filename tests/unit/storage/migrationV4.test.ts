@@ -92,7 +92,7 @@ describe('migration v4 (sync state) on a v3 database', () => {
   });
 });
 
-describe('Reset / Import mark the cloud for replacement in the same transaction (D6)', () => {
+describe('L4-C1 (F2): on a bound device, Reset / Import only after the cloud was replaced; same transaction', () => {
   const setup = async () => {
     name = uniqueDatabaseName();
     const db = await openAppDatabase(APP_MIGRATIONS, name);
@@ -102,36 +102,48 @@ describe('Reset / Import mark the cloud for replacement in the same transaction 
     await repos.backup.replaceUserData({ reviewCards: cards, reviewLogs: logs, studySessions: [], userSettings: null });
     return repos;
   };
-
-  it('not bound to an account: reset changes no sync state', async () => {
-    const repos = await setup();
-    await repos.backup.resetProgress();
-    expect(await repos.sync.getMeta()).toEqual(DEFAULT_SYNC_META);
-  });
-
-  it('bound: reset clears the ledger and sets pendingReplace; import does the same', async () => {
+  const bound = async () => {
     const repos = await setup();
     await repos.sync.bind('u');
     await repos.sync.markUploaded(sampleRecords().logs.map((l) => l.id), 0);
     await repos.sync.updateMeta({ knownEpoch: 0, pullCursor: { seconds: 1, nanoseconds: 0, id: 'x' } });
-    expect(await repos.sync.pendingLogs()).toEqual([]);
+    return repos;
+  };
+
+  it('not bound to an account: reset is local only and changes no sync state', async () => {
+    const repos = await setup();
     await repos.backup.resetProgress();
-    expect(await repos.sync.getMeta()).toMatchObject({ uid: 'u', pendingReplace: true, pullCursor: null });
+    expect(await repos.sync.getMeta()).toEqual(DEFAULT_SYNC_META);
+    expect(await repos.sync.hasLocalProgress()).toBe(false);
+  });
+
+  it('bound, WITHOUT a cloud replace (offline / refused): Reset and Import are refused and NOTHING changes (no pendingReplace)', async () => {
+    const repos = await bound();
+    const before = { meta: await repos.sync.getMeta(), data: await repos.backup.readUserData() };
+    await expect(repos.backup.resetProgress()).rejects.toThrow(/cloud data must be replaced first/);
+    await expect(repos.backup.replaceUserData({ reviewCards: [], reviewLogs: [], studySessions: [], userSettings: null })).rejects.toThrow();
+    await expect(repos.backup.resetProgress({ uid: 'other', epoch: 1 })).rejects.toThrow(); // another account
+    expect(await repos.sync.getMeta()).toEqual(before.meta);
+    expect(await repos.backup.readUserData()).toEqual(before.data);
+  });
+
+  it('bound, after the cloud was replaced: data + ledger + sync state change together and follow the new epoch', async () => {
+    const repos = await bound();
+    await repos.backup.resetProgress({ uid: 'u', epoch: 1 });
+    expect(await repos.sync.getMeta()).toMatchObject({ uid: 'u', knownEpoch: 1, cleanupBelow: 1, pushSettings: true, pullCursor: null, pendingReplace: false });
     expect(await repos.sync.hasLocalProgress()).toBe(false);
 
-    await repos.sync.updateMeta({ pendingReplace: false });
     const { logs } = sampleRecords();
-    await repos.backup.replaceUserData({ reviewCards: [], reviewLogs: logs, studySessions: [], userSettings: null });
-    expect((await repos.sync.getMeta()).pendingReplace).toBe(true);
+    await repos.backup.replaceUserData({ reviewCards: [], reviewLogs: logs, studySessions: [], userSettings: null }, { uid: 'u', epoch: 2 });
+    expect(await repos.sync.getMeta()).toMatchObject({ knownEpoch: 2, cleanupBelow: 2 });
     expect((await repos.sync.pendingLogs()).map((l) => l.id).sort()).toEqual(logs.map((l) => l.id).sort()); // all to upload
   });
 
   it('a failing import changes neither the data nor the sync state', async () => {
-    const repos = await setup();
-    await repos.sync.bind('u');
+    const repos = await bound();
     const before = await repos.sync.getMeta();
     const bad = { ...sampleRecords().logs[0]!, rating: 'PERFECT' as never };
-    await expect(repos.backup.replaceUserData({ reviewCards: [], reviewLogs: [bad], studySessions: [], userSettings: null })).rejects.toThrow();
+    await expect(repos.backup.replaceUserData({ reviewCards: [], reviewLogs: [bad], studySessions: [], userSettings: null }, { uid: 'u', epoch: 1 })).rejects.toThrow();
     expect(await repos.sync.getMeta()).toEqual(before);
     expect(await repos.sync.hasLocalProgress()).toBe(true);
   });

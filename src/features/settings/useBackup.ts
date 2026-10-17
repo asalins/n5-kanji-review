@@ -3,6 +3,7 @@ import { useRepositories } from '../../hooks/useRepositories';
 import { BackupError, type BackupErrorCode } from '../../services/backup/backupErrors';
 import { applyImport, createBackup, prepareImport, resetProgress, resetSettings, type ImportPlan } from '../../services/backup/backupService';
 import { logError } from '../../utils/userMessage';
+import { ReplaceError, type ReplaceErrorCode } from '../../services/sync/replaceErrors';
 import { downloadTextFile } from './downloadFile';
 import { useSettings } from './SettingsProvider';
 
@@ -12,6 +13,7 @@ export type BackupStatus =
   | { readonly kind: 'CONFIRM_IMPORT'; readonly plan: ImportPlan }
   | { readonly kind: 'DONE'; readonly message: 'EXPORTED' | 'IMPORTED' | 'RESET_PROGRESS' | 'RESET_SETTINGS' }
   | { readonly kind: 'IMPORT_ERROR'; readonly code: BackupErrorCode }
+  | { readonly kind: 'REPLACE_ERROR'; readonly code: ReplaceErrorCode }
   | { readonly kind: 'ERROR' };
 
 interface Options {
@@ -71,7 +73,7 @@ export function useBackup({ now = Date.now }: Options = {}) {
           const plan = await prepareImport({ backup, kanji, now }, text);
           return { kind: 'CONFIRM_IMPORT', plan };
         },
-        (error) => (error instanceof BackupError ? { kind: 'IMPORT_ERROR', code: error.code } : { kind: 'ERROR' }),
+        (error) => (error instanceof ReplaceError ? { kind: 'REPLACE_ERROR', code: error.code } : error instanceof BackupError ? { kind: 'IMPORT_ERROR', code: error.code } : { kind: 'ERROR' }),
       ),
     [run, backup, kanji, now],
   );
@@ -85,7 +87,7 @@ export function useBackup({ now = Date.now }: Options = {}) {
           await reload();
           return { kind: 'DONE', message: 'IMPORTED' };
         },
-        (error) => (error instanceof BackupError ? { kind: 'IMPORT_ERROR', code: error.code } : { kind: 'ERROR' }),
+        (error) => (error instanceof ReplaceError ? { kind: 'REPLACE_ERROR', code: error.code } : error instanceof BackupError ? { kind: 'IMPORT_ERROR', code: error.code } : { kind: 'ERROR' }),
       ),
     [run, backup, kanji, now, reload],
   );
@@ -98,7 +100,7 @@ export function useBackup({ now = Date.now }: Options = {}) {
           await resetProgress({ backup });
           return { kind: 'DONE', message: 'RESET_PROGRESS' };
         },
-        () => ({ kind: 'ERROR' }),
+        (error) => (error instanceof ReplaceError ? { kind: 'REPLACE_ERROR', code: error.code } : { kind: 'ERROR' }),
       ),
     [run, backup],
   );

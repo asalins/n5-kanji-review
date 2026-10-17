@@ -1,7 +1,7 @@
 rules_version = '2';
 
 // L3 (Preview / n5-kanji-review-dev only). Layout: docs/sync/l3-sync.md
-//   users/{uid}                 { schema: 1, epoch, resetAt, createdAt }
+//   users/{uid}                 { schema: 1, epoch, resetAt, createdAt, replacedBy? }
 //   users/{uid}/logs/{logId}    ReviewLog (10 fields) + epoch + uploadedAt   (create-only)
 //   users/{uid}/meta/settings   UserSettings + uploadedAt
 // Default: everything denied. Only the signed-in owner reaches users/{uid}/**.
@@ -76,11 +76,13 @@ service cloud.firestore {
         && request.resource.data.epoch == 0
         && request.resource.data.resetAt == null
         && request.resource.data.createdAt == request.time;
-      // Reset / Import: the epoch only ever goes up by exactly one (D6).
+      // Reset / Import: the epoch only ever goes up by exactly one (D6), tagged with the replacing attempt (L4-C1).
       allow update: if isOwner(uid)
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['epoch', 'resetAt'])
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['epoch', 'resetAt', 'replacedBy'])
         && request.resource.data.epoch == resource.data.epoch + 1
-        && request.resource.data.resetAt == request.time;
+        && request.resource.data.resetAt == request.time
+        && text(request.resource.data.replacedBy, 64)
+        && request.resource.data.replacedBy.size() >= 8;
       allow delete: if isOwner(uid);
 
       match /logs/{logId} {

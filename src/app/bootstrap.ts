@@ -1,6 +1,7 @@
 import { createReviewOrchestrator } from '../features/review/reviewOrchestrator';
 import type { AppRepositories } from '../hooks/useRepositories';
 import { createIndexedDbRepositories, type Repositories } from '../repositories/indexeddb';
+import type { AccountReplace } from '../repositories/interfaces';
 import { loadBundledDataset } from '../services/content/bundledDataset';
 import { createProjectListSource } from '../services/content/projectList';
 import { requestPersistentStorage } from '../services/persistence/persistentStorage';
@@ -51,11 +52,18 @@ export function buildAppServices(repositories: Repositories, options: AppService
     account.subscribe(follow);
   }
   const changed = () => sync?.notifyLocalChange();
-  /** F5: record WHO asked for a replacement of the account's cloud data (Reset / Import on this device). */
-  const noteReplace = async (what: string) => {
-    if (sync === null) return;
-    const bound = await sync.isBound().catch(() => false);
-    sync.log.add(bound ? `${what} on this device: the account's cloud data will be replaced on the next sync` : `${what} on this device (not bound to an account: local only)`);
+  /**
+   * Reset progress / Import (Replace). Bound to an account (L4-C1, F2): the cloud is replaced FIRST, atomically from
+   * this device's known epoch, and only then the local data (syncService.replaceAccount). Not bound: local only.
+   */
+  const replaceData = async (what: string, writeLocal: (replace?: AccountReplace) => Promise<void>) => {
+    if (sync !== null && (await sync.isBound())) {
+      await sync.replaceAccount(what, (replace) => writeLocal(replace));
+    } else {
+      await writeLocal();
+      sync?.log.add(`${what} on this device (not bound to an account: local only)`);
+    }
+    changed();
   };
   const orchestrator = createReviewOrchestrator({
     recorder: repositories.review,
@@ -76,16 +84,8 @@ export function buildAppServices(repositories: Repositories, options: AppService
     backup: {
       readUserData: () => repositories.backup.readUserData(),
       // Reset / Import mark a bound account's cloud for replacement (same transaction); sync it soon.
-      replaceUserData: async (snapshot) => {
-        await repositories.backup.replaceUserData(snapshot);
-        await noteReplace('Import (Replace)');
-        changed();
-      },
-      resetProgress: async () => {
-        await repositories.backup.resetProgress();
-        await noteReplace('Reset progress');
-        changed();
-      },
+      replaceUserData: (snapshot) => replaceData('Import (Replace)', (replace) => repositories.backup.replaceUserData(snapshot, replace)),
+      resetProgress: () => replaceData('Reset progress', (replace) => repositories.backup.resetProgress(replace)),
     },
     account,
     ...(sync === null ? {} : { sync }),

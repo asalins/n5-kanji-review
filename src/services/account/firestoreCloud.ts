@@ -102,16 +102,16 @@ export function createFirestoreCloud(db: Firestore, auth: Auth): CloudStore {
     // F4: the SDK re-runs a transaction whose commit result was lost (e.g. the connection dropped after the server
     // committed). A re-run that finds exactly from + 1 is this call's own commit, not another device's reset:
     // report success instead of a conflict, so the caller never raises the epoch a second time.
-    bumpEpoch: (uid, from) => {
+    bumpEpoch: (uid, from, token) => {
       let attempts = 0;
       return guarded(() =>
         runTransaction(db, async (tx) => {
           attempts += 1;
           const snap = await tx.get(root(uid));
           const epoch = snap.exists() ? Number(snap.data().epoch) : null;
-          if (attempts > 1 && epoch === from + 1) return from + 1;
+          if (attempts > 1 && epoch === from + 1 && snap.data()?.replacedBy === token) return from + 1;
           if (epoch !== from) throw new CloudError('conflict', `epoch is ${String(epoch)}, expected ${from}`);
-          tx.update(root(uid), { epoch: from + 1, resetAt: serverTimestamp() });
+          tx.update(root(uid), { epoch: from + 1, resetAt: serverTimestamp(), replacedBy: token });
           return from + 1;
         }),
       );

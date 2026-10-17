@@ -1,5 +1,6 @@
 import type { SyncRepository } from '../../repositories/interfaces';
 import type { SyncMeta } from '../../types/entities';
+import { newUuid } from '../../utils/uuid';
 import { CloudError, PULL_PAGE, PUSH_BATCH, type CloudRoot, type CloudStore } from './cloudTypes';
 
 /**
@@ -88,20 +89,22 @@ async function syncSettings(deps: SyncEngineDeps, uid: string, force: boolean): 
   return 'kept';
 }
 
-/** Raise the cloud epoch for a local Reset / Import (the epoch may have moved meanwhile: retry once). */
-async function startReplace(deps: SyncEngineDeps, uid: string, root: CloudRoot): Promise<number> {
-  let from = root.epoch;
-  for (let attempt = 0; ; attempt += 1) {
-    try {
-      deps.log?.(`replace: raising the cloud epoch ${from} -> ${from + 1} (a Reset / Import on this device is pending)`);
-      const epoch = await deps.cloud.bumpEpoch(uid, from);
-      await deps.repo.updateMeta({ knownEpoch: epoch, pendingReplace: false, cleanupBelow: epoch, pushSettings: true, pullCursor: null });
-      return epoch;
-    } catch (error) {
-      if (!(error instanceof CloudError) || error.kind !== 'conflict' || attempt > 0) throw error;
-      from = (await deps.cloud.readOrCreateRoot(uid)).epoch;
-      deps.log?.(`replace: the epoch moved meanwhile (now ${from}); retrying once`);
-    }
+/**
+ * Legacy only: `pendingReplace` was set by builds up to 9a1455c (Reset / Import marked the cloud for replacement
+ * and the next sync raised the epoch from whatever the cloud then had, F2). Current builds replace the cloud BEFORE
+ * changing local data (syncService.replaceAccount) and never set it. A leftover is honoured only if the cloud is
+ * still at this device's known epoch (atomic precondition); otherwise nothing is raised and the user decides.
+ */
+async function legacyReplace(deps: SyncEngineDeps, uid: string, meta: SyncMeta, root: CloudRoot): Promise<number | null> {
+  if (meta.knownEpoch === null || root.epoch !== meta.knownEpoch) return null;
+  deps.log?.(`legacy pending replace: raising the cloud epoch ${meta.knownEpoch} -> ${meta.knownEpoch + 1} only if still ${meta.knownEpoch}`);
+  try {
+    const epoch = await deps.cloud.bumpEpoch(uid, meta.knownEpoch, newUuid());
+    await deps.repo.updateMeta({ knownEpoch: epoch, pendingReplace: false, cleanupBelow: epoch, pushSettings: true, pullCursor: null });
+    return epoch;
+  } catch (error) {
+    if (error instanceof CloudError && error.kind === 'conflict') return null;
+    throw error;
   }
 }
 
@@ -129,10 +132,15 @@ export async function runSyncCycle(deps: SyncEngineDeps): Promise<SyncOutcome> {
   let replaced = false;
 
   if (meta.pendingReplace) {
-    await startReplace(deps, uid, root);
+    const raised = await legacyReplace(deps, uid, meta, root);
+    if (raised === null) {
+      await repo.updateMeta({ pendingReplace: false });
+      log(`legacy pending replace NOT applied: the cloud is at epoch ${root.epoch}, this device knew ${String(meta.knownEpoch)}; nothing raised`);
+      return { kind: 'remote-reset', uid, epoch: root.epoch, resetAt: root.resetAt, unsynced: (await repo.pendingLogs()).length };
+    }
     replaced = true;
     meta = await repo.getMeta();
-    root = { ...root, epoch: meta.knownEpoch!, created: false };
+    root = { ...root, epoch: raised, created: false };
   } else if (meta.knownEpoch === null) {
     meta = await repo.updateMeta({ knownEpoch: root.epoch, pullCursor: null });
     log(`first sync of this binding: following cloud epoch ${root.epoch}`);

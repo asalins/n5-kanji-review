@@ -13,6 +13,7 @@ import { replayAll } from '../../src/services/sync/replay';
 import { runSyncCycle, type SyncOutcome } from '../../src/services/sync/syncEngine';
 import { createSyncService, type SyncEnvironment } from '../../src/services/sync/syncService';
 import type { ReviewLog, ReviewRating, StudyMode } from '../../src/types/entities';
+import type { AccountReplace } from '../../src/repositories/interfaces';
 import { openTestDatabase } from '../helpers/testDatabase';
 
 /**
@@ -65,6 +66,11 @@ async function device(who: string) {
     repos,
     async review(code: string, mode: StudyMode, rating: ReviewRating, at: number) {
       await services.reviewOrchestrator!.submit({ item: { itemType: 'kanji', itemId: `kanji:U+${code}` }, mode, rating, answeredAt: at, durationMs: 800 });
+    },
+    /** L4-C1 cloud-first replace: raise the epoch only if it is still the one this device knows, then write locally. */
+    async replace(write: (r: AccountReplace) => Promise<void>) {
+      const epoch = await cloud.bumpEpoch(user.uid, (await repos.sync.getMeta()).knownEpoch!, `emu-${crypto.randomUUID()}`);
+      await write({ uid: user.uid, epoch });
     },
     sync: (store: CloudStore = cloud): Promise<SyncOutcome> => runSyncCycle({ repo: repos.sync, cloud: store, now: () => Date.now() }),
     data: () => repos.backup.readUserData(),
@@ -179,8 +185,8 @@ describe('sync on the Firestore emulator with the real rules', () => {
     synced(await b.sync());
     await b.review('706B', 'A', 'GOOD', T0 + 1_000);
 
-    await a.repos.backup.resetProgress();
-    expect(synced(await a.sync()).replaced).toBe(true);
+    await a.replace((r) => a.repos.backup.resetProgress(r));
+    synced(await a.sync());
     expect(await cloudLogs(a)).toEqual([]);
     expect((await getDoc(doc(a.firestore, 'users', a.uid))).data()?.epoch).toBe(1);
 
@@ -193,6 +199,33 @@ describe('sync on the Firestore emulator with the real rules', () => {
     await expectConverged(a, b);
   });
 
+  it('L4-C1 (R): two devices at the same epoch replace; the first wins, the second is refused and changes nothing', async () => {
+    const a = await device('race');
+    const b = await device('race');
+    for (const d of [a, b]) await d.repos.sync.bind(a.uid);
+    await a.review('6C34', 'A', 'GOOD', T0);
+    synced(await a.sync());
+    synced(await b.sync());
+    expect((await a.repos.sync.getMeta()).knownEpoch).toBe(0);
+    expect((await b.repos.sync.getMeta()).knownEpoch).toBe(0);
+    const before = await b.data();
+
+    await a.replace((r) => a.repos.backup.resetProgress(r));
+    let wrote = false;
+    await expect(b.replace(async () => { wrote = true; })).rejects.toMatchObject({ kind: 'conflict' });
+    expect(wrote).toBe(false);
+    // the transaction re-read inside the emulator, so no blind write: one raise, A's token
+    const root = (await getDoc(doc(a.firestore, 'users', a.uid))).data();
+    expect(root?.epoch).toBe(1);
+    expect(String(root?.replacedBy)).toMatch(/^emu-/);
+    expect(await b.data()).toEqual(before);
+    expect((await b.repos.sync.getMeta()).knownEpoch).toBe(0);
+    // a direct stale raise is refused by the rules too (epoch must be exactly +1 of the stored one)
+    await expect(setDoc(doc(b.firestore, 'users', b.uid), { epoch: 1, resetAt: serverTimestamp(), replacedBy: 'stale-token-1' }, { merge: true })).rejects.toBeDefined();
+    synced(await a.sync());
+    expect(await b.sync()).toMatchObject({ kind: 'remote-reset', epoch: 1 });
+  });
+
   it('Import (Replace) twice: the cloud holds exactly the imported logs, in the newest epoch', async () => {
     const a = await device('import');
     await a.repos.sync.bind(a.uid);
@@ -200,8 +233,8 @@ describe('sync on the Firestore emulator with the real rules', () => {
     synced(await a.sync());
     const imported: ReviewLog[] = [{ id: 'log:00000000-0000-4000-8000-000000000001', cardId: 'kanji:kanji:U+6728:B', rating: 'EASY', reviewedAt: T0 - 1, durationMs: 5, stateBefore: 'NEW', stateAfter: 'LEARNING', datasetVersion: null, deviceId: null, originalId: null }];
     for (let round = 1; round <= 2; round += 1) {
-      await a.repos.backup.replaceUserData({ reviewCards: [...replayAll(imported).values()], reviewLogs: imported, studySessions: [], userSettings: { ...DEFAULT_USER_SETTINGS, theme: 'dark', updatedAt: 1 } });
-      expect(synced(await a.sync())).toMatchObject({ replaced: true, settings: 'uploaded' });
+      await a.replace((r) => a.repos.backup.replaceUserData({ reviewCards: [...replayAll(imported).values()], reviewLogs: imported, studySessions: [], userSettings: { ...DEFAULT_USER_SETTINGS, theme: 'dark', updatedAt: 1 } }, r));
+      expect(synced(await a.sync())).toMatchObject({ settings: 'uploaded' });
       const docs = await cloudLogs(a);
       expect(docs.map((d) => [d.id, d.epoch])).toEqual([[imported[0]!.id, round]]);
     }

@@ -50,8 +50,12 @@ export interface CloudStore {
   confirmedUid(): Promise<string | null>;
   /** Reads users/{uid}, creating it (epoch 0) in a transaction when missing. */
   readOrCreateRoot(uid: string): Promise<CloudRoot>;
-  /** Raises the epoch by one if it is still `from` (transaction); CloudError 'conflict' otherwise. Returns the new epoch. */
-  bumpEpoch(uid: string, from: number): Promise<number>;
+  /**
+   * L4-C1: raises the epoch by one ONLY if it is still `from` (one Firestore transaction = the precondition and the
+   * write are atomic); CloudError 'conflict' otherwise. `token` (random, per attempt) is stored as `replacedBy`, so a
+   * transaction re-run after a lost commit recognises its OWN commit and never takes another device's for it.
+   */
+  bumpEpoch(uid: string, from: number, token: string): Promise<number>;
   pullLogs(uid: string, after: SyncCursor | null, limit: number): Promise<CloudLogPage>;
   /** Creates the log documents (one batch, ≤ PUSH_BATCH) with `epoch` and a server upload time. */
   pushLogs(uid: string, epoch: number, logs: readonly ReviewLog[]): Promise<void>;

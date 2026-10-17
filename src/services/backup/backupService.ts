@@ -1,3 +1,4 @@
+import { ReplaceError } from '../sync/replaceErrors';
 import type { BackupRepository, KanjiRepository, SettingsRepository, UserDataSnapshot } from '../../repositories/interfaces';
 import type { JlptLevel } from '../../types/entities';
 import { localDay } from '../../utils/localDay';
@@ -82,6 +83,7 @@ export async function applyImport(deps: BackupDeps, plan: ImportPlan): Promise<v
   try {
     await deps.backup.replaceUserData(plan.snapshot);
   } catch (cause) {
+    if (cause instanceof ReplaceError) throw cause; // L4-C1: the account replace was refused / incomplete: say why
     throw new BackupError('IMPORT_TRANSACTION_FAILED', 'The backup could not be restored', { cause });
   }
 }

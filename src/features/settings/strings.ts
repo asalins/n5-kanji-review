@@ -41,6 +41,16 @@ export const TEXT = {
     'เครื่องนี้ sync กับบัญชีอยู่: ความคืบหน้าของบัญชีนี้บน Cloud จะถูกลบด้วย และทุกอุปกรณ์ที่ sync กับบัญชีนี้จะถูกถามให้ล้างความคืบหน้าของตัวเอง ถ้าต้องการล้างเฉพาะเครื่องนี้ ให้ออกจากระบบแล้วติ๊ก "ลบความคืบหน้าในเครื่องนี้ด้วย" · This device syncs with an account: the account\'s progress in the cloud is deleted too, and every device synced with it will be asked to clear its progress. To clear only this device, sign out and tick "Also delete learning progress on this device".',
   boundImportWarning:
     'เครื่องนี้ sync กับบัญชีอยู่: ความคืบหน้าของบัญชีนี้บน Cloud จะถูกแทนที่ด้วยไฟล์นี้ และทุกอุปกรณ์ที่ sync กับบัญชีนี้จะถูกถามให้ล้างความคืบหน้าของตัวเอง · This device syncs with an account: the account\'s progress in the cloud is replaced by this file, and every device synced with it will be asked to clear its progress.',
+  replaceError: {
+    offline: 'ต้องออนไลน์เพื่อตรวจข้อมูลของบัญชีก่อน · ไม่มีอะไรถูกเปลี่ยน · You must be online so the account can be checked first. Nothing was changed.',
+    'not-signed-in': 'เครื่องนี้ sync กับบัญชีอยู่: เข้าสู่ระบบบัญชีนั้นก่อน · ไม่มีอะไรถูกเปลี่ยน · This device syncs with an account: sign in to it first. Nothing was changed.',
+    'not-synced': 'ต้อง sync กับบัญชีให้สำเร็จก่อน (หัวข้อบัญชี → Sync ตอนนี้) · ไม่มีอะไรถูกเปลี่ยน · Complete a sync with the account first (Account → Sync now). Nothing was changed.',
+    'cloud-failed': 'ตรวจหรือแก้ข้อมูลของบัญชีบน Cloud ไม่สำเร็จ · ไม่มีอะไรถูกเปลี่ยน ลองใหม่ได้ · The account data in the cloud could not be checked or updated. Nothing was changed; you can try again.',
+    conflict:
+      'บัญชีถูก reset หรือแทนที่จากอุปกรณ์อื่นก่อนแล้ว · ไม่มีอะไรถูกเปลี่ยน ดูกรอบ Sync ในหัวข้อบัญชีแล้วเลือกอีกครั้ง · The account was already reset or replaced from another device. Nothing was changed; see the sync notice in the Account section and choose again.',
+    'local-failed':
+      'ข้อมูลของบัญชีบน Cloud ถูกทำเครื่องหมายว่าแทนที่แล้ว แต่บันทึกในเครื่องนี้ไม่สำเร็จ · ข้อมูลในเครื่องนี้ยังเหมือนเดิม และไม่มีข้อมูลบน Cloud ถูกลบ · ดูกรอบ Sync ในหัวข้อบัญชี · The account was marked as replaced in the cloud, but saving on this device failed. This device\'s data is unchanged and nothing in the cloud was deleted. See the sync notice in the Account section.',
+  },
   blockedByRemoteReset:
     'ตอบกรอบ Sync ในหัวข้อบัญชีก่อน: ความคืบหน้าในบัญชีถูก reset หรือแทนที่จากอุปกรณ์อื่น · First answer the sync notice in the Account section: the account was reset or replaced from another device.',
   resetSettings: 'คืนค่าการตั้งค่าเริ่มต้น · Reset settings',

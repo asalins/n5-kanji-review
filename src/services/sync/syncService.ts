@@ -2,6 +2,9 @@ import type { SyncRepository } from '../../repositories/interfaces';
 import { CloudError, type CloudStore } from './cloudTypes';
 import { runSyncCycle, type SyncOutcome } from './syncEngine';
 import { createSyncLog, type SyncLog } from './syncLog';
+import { ReplaceError } from './replaceErrors';
+import type { AccountReplace } from '../../repositories/interfaces';
+import { newUuid } from '../../utils/uuid';
 
 /**
  * L3b sync scheduler. When to sync, never what (that is syncEngine):
@@ -79,6 +82,15 @@ export interface SyncService {
   deleteCloudData(uid: string): Promise<'deleted' | 'failed'>;
   /** After a failed Delete Account: syncing may continue. */
   resume(): void;
+  /**
+   * L4-C1 (F2): Reset progress / Import (Replace) on a bound device. Order (Firestore and IndexedDB cannot commit
+   * together): (1) online + server-confirmed same account + this device has synced; (2) ONE Firestore transaction
+   * raises the epoch only if it is still this device's known epoch (else 'conflict': nothing changed anywhere);
+   * (3) `writeLocal` replaces the local data and follows the new epoch in ONE IndexedDB transaction; (4) the next
+   * sync deletes the old-epoch cloud logs and uploads. Syncing is suspended and the cross-tab lock held throughout.
+   * Throws ReplaceError; never reports success unless (2) and (3) both committed.
+   */
+  replaceAccount(what: string, writeLocal: (replace: AccountReplace) => Promise<void>): Promise<void>;
   /** Is this device's progress bound to an account (Reset / Import then also replace that account's cloud data)? */
   isBound(): Promise<boolean>;
   /** F5: what sync decided on this device, newest last. */
@@ -322,6 +334,67 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
       suspended = false;
     },
     isBound: async () => (await repo.getMeta()).uid !== null,
+    async replaceAccount(what, writeLocal) {
+      const cloud = deps.getCloud();
+      if (!active || cloud === null) {
+        note(`${what} refused: not signed in (this device syncs with an account)`);
+        throw new ReplaceError('not-signed-in', 'Sign in to replace the account data');
+      }
+      if (!env.isOnline()) {
+        note(`${what} refused: offline; nothing changed`);
+        throw new ReplaceError('offline', 'Offline');
+      }
+      suspended = true;
+      cancelTimer();
+      if (running !== null) await running;
+      const task = async () => {
+        const meta = await repo.getMeta();
+        let uid: string | null;
+        try {
+          uid = await cloud.confirmedUid();
+        } catch (cause) {
+          note(`${what} refused: the account could not be checked with the server; nothing changed`);
+          throw new ReplaceError(cause instanceof CloudError && cause.kind === 'network' ? 'offline' : 'cloud-failed', 'Account check failed', { cause });
+        }
+        if (uid === null || uid !== meta.uid) {
+          note(`${what} refused: the signed-in account is not the one this device syncs with; nothing changed`);
+          throw new ReplaceError('not-signed-in', 'Different or no account');
+        }
+        if (meta.knownEpoch === null || meta.pendingReplace) {
+          note(`${what} refused: this device has not completed a sync with the account yet; nothing changed`);
+          throw new ReplaceError('not-synced', 'Sync first');
+        }
+        const from = meta.knownEpoch;
+        note(`${what} on this device: raising the cloud epoch ${from} -> ${from + 1} only if still ${from}`);
+        let epoch: number;
+        try {
+          epoch = await cloud.bumpEpoch(uid, from, newUuid());
+        } catch (cause) {
+          if (cause instanceof CloudError && cause.kind === 'conflict') {
+            note(`${what} refused: the account was already replaced from another device (epoch is no longer ${from}); nothing changed`);
+            throw new ReplaceError('conflict', 'Replaced elsewhere first', { cause });
+          }
+          note(`${what} refused: the cloud could not be updated (${cause instanceof CloudError ? cause.kind : 'unknown'}); nothing changed`);
+          throw new ReplaceError(cause instanceof CloudError && cause.kind === 'network' ? 'offline' : 'cloud-failed', 'Cloud update failed', { cause });
+        }
+        try {
+          await writeLocal({ uid, epoch });
+        } catch (cause) {
+          log(cause);
+          note(`${what}: the cloud epoch is now ${epoch} but saving on this device FAILED; this device's data is unchanged and no cloud log was deleted`);
+          throw new ReplaceError('local-failed', 'Local write failed after the cloud was replaced', { cause });
+        }
+        note(`${what} done: this device follows epoch ${epoch}; old cloud logs are deleted and this device's uploaded on the next sync`);
+      };
+      try {
+        if (env.locks === null) await task();
+        else await env.locks.request(LOCK_NAME, { ifAvailable: false }, task);
+      } finally {
+        suspended = false;
+        failures = 0;
+        void run(); // success: clean up + upload; refusal: show the current state (e.g. the remote-reset notice)
+      }
+    },
     log: syncLog,
   };
 }
