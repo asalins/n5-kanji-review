@@ -87,3 +87,41 @@ version". Backups made by the production app (format 1) import into this version
   starts, then checks the upgrade, a new review, reload, Import (Replace) and export; `productionUpgrade.spec.ts` runs
   the real production build, creates data, deploys this build on the same origin and taps Update
   (requires `N5_BASELINE_DIST`; otherwise reported as skipped, never as passed).
+
+## Results and Gate (2026-10-17)
+
+**Coordinator Gate: L1 PASS** for commit `0ad62578c6762fa57a9f099f64171e7ad1a4ee65` (parent `c6fdf23`), bundle
+`l1-local-ids-0ad6257.bundle`, SHA-256 `BFBC93B7268DE2C8E3C06AB1215AA6449C75CBF0DBAB7AC092532E1ADEA977F9`.
+L2: design plan only (no implementation). Production stays `c6fdf23`.
+
+| Check | Result |
+|---|---|
+| `verify:all` (Chromium, `N5_BASELINE_DIST` = `c6fdf23` dist) | PASS: unit 54 files / 703 tests; E2E 40 passed, 24 skipped by the existing per-viewport rule; no BLOCKED |
+| Production build `c6fdf23` rebuilt | byte-identical to the production baseline, 25/25 files |
+| Android Preview upgrade (`l1-upgrade-test2`) | `c6fdf23`: 3 reviews, New cards 20, backup v1 exported (Home 3 · 3 · 0 · 3/20 · 17) → "A new version is available" → Update to `0ad6257`: Home unchanged → 1 more review (4 · 4 · 0 · 4/20 · 16) → Import of the v1 backup → 3 · 3 · 0 · 3/20 · 17 |
+
+Limitations kept on record
+- Closing/reopening the app after the Import was **not** evidenced on the phone; the E2E reload after the upgrade is
+  used instead. It must not be described as tested on the phone.
+- Phone evidence is the Home figures only; IndexedDB-level checks are unit/E2E.
+- `productionUpgrade.spec.ts` needs `N5_BASELINE_DIST`; without it it is reported as skipped, never passed.
+- The phone procedure was skipped twice (`l1-local-ids`, `l1-upgrade-test`: both pushes ran back to back) and redone on
+  `l1-upgrade-test2` one command at a time. No force push.
+
+### Preview deployment evidence (Cloudflare Pages, project `n5-kanji-review`, screenshot 2026-10-17 09:52)
+
+| Branch | Commit | Deployment | Use |
+|---|---|---|---|
+| `l1-upgrade-test2` | `0ad6257` | `5996f8d7` | phone: after Update (evidence) |
+| `l1-upgrade-test2` | `c6fdf23` | `a6e3a268` | phone: production version, data created (evidence) |
+| `l1-upgrade-test` | `0ad6257` | `b8b7c3da` | procedure skipped (not evidence) |
+| `l1-upgrade-test` | `c6fdf23` | `f48eaa80` | procedure skipped (not evidence) |
+| `l1-local-ids` | `0ad6257` | `65e91ab4` | L1 Preview |
+| `l1-local-ids` | `c6fdf23` | `22e021fa` | procedure skipped (not evidence) |
+| `ui-import-button` (Production) | `c6fdf23` | `90ae9e05` | unchanged |
+
+The dashboard truncates the branch name to `l1-upgrade-tes…` for the first two rows; they are `l1-upgrade-test2`
+because `l1-upgrade-test` is listed separately in full and these are the only other deployments of those commits.
+Branches `l1-upgrade-test` and `l1-upgrade-test2` point to `0ad6257` (same commit as `l1-local-ids`) and hold no work
+of their own; the Coordinator allowed deleting them once this record is stored. Their Preview deployments stay listed
+in Cloudflare after the branches are deleted.
