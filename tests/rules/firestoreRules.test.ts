@@ -139,11 +139,14 @@ describe('users/{uid}/logs/{logId}', () => {
     await withUser('alice');
     for (const id of ['log:1', 'log:2']) await assertSucceeds(setDoc(doc(as('alice'), `users/alice/logs/${id}`), log(id)));
     await assertFails(deleteDoc(doc(as('bob'), 'users/alice/logs/log:1')));
-    const batch = writeBatch(as('alice'));
-    batch.delete(doc(as('alice'), 'users/alice/logs/log:1'));
-    batch.delete(doc(as('alice'), 'users/alice/logs/log:2'));
+    // A batch and its document references must come from one Firestore instance;
+    // every as() call opens a new one.
+    const alice = as('alice');
+    const batch = writeBatch(alice);
+    batch.delete(doc(alice, 'users/alice/logs/log:1'));
+    batch.delete(doc(alice, 'users/alice/logs/log:2'));
     await assertSucceeds(batch.commit());
-    await assertSucceeds(deleteDoc(doc(as('alice'), 'users/alice')));
+    await assertSucceeds(deleteDoc(doc(alice, 'users/alice')));
   });
 });
 
