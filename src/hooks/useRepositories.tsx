@@ -4,6 +4,7 @@ import type { BackupRepository, KanjiRepository, ReviewRepository, SettingsRepos
 import type { NewItemSource } from '../services/session/types';
 import type { AccountService } from '../services/account';
 import type { SyncService } from '../services/sync/syncService';
+import type { ClockService } from '../services/clock/clockCheck';
 
 /** What the UI is allowed to know: repository INTERFACES only, never an implementation. */
 export interface AppRepositories {
@@ -21,6 +22,8 @@ export interface AppRepositories {
   readonly account?: AccountService;
   /** Multi-device sync (L3b). Absent in tests that do not need it and when the account is unavailable. */
   readonly sync?: SyncService;
+  /** F10-A: device clock vs server time. Absent in tests that do not need it: no clock guard, no notices. */
+  readonly clock?: ClockService;
 }
 
 const RepositoriesContext = createContext<AppRepositories | null>(null);

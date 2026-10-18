@@ -5,6 +5,7 @@ export const ERROR_TEXT: Record<ReviewErrorCode, { title: string; description: s
   SESSION_LOAD_ERROR: { title: 'เตรียมรอบทบทวนไม่สำเร็จ', description: 'อ่านข้อมูลการเรียนไม่ได้ ลองอีกครั้ง' },
   REVIEW_SAVE_ERROR: { title: 'บันทึกผลไม่สำเร็จ', description: 'ผลนี้ยังไม่ถูกนับ กดให้คะแนนอีกครั้งเพื่อลองใหม่' },
   SESSION_STATE_ERROR: { title: 'เริ่มรอบทบทวนไม่สำเร็จ', description: 'ระบบยังไม่พร้อม ลองอีกครั้ง' },
+  CLOCK_SKEW_ERROR: { title: 'ไม่ได้บันทึกผล: เวลาของอุปกรณ์ไม่ตรง', description: 'เปิดตั้งเวลาอัตโนมัติ แล้วกดตรวจเวลาอีกครั้ง ผลนี้ยังไม่ถูกนับ' },
 };
 
 export function formatDuration(ms: number): string {

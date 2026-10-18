@@ -3,6 +3,7 @@ import type { AppRepositories } from '../hooks/useRepositories';
 import { createIndexedDbRepositories, type Repositories } from '../repositories/indexeddb';
 import type { AccountReplace } from '../repositories/interfaces';
 import type { UserSettings } from '../types/entities';
+import { ClockSkewError, browserClockEnvironment, createClockService, describeSkew, type ClockService } from '../services/clock/clockCheck';
 import { loadBundledDataset } from '../services/content/bundledDataset';
 import { createProjectListSource } from '../services/content/projectList';
 import { requestPersistentStorage } from '../services/persistence/persistentStorage';
@@ -19,6 +20,8 @@ export interface AppServiceOptions {
   readonly syncEnv?: SyncEnvironment;
   /** Test-only: the F5 diagnostic log. */
   readonly syncLog?: SyncLog;
+  /** F10-A: the device-clock check (production: against the server's Date). Absent = no clock guard (tests). */
+  readonly clock?: ClockService;
   /** Test-only: an account service instead of the Firebase one (to exercise the real sync wiring). */
   readonly account?: AccountService;
 }
@@ -92,8 +95,20 @@ export function buildAppServices(repositories: Repositories, options: AppService
     account,
     ...(sync === null ? {} : { sync }),
     newItems: createProjectListSource(),
+    ...(options.clock === undefined ? {} : { clock: options.clock }),
     reviewOrchestrator: {
       async submit(request) {
+        // F10-A: a NEW review is not recorded while the device clock is known (fresh server time) to be wrong.
+        // Unknown (offline, no server time, stale) never blocks: offline-first. Practice mode never comes here.
+        const clock = options.clock;
+        if (clock !== undefined) {
+          let state = clock.current();
+          if (state.kind === 'unknown' && (state.reason === 'stale' || state.reason === 'not-checked')) state = await clock.check();
+          if (state.kind === 'wrong') {
+            sync?.log.add(`review NOT recorded: the device clock is ${describeSkew(state.skewMs)} (server time)`, { once: true });
+            throw new ClockSkewError(state.skewMs);
+          }
+        }
         await orchestrator.submit(request);
         changed();
       },
@@ -108,7 +123,16 @@ async function start(): Promise<AppRepositories> {
   await loadBundledDataset({ writer: repositories.contentWriter, reader: repositories.kanji, now: Date.now });
   // Ask the browser not to evict the learning data. Not awaited: start-up never waits for or fails on it.
   void requestPersistentStorage();
-  const services = buildAppServices(repositories);
+  // F10-A: measure the device clock against the server now, when back online and when the app is shown again.
+  const clock = createClockService(browserClockEnvironment());
+  void clock.check();
+  if (typeof window !== 'undefined') {
+    window.addEventListener('online', () => void clock.check());
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') void clock.check();
+    });
+  }
+  const services = buildAppServices(repositories, { clock });
   // Optional account: loads Firebase only if this browser had a session (hint). Never blocks or fails start-up.
   services.account?.start();
   return services;

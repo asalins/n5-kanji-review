@@ -9,12 +9,14 @@ import { logError } from '../../utils/userMessage';
 import type { FlashcardPhase } from '../flashcards/Flashcard';
 import { isCardPlayable, type KanjiCardData } from '../flashcards/presentation';
 import type { ReviewOrchestrator } from './reviewBoundary';
+import { ClockSkewError } from '../../services/clock/clockCheck';
 
 export type ReviewErrorCode =
   | 'DATA_LOAD_ERROR'
   | 'SESSION_LOAD_ERROR'
   | 'REVIEW_SAVE_ERROR'
-  | 'SESSION_STATE_ERROR';
+  | 'SESSION_STATE_ERROR'
+  | 'CLOCK_SKEW_ERROR';
 
 export interface SessionCardView {
   readonly planned: PlannedCard;
@@ -162,7 +164,7 @@ export function useReviewSession({ now = Date.now, limits, orchestrator: orchest
       } catch (error) {
         logError(error);
         // Not stored: the card stays, nothing is counted, and the user can rate again (the first attempt rolled back).
-        setState({ ...current, saving: false, saveError: 'REVIEW_SAVE_ERROR' });
+        setState({ ...current, saving: false, saveError: error instanceof ClockSkewError ? 'CLOCK_SKEW_ERROR' : 'REVIEW_SAVE_ERROR' });
         return;
       }
       const results = [...current.results, { rating, durationMs }];

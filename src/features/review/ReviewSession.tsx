@@ -9,6 +9,7 @@ import { ERROR_TEXT, formatAccuracy, formatDuration } from './reviewStrings';
 import type { ReviewOrchestrator } from './reviewBoundary';
 import type { DailyLimits } from '../../services/session/allowance';
 import { useReviewSession } from './useReviewSession';
+import { ClockStatusNote, useClockState } from '../clock/ClockNotices';
 
 interface ReviewSessionProps {
   readonly onExit: () => void;
@@ -21,6 +22,9 @@ interface ReviewSessionProps {
 export function ReviewSession({ onExit, now, limits, orchestrator }: ReviewSessionProps) {
   const { state, start, reveal, rate, restart } = useReviewSession({ now, limits, orchestrator });
   const answerRef = useRef<HTMLDivElement>(null);
+  // F10-A: while the clock is known to be wrong, no review is started or recorded (the orchestrator refuses too).
+  const clock = useClockState();
+  const clockWrong = clock.state.kind === 'wrong';
   const reviewing = state.status === 'REVIEWING' ? state : null;
 
   useCardKeyboard({
@@ -41,6 +45,17 @@ export function ReviewSession({ onExit, now, limits, orchestrator }: ReviewSessi
       <h1 className="text-base font-semibold">ทบทวนวันนี้ · Today's review</h1>
     </header>
   );
+
+  const clockNote = <ClockStatusNote state={clock.state} recheck={clock.recheck} />;
+  if (clockWrong && state.status !== 'COMPLETED') {
+    return (
+      <>
+        {header}
+        {clockNote}
+        <button type="button" onClick={onExit} className={SECONDARY_BUTTON}>กลับหน้าหลัก</button>
+      </>
+    );
+  }
 
   switch (state.status) {
     case 'IDLE':
@@ -77,6 +92,7 @@ export function ReviewSession({ onExit, now, limits, orchestrator }: ReviewSessi
       return (
         <>
           {header}
+          {clockNote}
           <StateMessage tone="empty" title={`${state.cards.length} ใบในรอบนี้`} description={`ทบทวน ${due} ใบ · ใหม่ ${state.cards.length - due} ใบ`}>
             <button type="button" onClick={() => void start()} className={PRIMARY_BUTTON}>
               เริ่ม · Start
