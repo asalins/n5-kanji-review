@@ -78,7 +78,7 @@ kept (D4); Verify branding not requested.
 ### Firestore Production (S1–S5)
 | # | Result |
 |---|---|
-| S1 | `(default)` database created (production mode). Location not evidenced by a screenshot (selected asia-southeast1 per guide) |
+| S1 | `(default)` database created (production mode): location **asia-southeast1**, Standard, Firestore Native, scheduled backups disabled (screenshot 19:26) |
 | S2 | Rules published 17:36 = `firestore.rules` of `affcca8` (= `dff6d4c`) |
 | S3 | Published text saved from the console: `git diff --no-index --ignore-cr-at-eol` with the repo file = **no difference**, no BOM |
 | S4 | Rules Playground: owner get allowed; other uid get denied; other uid create log denied; unauthenticated get denied |
@@ -99,4 +99,4 @@ Accounts: T1 = test Gmail (former U2), T2 = support mailbox; the owner's learnin
 | — | Note: an Auth record for the owner's Google account appeared during the session (signed in once by mistake); it had no Firestore data; deleted from the console. Final state: **Auth no users, Firestore empty** |
 
 Cleanup: server stopped; `.env.local` and the test build deleted; authorized domain `localhost` removed (3 domains
-left); key referrer `http://localhost:4198/*` removed (2 referrers left, 3 APIs kept).
+left); key referrer `http://localhost:4198/*` removed (2 referrers left, 3 APIs kept; saved).
