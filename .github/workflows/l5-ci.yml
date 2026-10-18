@@ -1,0 +1,43 @@
+# CI-only branch for the Login Activation prep (affcca8 on l5-login-activation). This file is NOT part of the
+# release. Runs every L3 Gate check on Linux: typecheck, unit (incl. migration v3->v4 and the D3 VersionError
+# regression), build, Auth + Firestore emulator (sync engine), Firestore rules, account isolation, E2E (Chromium).
+# Only local emulators are used: no Firebase project is contacted and nothing is deployed.
+name: l5-ci
+
+on:
+  push:
+    branches: ['l4-ci-l5']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - run: npm ci
+      - name: Typecheck + unit tests + build (npm run verify)
+        run: npm run verify
+      - name: Migration v3->v4 and D3 VersionError regression (named, also part of the unit run)
+        run: npx vitest run tests/unit/storage
+      - name: Account isolation (dist)
+        run: npx tsx scripts/qa/accountIsolation.ts dist
+      - name: Emulator tests (Auth + sync on Firestore + Firestore rules)
+        run: |
+          npm install --no-save firebase-tools@14.27.0
+          npx firebase emulators:exec --only auth,firestore --project demo-n5 "npm run test:auth-emulator && npm run test:rules"
+      - name: E2E (Chromium)
+        run: |
+          npx playwright install --with-deps chromium
+          npx tsx scripts/qa/e2e.ts
