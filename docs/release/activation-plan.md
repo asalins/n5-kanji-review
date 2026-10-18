@@ -59,3 +59,44 @@ the dev project. Options:
 
 - Real Spark quota: BLOCKED.
 - The support mailbox must be accessible by the owner (L2).
+
+## 6. Progress (2026-10-18) — Coordinator: Activation Prep 1 PASS (D1 privacy dark release, D2 localhost, D3 one Gate in order, D4 keep "In production")
+
+### Privacy release (D1)
+`affcca8` deployed: fast-forward `dff6d4c..affcca8`, production deployment **`0898e5df`**; Production variables
+`NODE_VERSION` only (16:09). `https://n5-kanji-review.pages.dev/privacy.html` and `/privacy` show the notice (not the
+app) in a tab with the service worker active and in Incognito (no sign-in). App update: Home unchanged, no account
+section. Android check of the URL: not evidenced.
+
+### OAuth / Branding (L2–L4)
+`n5kanjireview.support@gmail.com` = project Viewer. Branding saved (owner account): home page
+`https://n5-kanji-review.pages.dev`, privacy `…/privacy.html`, authorized domains `n5-kanji-review-prod.firebaseapp.com`
+and `n5-kanji-review.pages.dev`, developer contacts support + owner. **User support e-mail stays the owner's address**:
+Google offers only the signed-in user's e-mail or a Google Group they manage (none). Publishing status "In production"
+kept (D4); Verify branding not requested.
+
+### Firestore Production (S1–S5)
+| # | Result |
+|---|---|
+| S1 | `(default)` database created (production mode). Location not evidenced by a screenshot (selected asia-southeast1 per guide) |
+| S2 | Rules published 17:36 = `firestore.rules` of `affcca8` (= `dff6d4c`) |
+| S3 | Published text saved from the console: `git diff --no-index --ignore-cr-at-eol` with the repo file = **no difference**, no BOM |
+| S4 | Rules Playground: owner get allowed; other uid get denied; other uid create log denied; unauthenticated get denied |
+| S5 | Browser key APIs: Identity Toolkit, Token Service, **Cloud Firestore** (3) — permanent |
+
+### Localhost test with the production project (D2, option A)
+Separate checkout `n5-localtest` at `affcca8`, production web config in an uncommitted `.env.local`, `vite preview` on
+`http://localhost:4198`; temporary: authorized domain `localhost`, key referrer `http://localhost:4198/*`.
+Accounts: T1 = test Gmail (former U2), T2 = support mailbox; the owner's learning data never involved.
+
+| # | Result |
+|---|---|
+| T1 | A: 3 reviews → Google popup sign-in (T1) → binding prompt → Upload → `synced (epoch 0): pushed 3`. Firestore `users/<T1>` schema 1, epoch 0, server `createdAt`, 3 `log:<uuid>`. Auth: T1 |
+| T2 | B (Incognito) sign-in T1 → bound silently → `pulled 3` → 1 review → `pushed 1`; A sync → `pulled 1`, Home 4. Firestore 4 logs |
+| T3 | B sign out (local kept) → sign in T2 → `asking before binding (other-account); nothing uploaded` → skip. Firestore: only `users/<T1>` (4 logs); nothing of T2 |
+| T4 | B back to T1: syncs, no other-account notice. A Reset progress: `asking the cloud to raise epoch 0 -> 1 (only if it is still 0)` → `the cloud raised the epoch to 1` → `replace: deleted 4 cloud logs of epochs below 1`. Firestore epoch 1, `replacedBy`, server `resetAt`, logs empty. B: `remote reset detected: cloud epoch 1, this device knew 0; nothing uploaded`, notice with time; accepted → cleared |
+| T5 | A 2 reviews at epoch 1 → export `LT-A.json` (DB 4, 2 logs, no uid/sync state) → replayCheck PASS. Offline (DevTools) Reset → "You must be online … Nothing was changed". Delete Account T1 → "account deleted / learning data in the cloud deleted / data on this device kept"; Firestore empty; B signed out. T2 deleted. Network during delete: Firebase Auth iframe only |
+| — | Note: an Auth record for the owner's Google account appeared during the session (signed in once by mistake); it had no Firestore data; deleted from the console. Final state: **Auth no users, Firestore empty** |
+
+Cleanup: server stopped; `.env.local` and the test build deleted; authorized domain `localhost` removed (3 domains
+left); key referrer `http://localhost:4198/*` removed (2 referrers left, 3 APIs kept).
