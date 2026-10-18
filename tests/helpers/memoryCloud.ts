@@ -100,7 +100,7 @@ export class MemoryCloud {
           a.root = { epoch: 0, resetAt: null };
           return { epoch: 0, resetAt: null, created: true };
         }),
-      bumpEpoch: (uid, from, token) =>
+      bumpEpoch: (uid, from, token, settings) =>
         gate('bumpEpoch', () => {
           this.beforeBump?.();
           const a = owner(uid);
@@ -108,6 +108,7 @@ export class MemoryCloud {
           if (a.root === null || a.root.epoch !== from) throw new CloudError('conflict', 'epoch moved');
           if (token.length < 8) throw new CloudError('denied', 'replacedBy missing');
           a.root = { epoch: from + 1, resetAt: tick().seconds };
+          if (settings !== null) a.settings = settings; // same transaction
           this.bumps.push(token);
           return from + 1;
         }),
@@ -145,9 +146,11 @@ export class MemoryCloud {
           return n;
         }),
       readSettings: (uid) => gate('readSettings', () => owner(uid).settings),
-      writeSettings: (uid, settings) =>
+      writeSettings: (uid, epoch, settings) =>
         gate('writeSettings', () => {
-          owner(uid).settings = settings;
+          const a = owner(uid);
+          if (a.root === null || a.root.epoch !== epoch) throw new CloudError('conflict', 'epoch moved');
+          a.settings = settings;
         }),
       deleteAll: (uid) =>
         gate('deleteAll', () => {

@@ -190,7 +190,7 @@ export class IndexedDbSyncRepository implements SyncRepository {
       inTransaction(this.db, [STORES.reviewCards, STORES.reviewLogs, STORES.studySessions, STORES.syncLedger, STORES.syncMeta], async (tx) => {
         const meta = await readMeta(tx);
         for (const store of [STORES.reviewCards, STORES.reviewLogs, STORES.studySessions, STORES.syncLedger] as const) await tx.objectStore(store).clear();
-        await tx.objectStore(STORES.syncMeta).put({ ...meta, knownEpoch: epoch, pullCursor: null, pendingReplace: false, cleanupBelow: null, pushSettings: false }, SINGLETON_KEY);
+        await tx.objectStore(STORES.syncMeta).put({ ...meta, knownEpoch: epoch, pullCursor: null, pendingReplace: false, cleanupBelow: null, pushSettings: false, pullSettings: true }, SINGLETON_KEY);
       }),
     );
   }

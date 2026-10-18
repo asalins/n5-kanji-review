@@ -12,7 +12,7 @@ import { CloudError, PUSH_BATCH, type CloudStore } from '../../src/services/sync
 import { replayAll } from '../../src/services/sync/replay';
 import { runSyncCycle, type SyncOutcome } from '../../src/services/sync/syncEngine';
 import { createSyncService, type SyncEnvironment } from '../../src/services/sync/syncService';
-import type { ReviewLog, ReviewRating, StudyMode } from '../../src/types/entities';
+import type { ReviewLog, ReviewRating, StudyMode, UserSettings } from '../../src/types/entities';
 import type { AccountReplace } from '../../src/repositories/interfaces';
 import { openTestDatabase } from '../helpers/testDatabase';
 
@@ -68,8 +68,8 @@ async function device(who: string) {
       await services.reviewOrchestrator!.submit({ item: { itemType: 'kanji', itemId: `kanji:U+${code}` }, mode, rating, answeredAt: at, durationMs: 800 });
     },
     /** L4-C1 cloud-first replace: raise the epoch only if it is still the one this device knows, then write locally. */
-    async replace(write: (r: AccountReplace) => Promise<void>) {
-      const epoch = await cloud.bumpEpoch(user.uid, (await repos.sync.getMeta()).knownEpoch!, `emu-${crypto.randomUUID()}`);
+    async replace(write: (r: AccountReplace) => Promise<void>, settings: UserSettings | null = null) {
+      const epoch = await cloud.bumpEpoch(user.uid, (await repos.sync.getMeta()).knownEpoch!, `emu-${crypto.randomUUID()}`, settings);
       await write({ uid: user.uid, epoch });
     },
     sync: (store: CloudStore = cloud): Promise<SyncOutcome> => runSyncCycle({ repo: repos.sync, cloud: store, now: () => Date.now() }),
@@ -233,12 +233,38 @@ describe('sync on the Firestore emulator with the real rules', () => {
     synced(await a.sync());
     const imported: ReviewLog[] = [{ id: 'log:00000000-0000-4000-8000-000000000001', cardId: 'kanji:kanji:U+6728:B', rating: 'EASY', reviewedAt: T0 - 1, durationMs: 5, stateBefore: 'NEW', stateAfter: 'LEARNING', datasetVersion: null, deviceId: null, originalId: null }];
     for (let round = 1; round <= 2; round += 1) {
-      await a.replace((r) => a.repos.backup.replaceUserData({ reviewCards: [...replayAll(imported).values()], reviewLogs: imported, studySessions: [], userSettings: { ...DEFAULT_USER_SETTINGS, theme: 'dark', updatedAt: 1 } }, r));
-      expect(synced(await a.sync())).toMatchObject({ settings: 'uploaded' });
+      const fileSettings = { ...DEFAULT_USER_SETTINGS, theme: 'dark' as const, updatedAt: 1 };
+      await a.replace((r) => a.repos.backup.replaceUserData({ reviewCards: [...replayAll(imported).values()], reviewLogs: imported, studySessions: [], userSettings: fileSettings }, r), fileSettings);
+      expect(synced(await a.sync())).toMatchObject({ settings: 'kept' }); // D-F9: already written with the epoch
       const docs = await cloudLogs(a);
       expect(docs.map((d) => [d.id, d.epoch])).toEqual([[imported[0]!.id, round]]);
     }
     expect((await getDoc(doc(a.firestore, 'users', a.uid, 'meta', 'settings'))).data()?.theme).toBe('dark');
+  });
+
+  it('D-F9: an imported file\'s settings are written WITH the epoch (one transaction, real rules); a stale-epoch settings write is refused; the follower takes them', async () => {
+    const a = await device('f9');
+    const b = await device('f9');
+    for (const d of [a, b]) await d.repos.sync.bind(a.uid);
+    await a.review('6C34', 'A', 'GOOD', T0);
+    synced(await a.sync());
+    await b.repos.settings.save({ ...DEFAULT_USER_SETTINGS, studyMode: 'C' }); // newer than the file, on B
+    synced(await b.sync());
+    const fileSettings = { ...DEFAULT_USER_SETTINGS, theme: 'dark' as const, dailyNewCards: 10 as const, dailyReviewLimit: 10 as const, updatedAt: 0 };
+    await a.replace((r) => a.repos.backup.replaceUserData({ reviewCards: [], reviewLogs: [], studySessions: [], userSettings: fileSettings }, r), fileSettings);
+    const cloudSettings = async () => (await getDoc(doc(a.firestore, 'users', a.uid, 'meta', 'settings'))).data();
+    const root = (await getDoc(doc(a.firestore, 'users', a.uid))).data();
+    expect(root?.epoch).toBe(1);
+    expect(await cloudSettings()).toMatchObject({ theme: 'dark', updatedAt: 0 });
+    expect((await cloudSettings())?.uploadedAt.toMillis()).toBe(root?.resetAt.toMillis()); // same commit
+    // B has not learned about the replace: its (newer-timestamp) settings may NOT be written over epoch 1
+    await expect(b.cloud.writeSettings(b.uid, 0, (await b.repos.sync.getSettings())!)).rejects.toMatchObject({ kind: 'conflict' });
+    expect(await b.sync()).toMatchObject({ kind: 'remote-reset', epoch: 1 });
+    await b.repos.sync.acceptRemoteReset(1);
+    expect(synced(await b.sync()).settings).toBe('downloaded');
+    expect((await b.repos.sync.getSettings())).toMatchObject({ theme: 'dark', dailyNewCards: 10, updatedAt: 0 });
+    for (let i = 0; i < 2; i += 1) for (const d of [a, b]) synced(await d.sync());
+    expect(await cloudSettings()).toMatchObject({ theme: 'dark', updatedAt: 0 }); // not overwritten afterwards
   });
 
   it('settings follow the newer updatedAt between devices', async () => {

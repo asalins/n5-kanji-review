@@ -127,8 +127,14 @@ export interface SyncMeta {
   readonly pendingReplace: boolean;
   /** The epoch was raised for a replace; logs of older epochs still have to be deleted from the cloud. */
   readonly cleanupBelow: number | null;
-  /** After a replace, this device's settings win once (they came with the reset / imported file). */
+  /** Legacy (pendingReplace only): after that replace, this device's settings win once. */
   readonly pushSettings: boolean;
+  /**
+   * D-F9: this device accepted a reset / replace made on another device: the next sync takes the account's settings
+   * from the cloud (no timestamp comparison) BEFORE any settings of this device may be uploaded again.
+   * Local only (never in a backup); absent in records written before L4-R = false.
+   */
+  readonly pullSettings: boolean;
   /** The user chose not to sync this device with this account. */
   readonly declinedUid: string | null;
   readonly lastSyncAt: EpochMs | null;

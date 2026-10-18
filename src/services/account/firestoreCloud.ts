@@ -17,7 +17,6 @@ import {
   query,
   runTransaction,
   serverTimestamp,
-  setDoc,
   startAfter,
   where,
   writeBatch,
@@ -57,6 +56,7 @@ async function guarded<T>(fn: () => Promise<T>): Promise<T> {
 
 const LOG_FIELDS = ['id', 'cardId', 'rating', 'reviewedAt', 'durationMs', 'stateBefore', 'stateAfter', 'datasetVersion', 'deviceId', 'originalId'] as const;
 const SETTINGS_FIELDS = ['dailyNewCards', 'dailyReviewLimit', 'theme', 'uiLanguage', 'soundEnabled', 'autoPlay', 'studyMode', 'animationsEnabled', 'updatedAt'] as const;
+const settingsData = (settings: UserSettings) => ({ ...pick(settings as unknown as Record<string, unknown>, SETTINGS_FIELDS), uploadedAt: serverTimestamp() });
 const pick = <K extends string>(source: Record<string, unknown>, keys: readonly K[]) => Object.fromEntries(keys.map((k) => [k, source[k]])) as Record<K, unknown>;
 
 export function createFirestoreCloud(db: Firestore, auth: Auth): CloudStore {
@@ -102,7 +102,7 @@ export function createFirestoreCloud(db: Firestore, auth: Auth): CloudStore {
     // F4: the SDK re-runs a transaction whose commit result was lost (e.g. the connection dropped after the server
     // committed). A re-run that finds exactly from + 1 is this call's own commit, not another device's reset:
     // report success instead of a conflict, so the caller never raises the epoch a second time.
-    bumpEpoch: (uid, from, token) => {
+    bumpEpoch: (uid, from, token, settings) => {
       let attempts = 0;
       return guarded(() =>
         runTransaction(db, async (tx) => {
@@ -112,6 +112,7 @@ export function createFirestoreCloud(db: Firestore, auth: Auth): CloudStore {
           if (attempts > 1 && epoch === from + 1 && snap.data()?.replacedBy === token) return from + 1;
           if (epoch !== from) throw new CloudError('conflict', `epoch is ${String(epoch)}, expected ${from}`);
           tx.update(root(uid), { epoch: from + 1, resetAt: serverTimestamp(), replacedBy: token });
+          if (settings !== null) tx.set(settingsDoc(uid), settingsData(settings));
           return from + 1;
         }),
       );
@@ -153,8 +154,16 @@ export function createFirestoreCloud(db: Firestore, auth: Auth): CloudStore {
         return parsed.success ? parsed.data : null;
       }),
 
-    writeSettings: (uid, settings: UserSettings) =>
-      guarded(() => setDoc(settingsDoc(uid), { ...pick(settings as unknown as Record<string, unknown>, SETTINGS_FIELDS), uploadedAt: serverTimestamp() })),
+    // D-F9: a device that has not learned about a replace must never write its old settings over the new epoch's.
+    writeSettings: (uid, epoch, settings: UserSettings) =>
+      guarded(() =>
+        runTransaction(db, async (tx) => {
+          const snap = await tx.get(root(uid));
+          const current = snap.exists() ? Number(snap.data().epoch) : null;
+          if (current !== epoch) throw new CloudError('conflict', `epoch is ${String(current)}, expected ${epoch}`);
+          tx.set(settingsDoc(uid), settingsData(settings));
+        }),
+      ),
 
     // users/{uid} goes FIRST: if the deletion stops half-way, every device then sees "the cloud was reset or
     // deleted" (remote-reset, the user decides) instead of syncing silently with a half-deleted cloud.

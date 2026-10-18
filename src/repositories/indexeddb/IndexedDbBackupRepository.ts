@@ -31,7 +31,10 @@ async function followReplace(
   }
   await tx.objectStore(STORES.syncLedger).clear();
   await tx.objectStore(STORES.syncMeta).put(
-    { ...meta, knownEpoch: replace.epoch, cleanupBelow: replace.epoch, pushSettings: true, pullCursor: null, pendingReplace: false } as never,
+    // D-F9: settings are not pushed by timestamp after a replace. An imported file's settings were already written in
+    // the SAME cloud transaction as the epoch; a reset (or a file without settings) leaves the account's settings
+    // to the normal rule (D5).
+    { ...meta, knownEpoch: replace.epoch, cleanupBelow: replace.epoch, pushSettings: false, pullSettings: false, pullCursor: null, pendingReplace: false } as never,
     SINGLETON_KEY,
   );
 }

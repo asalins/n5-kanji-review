@@ -7,6 +7,7 @@ export const DEFAULT_SYNC_META: SyncMeta = {
   pendingReplace: false,
   cleanupBelow: null,
   pushSettings: false,
+  pullSettings: false,
   declinedUid: null,
   lastSyncAt: null,
 };

@@ -2,6 +2,7 @@ import { createReviewOrchestrator } from '../features/review/reviewOrchestrator'
 import type { AppRepositories } from '../hooks/useRepositories';
 import { createIndexedDbRepositories, type Repositories } from '../repositories/indexeddb';
 import type { AccountReplace } from '../repositories/interfaces';
+import type { UserSettings } from '../types/entities';
 import { loadBundledDataset } from '../services/content/bundledDataset';
 import { createProjectListSource } from '../services/content/projectList';
 import { requestPersistentStorage } from '../services/persistence/persistentStorage';
@@ -56,9 +57,10 @@ export function buildAppServices(repositories: Repositories, options: AppService
    * Reset progress / Import (Replace). Bound to an account (L4-C1, F2): the cloud is replaced FIRST, atomically from
    * this device's known epoch, and only then the local data (syncService.replaceAccount). Not bound: local only.
    */
-  const replaceData = async (what: string, writeLocal: (replace?: AccountReplace) => Promise<void>) => {
+  const replaceData = async (what: string, writeLocal: (replace?: AccountReplace) => Promise<void>, settings: UserSettings | null) => {
     if (sync !== null && (await sync.isBound())) {
-      await sync.replaceAccount(what, (replace) => writeLocal(replace));
+      // D-F9: an imported file's settings become the account's settings in the same cloud transaction as the epoch.
+      await sync.replaceAccount(what, (replace) => writeLocal(replace), settings);
     } else {
       await writeLocal();
       sync?.log.add(`${what} on this device (not bound to an account: local only)`);
@@ -84,8 +86,8 @@ export function buildAppServices(repositories: Repositories, options: AppService
     backup: {
       readUserData: () => repositories.backup.readUserData(),
       // Reset / Import mark a bound account's cloud for replacement (same transaction); sync it soon.
-      replaceUserData: (snapshot) => replaceData('Import (Replace)', (replace) => repositories.backup.replaceUserData(snapshot, replace)),
-      resetProgress: () => replaceData('Reset progress', (replace) => repositories.backup.resetProgress(replace)),
+      replaceUserData: (snapshot) => replaceData('Import (Replace)', (replace) => repositories.backup.replaceUserData(snapshot, replace), snapshot.userSettings),
+      resetProgress: () => replaceData('Reset progress', (replace) => repositories.backup.resetProgress(replace), null),
     },
     account,
     ...(sync === null ? {} : { sync }),

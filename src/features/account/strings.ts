@@ -76,7 +76,7 @@ export const SYNC_TEXT = {
   resetExplain:
     'Sync หยุดไว้จนกว่าคุณจะเลือก ถ้าต้องการเก็บข้อมูลของเครื่องนี้ ให้ Export backup ก่อน (หัวข้อ Backup) · Sync is stopped until you decide. To keep this device’s data, export a backup first (Backup section).',
   resetAccept: 'ล้างความคืบหน้าในเครื่องนี้และใช้ข้อมูลของบัญชี · Clear this device’s progress and use the account’s data',
-  resetAcceptExplain: 'ความคืบหน้าการเรียนในเครื่องนี้จะถูกลบ แล้วใช้ข้อมูลปัจจุบันของบัญชี · This device’s learning progress is deleted and the account’s current data is used.',
+  resetAcceptExplain: 'ความคืบหน้าการเรียนในเครื่องนี้จะถูกลบ แล้วใช้ข้อมูลและการตั้งค่าปัจจุบันของบัญชี · This device’s learning progress is deleted and the account’s current data and settings are used.',
   understand: 'ฉันเข้าใจ · I understand',
   cancel: 'ยกเลิก · Cancel',
   failed: 'ทำไม่สำเร็จ · ลองใหม่อีกครั้ง · That did not work. Please try again.',

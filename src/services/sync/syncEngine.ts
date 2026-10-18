@@ -71,20 +71,29 @@ async function push(deps: SyncEngineDeps, uid: string, epoch: number): Promise<n
   return pushed;
 }
 
-async function syncSettings(deps: SyncEngineDeps, uid: string, force: boolean): Promise<'kept' | 'uploaded' | 'downloaded'> {
+/**
+ * Settings sync. `pull` (D-F9): this device accepted another device's replace: the account's settings come from the
+ * cloud, with no timestamp comparison, before this device may upload settings again (its old ones never go back
+ * up). `force` = legacy pendingReplace only. Otherwise D5. Every upload is conditional on the epoch (writeSettings).
+ */
+async function syncSettings(deps: SyncEngineDeps, uid: string, epoch: number, mode: { readonly force: boolean; readonly pull: boolean }): Promise<'kept' | 'uploaded' | 'downloaded'> {
   const local = await deps.repo.getSettings();
-  if (force && local !== null) {
-    await deps.cloud.writeSettings(uid, local);
+  if (mode.force && local !== null) {
+    await deps.cloud.writeSettings(uid, epoch, local);
     return 'uploaded';
   }
   const remote = await deps.cloud.readSettings(uid);
+  if (mode.pull && remote !== null) {
+    await deps.repo.applyRemoteSettings(remote);
+    return 'downloaded';
+  }
   // D5: newer updatedAt wins; equal keeps this device's. Clocks differ: this is a convention, not proof of order.
   if (remote !== null && (local === null || remote.updatedAt > local.updatedAt)) {
     await deps.repo.applyRemoteSettings(remote);
     return 'downloaded';
   }
   if (local !== null && (remote === null || local.updatedAt > remote.updatedAt)) {
-    await deps.cloud.writeSettings(uid, local);
+    await deps.cloud.writeSettings(uid, epoch, local);
     return 'uploaded';
   }
   return 'kept';
@@ -100,7 +109,7 @@ async function legacyReplace(deps: SyncEngineDeps, uid: string, meta: SyncMeta, 
   if (meta.knownEpoch === null || root.epoch !== meta.knownEpoch) return null;
   deps.log?.(`legacy pending replace: asking the cloud to raise epoch ${meta.knownEpoch} -> ${meta.knownEpoch + 1} (only if it is still ${meta.knownEpoch})`);
   try {
-    const epoch = await deps.cloud.bumpEpoch(uid, meta.knownEpoch, newUuid());
+    const epoch = await deps.cloud.bumpEpoch(uid, meta.knownEpoch, newUuid(), null);
     deps.log?.(`legacy pending replace: the cloud raised the epoch to ${epoch}`);
     await deps.repo.updateMeta({ knownEpoch: epoch, pendingReplace: false, cleanupBelow: epoch, pushSettings: true, pullCursor: null });
     return epoch;
@@ -176,8 +185,18 @@ export async function runSyncCycle(deps: SyncEngineDeps): Promise<SyncOutcome> {
     pushed = await push(deps, uid, epoch);
   }
 
-  const settings = await syncSettings(deps, uid, meta.pushSettings);
-  await repo.updateMeta({ pushSettings: false, lastSyncAt: deps.now() });
+  let settings: 'kept' | 'uploaded' | 'downloaded';
+  try {
+    settings = await syncSettings(deps, uid, epoch, { force: meta.pushSettings, pull: meta.pullSettings });
+  } catch (error) {
+    if (!(error instanceof CloudError) || error.kind !== 'conflict') throw error;
+    // D-F9: the epoch moved since this cycle read it: this device's settings are NOT written over the new epoch.
+    const now = await cloud.readOrCreateRoot(uid);
+    log(`settings not uploaded: the account was replaced meanwhile (cloud epoch ${now.epoch}); nothing written`);
+    return { kind: 'remote-reset', uid, epoch: now.epoch, resetAt: now.resetAt, unsynced: (await repo.pendingLogs()).length };
+  }
+  if (meta.pullSettings) log(`settings after the reset / replace: ${settings === 'downloaded' ? 'taken from the account' : `the account had none; this device's ${settings === 'uploaded' ? 'uploaded' : 'kept'}`}`);
+  await repo.updateMeta({ pushSettings: false, pullSettings: false, lastSyncAt: deps.now() });
   if (replaced || pulled.pulled > 0 || pushed > 0 || pulled.renamed > 0 || settings !== 'kept') {
     log(`synced (epoch ${epoch}): pulled ${pulled.pulled}, pushed ${pushed}, renamed ${pulled.renamed}, settings ${settings}${replaced ? ', REPLACED the cloud' : ''}`);
   }

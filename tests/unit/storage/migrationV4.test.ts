@@ -130,7 +130,7 @@ describe('L4-C1 (F2): on a bound device, Reset / Import only after the cloud was
   it('bound, after the cloud was replaced: data + ledger + sync state change together and follow the new epoch', async () => {
     const repos = await bound();
     await repos.backup.resetProgress({ uid: 'u', epoch: 1 });
-    expect(await repos.sync.getMeta()).toMatchObject({ uid: 'u', knownEpoch: 1, cleanupBelow: 1, pushSettings: true, pullCursor: null, pendingReplace: false });
+    expect(await repos.sync.getMeta()).toMatchObject({ uid: 'u', knownEpoch: 1, cleanupBelow: 1, pushSettings: false, pullSettings: false, pullCursor: null, pendingReplace: false });
     expect(await repos.sync.hasLocalProgress()).toBe(false);
 
     const { logs } = sampleRecords();

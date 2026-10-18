@@ -168,6 +168,7 @@ export const syncMetaSchema = conform<SyncMeta>(
     pendingReplace: z.boolean(),
     cleanupBelow: count.nullable(),
     pushSettings: z.boolean(),
+    pullSettings: z.boolean().default(false),
     declinedUid: text.nullable(),
     lastSyncAt: epochMs.nullable(),
   }),

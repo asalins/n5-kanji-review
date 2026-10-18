@@ -14,6 +14,9 @@ import { MemoryCloud } from '../../helpers/memoryCloud';
 import { CloudError } from '../../../src/services/sync/cloudTypes';
 import { openTestDatabase } from '../../helpers/testDatabase';
 import { openRealRepositories } from '../../helpers/realData';
+import { DEFAULT_USER_SETTINGS } from '../../../src/services/settings/defaults';
+import type { UserSettings } from '../../../src/types/entities';
+import { DEFAULT_SYNC_META } from '../../../src/repositories/interfaces';
 
 const disposers: (() => Promise<void>)[] = [];
 afterEach(async () => {
@@ -370,5 +373,154 @@ describe('L4-C2 (SIMULATED, not a real quota test): resource-exhausted / unavail
     expect(cloud.logsOf('U')).toHaveLength(3);
     expect(cloud.account('U').root?.epoch).toBe(0);
     expect(cloud.bumps).toEqual([]);
+  });
+});
+
+describe('F9 / D-F9: the settings of an imported file survive the replace on every device (epoch decides, never a clock)', () => {
+  const YEAR = 365 * 86_400_000;
+  const file = (over: Partial<UserSettings> = {}): UserSettings => ({ ...DEFAULT_USER_SETTINGS, theme: 'dark', dailyNewCards: 10, dailyReviewLimit: 10, updatedAt: 0, ...over });
+  const importing = (settings: UserSettings | null) => ({ reviewCards: [], reviewLogs: [], studySessions: [], userSettings: settings });
+  type P = Awaited<ReturnType<typeof profile>>;
+  const settingsOf = (p: P) => p.repos.sync.getSettings();
+  const syncAll = async (...ps: P[]) => {
+    for (let i = 0; i < 3; i += 1) for (const p of ps) await p.first.sync!.syncNow();
+  };
+  /** B (not the importer) accepts the replace it is told about. */
+  const follow = async (b: P) => {
+    await b.first.sync!.syncNow();
+    expect(b.first.sync!.getStatus().kind).toBe('remote-reset');
+    await b.first.sync!.acceptRemoteReset();
+  };
+
+  for (const [label, updatedAt] of [['backup v1 (updatedAt 0)', 0], ['backup v2 (an old updatedAt)', 1_700_000_000_000]] as const) {
+    it(`${label}: written with the epoch; the other device (newer settings) takes them and never writes its own back`, async () => {
+      const { cloud, a, b } = await twoSynced();
+      await b.first.settings!.save({ ...DEFAULT_USER_SETTINGS, theme: 'light', dailyNewCards: 30 }); // newer, on B
+      await b.first.sync!.syncNow();
+      expect(cloud.account('U').settings?.theme).toBe('light');
+      await a.first.backup!.replaceUserData(importing(file({ updatedAt })));
+      expect(cloud.account('U').settings).toEqual(file({ updatedAt })); // same transaction as the epoch
+      expect(cloud.account('U').root?.epoch).toBe(1);
+      await follow(b);
+      await syncAll(a, b);
+      expect(cloud.account('U').settings).toEqual(file({ updatedAt }));
+      expect(await settingsOf(a)).toEqual(file({ updatedAt }));
+      expect(await settingsOf(b)).toEqual(file({ updatedAt }));
+      expect(b.events()).toContain('t1: settings after the reset / replace: taken from the account');
+    });
+  }
+
+  it('Import twice (different settings): the last import wins on every device', async () => {
+    const { cloud, a, b } = await twoSynced();
+    await a.first.backup!.replaceUserData(importing(file({ theme: 'dark' })));
+    await follow(b);
+    await a.first.backup!.replaceUserData(importing(file({ theme: 'light', dailyNewCards: 20 })));
+    await follow(b);
+    await syncAll(a, b);
+    for (const s of [cloud.account('U').settings, await settingsOf(a), await settingsOf(b)]) expect(s).toMatchObject({ theme: 'light', dailyNewCards: 20 });
+    expect(cloud.account('U').root?.epoch).toBe(2);
+  });
+
+  it('epoch race: B read the old epoch, then A replaced, then B tries to upload its (newer) settings -> refused, nothing written', async () => {
+    const { cloud, a, b } = await twoSynced();
+    await b.first.settings!.save({ ...DEFAULT_USER_SETTINGS, theme: 'light' });
+    const held = cloud.hold('writeSettings', 'before'); // B's cycle stops right before its settings write
+    const bSync = b.first.sync!.syncNow();
+    await settle();
+    await a.first.backup!.replaceUserData(importing(file()));
+    held.release();
+    await bSync;
+    expect(cloud.account('U').settings).toEqual(file()); // B's old settings did NOT go over epoch 1
+    expect(b.first.sync!.getStatus()).toMatchObject({ kind: 'remote-reset', epoch: 1 });
+    expect(b.events().some((e) => e.includes('settings not uploaded: the account was replaced meanwhile'))).toBe(true);
+    await b.first.sync!.acceptRemoteReset();
+    await syncAll(a, b);
+    expect(await settingsOf(b)).toEqual(file());
+  });
+
+  it('clock skew: importer\'s clock -1 / +1 year and the other device\'s settings stamped +1 year: same result', async () => {
+    for (const skew of [-YEAR, YEAR]) {
+      const { cloud, a, b } = await twoSynced();
+      await a.repos.sync.applyRemoteSettings({ ...DEFAULT_USER_SETTINGS, theme: 'system', updatedAt: Date.now() + skew }); // A's own (skewed) stamp
+      await b.repos.sync.applyRemoteSettings({ ...DEFAULT_USER_SETTINGS, theme: 'light', updatedAt: Date.now() + YEAR }); // far-future on B
+      await a.first.backup!.replaceUserData(importing(file({ updatedAt: Date.now() + skew })));
+      await follow(b);
+      await syncAll(a, b);
+      expect(cloud.account('U').settings?.theme).toBe('dark');
+      expect((await settingsOf(b))?.theme).toBe('dark');
+      expect((await settingsOf(a))?.theme).toBe('dark');
+    }
+  });
+
+  it('a file WITHOUT settings: the account\'s settings stay as they are (nothing written with the epoch); both devices use them', async () => {
+    const { cloud, a, b } = await twoSynced();
+    await b.first.settings!.save({ ...DEFAULT_USER_SETTINGS, theme: 'light' });
+    await b.first.sync!.syncNow();
+    const before = cloud.account('U').settings;
+    await a.first.backup!.replaceUserData(importing(null));
+    expect(cloud.account('U').settings).toEqual(before);
+    await follow(b);
+    await syncAll(a, b);
+    expect(cloud.account('U').settings).toEqual(before);
+    expect(await settingsOf(a)).toEqual(before);
+    expect(await settingsOf(b)).toEqual(before);
+  });
+
+  it('Reset progress does not touch the settings: the account keeps them (no forced upload of the resetting device\'s)', async () => {
+    const { cloud, a, b } = await twoSynced();
+    await b.first.settings!.save({ ...DEFAULT_USER_SETTINGS, theme: 'light' });
+    await b.first.sync!.syncNow();
+    await a.repos.sync.applyRemoteSettings({ ...DEFAULT_USER_SETTINGS, theme: 'dark', updatedAt: 1 }); // A: older
+    await a.first.backup!.resetProgress();
+    await follow(b);
+    await syncAll(a, b);
+    expect(cloud.account('U').settings?.theme).toBe('light');
+    expect((await settingsOf(a))?.theme).toBe('light');
+  });
+
+  it('the epoch transaction fails: neither the epoch nor the settings change, local data unchanged', async () => {
+    const { cloud, a } = await twoSynced();
+    const before = { settings: cloud.account('U').settings, local: await snapshot(a) };
+    cloud.failOnce = { op: 'bumpEpoch', error: new CloudError('unknown', 'aborted') };
+    await expect(a.first.backup!.replaceUserData(importing(file()))).rejects.toMatchObject({ code: 'cloud-failed' });
+    expect(cloud.account('U').settings).toEqual(before.settings);
+    expect(cloud.account('U').root?.epoch).toBe(0);
+    expect(await snapshot(a)).toEqual(before.local);
+  });
+
+  it('cloud committed but the local write failed: recovered through sync (accept) with the file\'s settings; no second replace / epoch raise', async () => {
+    const { cloud, a } = await twoSynced();
+    const real = a.repos.backup.replaceUserData.bind(a.repos.backup);
+    a.repos.backup.replaceUserData = async () => {
+      throw new Error('IndexedDB failed');
+    };
+    await expect(a.first.backup!.replaceUserData(importing(file()))).rejects.toMatchObject({ code: 'local-failed' });
+    a.repos.backup.replaceUserData = real;
+    await settle();
+    expect(a.first.sync!.getStatus()).toMatchObject({ kind: 'remote-reset', epoch: 1 });
+    await a.first.sync!.acceptRemoteReset();
+    await syncAll(a);
+    expect(await settingsOf(a)).toEqual(file());
+    expect(cloud.bumps).toHaveLength(1);
+    expect(cloud.account('U').root?.epoch).toBe(1);
+  });
+
+  it('after the replace, D5 applies again: a new change on any device wins over the imported (older) settings', async () => {
+    const { cloud, a, b } = await twoSynced();
+    await a.first.backup!.replaceUserData(importing(file()));
+    await follow(b);
+    await syncAll(a, b);
+    await b.first.settings!.save({ ...file(), studyMode: 'C' });
+    await syncAll(a, b);
+    expect(cloud.account('U').settings?.studyMode).toBe('C');
+    expect((await settingsOf(a))?.studyMode).toBe('C');
+  });
+
+  it('a sync meta stored before L4-R (no pullSettings) reads as pullSettings = false', async () => {
+    const { db, dispose } = await openTestDatabase();
+    disposers.push(dispose);
+    const { pullSettings: _drop, ...old } = { ...DEFAULT_SYNC_META, uid: 'U', knownEpoch: 3 };
+    await db.put('syncMeta', old as never, 'current');
+    expect(await createIndexedDbRepositories(db).sync.getMeta()).toMatchObject({ uid: 'U', knownEpoch: 3, pullSettings: false });
   });
 });

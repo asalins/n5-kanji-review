@@ -54,15 +54,18 @@ export interface CloudStore {
    * L4-C1: raises the epoch by one ONLY if it is still `from` (one Firestore transaction = the precondition and the
    * write are atomic); CloudError 'conflict' otherwise. `token` (random, per attempt) is stored as `replacedBy`, so a
    * transaction re-run after a lost commit recognises its OWN commit and never takes another device's for it.
+   * D-F9: `settings` (an imported file's) are written in the SAME transaction: the epoch and the account's settings
+   * change together or not at all; null = the settings are not part of this replace.
    */
-  bumpEpoch(uid: string, from: number, token: string): Promise<number>;
+  bumpEpoch(uid: string, from: number, token: string, settings: UserSettings | null): Promise<number>;
   pullLogs(uid: string, after: SyncCursor | null, limit: number): Promise<CloudLogPage>;
   /** Creates the log documents (one batch, ≤ PUSH_BATCH) with `epoch` and a server upload time. */
   pushLogs(uid: string, epoch: number, logs: readonly ReviewLog[]): Promise<void>;
   /** Deletes every log with an epoch below `epoch`. Returns how many were deleted. */
   deleteLogsBelow(uid: string, epoch: number): Promise<number>;
   readSettings(uid: string): Promise<UserSettings | null>;
-  writeSettings(uid: string, settings: UserSettings): Promise<void>;
+  /** D-F9: one transaction: writes ONLY if the cloud is still at `epoch` (else CloudError 'conflict'). */
+  writeSettings(uid: string, epoch: number, settings: UserSettings): Promise<void>;
   /** Delete Account: users/{uid} first, then every log and the settings. */
   deleteAll(uid: string): Promise<void>;
 }

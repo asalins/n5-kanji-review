@@ -5,6 +5,7 @@ import { createSyncLog, type SyncLog, type SyncLogAddOptions } from './syncLog';
 import { ReplaceError } from './replaceErrors';
 import type { AccountReplace } from '../../repositories/interfaces';
 import { newUuid } from '../../utils/uuid';
+import type { UserSettings } from '../../types/entities';
 
 /**
  * L3b sync scheduler. When to sync, never what (that is syncEngine):
@@ -96,7 +97,7 @@ export interface SyncService {
    * sync deletes the old-epoch cloud logs and uploads. Syncing is suspended and the cross-tab lock held throughout.
    * Throws ReplaceError; never reports success unless (2) and (3) both committed.
    */
-  replaceAccount(what: string, writeLocal: (replace: AccountReplace) => Promise<void>): Promise<void>;
+  replaceAccount(what: string, writeLocal: (replace: AccountReplace) => Promise<void>, settings?: UserSettings | null): Promise<void>;
   /** Is this device's progress bound to an account (Reset / Import then also replace that account's cloud data)? */
   isBound(): Promise<boolean>;
   /** F5: what sync decided on this device, newest last. */
@@ -401,7 +402,7 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
       suspended = false;
     },
     isBound: async () => (await repo.getMeta()).uid !== null,
-    async replaceAccount(what, writeLocal) {
+    async replaceAccount(what, writeLocal, settings = null) {
       const cloud = deps.getCloud();
       if (!active || cloud === null) {
         note(`${what} refused: not signed in (this device syncs with an account)`);
@@ -442,10 +443,10 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
           throw new ReplaceError('not-synced', 'Sync first');
         }
         const from = meta.knownEpoch;
-        note(`${what} on this device: asking the cloud to raise epoch ${from} -> ${from + 1} (only if it is still ${from})`);
+        note(`${what} on this device: asking the cloud to raise epoch ${from} -> ${from + 1} (only if it is still ${from})${settings === null ? '' : ', with the imported settings in the same transaction'}`);
         let epoch: number;
         try {
-          epoch = await cloud.bumpEpoch(uid, from, newUuid());
+          epoch = await cloud.bumpEpoch(uid, from, newUuid(), settings);
           note(`${what}: the cloud raised the epoch to ${epoch}`);
         } catch (cause) {
           if (cause instanceof CloudError && cause.kind === 'conflict') {
