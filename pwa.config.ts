@@ -44,6 +44,8 @@ export const pwaOptions: Partial<VitePWAOptions> = {
     // Firebase for a user who does not sign in (D-L2-1).
     globIgnores: [ACCOUNT_SDK_CHUNK_GLOB],
     navigateFallback: 'index.html',
+    // The public privacy notice is its own page (privacy.html), never the app shell.
+    navigateFallbackDenylist: [/^\/privacy(\.html)?$/],
     cleanupOutdatedCaches: true,
     // No runtime caching: no API or network response is ever cached (backups are local files, never fetched).
     // Consequence for the optional account: offline, a signed-in user whose browser has not kept the Firebase chunk
