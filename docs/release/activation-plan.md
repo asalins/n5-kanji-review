@@ -152,3 +152,10 @@ Card states changed on both devices to the union of both histories (expected by 
 Cleanup: branches `act-recovery-test` and `l4-ci-freeze` deleted (run ids and results recorded in §7–8; freeze rules
 kept in `docs/release/firestore-freeze.rules`). Open: remove `act-recovery-test.n5-kanji-review.pages.dev` from the dev
 project's authorized domains (owner).
+
+## 10. Post-activation Gate: PASS — CLOSED (Coordinator, 2026-10-18)
+
+Login + Cloud Sync active on production for the owner (controlled pilot). Not authorized: Small Beta / Public Launch.
+Next: owner-only pilot monitoring 18–25 Oct 2026 (data/sync, Firestore usage vs Spark, Auth/rules, offline→online,
+Android installed PWA, backup + replay), then a Pilot Monitoring Report for a Small Beta Gate. Pre-activation and
+post-sync backups kept apart in `Downloads/n5-backups/` with SHA-256 prefixes in `CHECKSUMS.txt` (outside the repo).
