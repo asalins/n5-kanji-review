@@ -42,3 +42,50 @@ check and during upload: no log lost, epoch not raised, back-off / quota pause a
 ## L4-C3 — CI maintenance
 
 `emulator-tests.yml`: `actions/checkout`, `setup-node`, `setup-java` v4 → v5. No permission, trigger or deployment change.
+
+## L4-R — Remediation (Gate: L4 Remediation Plan APPROVED WITH CONDITIONS)
+
+Branch `l4-remediation` from `7c6e5c7` (the L4 baseline is not changed).
+
+### F7 / O4 — sync log
+- Reset / Import write `asking the cloud to raise epoch X -> X+1 (only if it is still X)` and only after the commit `the cloud raised the epoch to N` (or the refusal).
+- State lines (`remote reset detected`, `asking before binding`) are written once per minute across tabs. This only affects the display: nothing runs twice.
+
+### F8 — offline status, cycle timeout
+- The `offline` event shows "offline" at once.
+- A cycle still waiting after 30 s is reported as offline or as a network error, using the existing back-off. Quota pause and F6 are unchanged.
+- A Firestore request cannot be cancelled, so the cycle keeps the cross-tab lock until it settles. No second cycle runs meanwhile, so nothing is sent twice. Its late status is ignored (generation token), while its data changes still refresh the screens.
+- Reset / Import waits at most 30 s for such a cycle; otherwise it is refused and nothing changes.
+
+### F9 (D-F9) — settings after a replace: the epoch decides, never a clock
+| Step | Rule |
+|---|---|
+| Import with settings, bound device | `bumpEpoch` writes the file's settings to `meta/settings` in the **same Firestore transaction** as the epoch (both or neither) |
+| Reset / Import without settings | the account's settings are not touched |
+| Device that accepts the remote reset | `syncMeta.pullSettings = true` → the next sync takes the account's settings **without comparing `updatedAt`**, before any upload |
+| Any settings upload | a transaction that writes only if the cloud is still at this device's epoch; otherwise nothing is written and the device sees the remote reset |
+| Afterwards | D5 (newer `updatedAt` wins) as before |
+
+- `syncMeta.pullSettings` is local only (never in a backup); records written before L4-R read it as `false`.
+- No change to the Firestore rules, the backup format or the log/card schema.
+- Residual (D5, unchanged by decision): **after** the replace, a device whose clock runs far ahead stamps its new settings changes in the future, and those win over later changes made on correct clocks until that time has passed. A replace still overrides such a device (pull without comparison).
+
+### F10-A — device clock
+- **Measurement:** HEAD `/favicon.svg?clock-check=<unique>` on the app's own origin, `cache: 'no-store'`. The service worker precaches GET only and has no runtime routes; an E2E test checks the answer is not from the service worker.
+  - Server time = `Date` header + 0.5 s, placed at the middle of the round trip.
+  - Uncertainty = 0.5 s + RTT / 2.
+- **Verdict:**
+  - **Wrong** when it is certainly ≥ 5 min off.
+  - **Unknown** (never "ok") when there is no or an unparsable `Date`, the request failed, RTT > 10 s, the device is offline, or the difference is within the uncertainty.
+  - A result is used for ≤ 5 min of monotonic time; a later change of the device clock is subtracted.
+- **Online and wrong:** the recording review is refused and nothing is stored. Today's review explains why and offers "Check again". Practice still works.
+- **Unknown:** reviews are recorded as before (offline-first), with a note that the time could not be checked.
+- **Future-dated reviews:** found with a fresh server time; shown on Home with their count and dates, kept and synced unchanged, and written once to the sync log.
+- **Limits (stated):**
+  - Offline with a wrong clock, reviews are still recorded with the device time (the K2 offline case). It becomes visible later only if the date is still in the future.
+  - Logs from a clock that was behind, or future dates that real time has already passed, are not found.
+  - The check cannot prove every time error.
+- No change to SRS, the ReviewLog schema or the Firestore rules.
+
+### O2 — daily limits are per device
+Stated under Settings and in `docs/srs-v1.md`.

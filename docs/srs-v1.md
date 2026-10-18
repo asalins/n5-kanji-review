@@ -40,5 +40,8 @@ Example (REVIEW, 3 days, ease 2500): HARD 4 d / 2350, GOOD 8 d / 2500, EASY 10 d
 - **Time zones:** the algorithm only adds durations to instants, so DST and time zones cannot change a result. Local study days (streak, daily limits) are derived later from `lastReviewed`/`reviewedAt` plus a time zone; nothing stored prevents that.
 - **durationMs** is measured by the session layer and passed in; SRS never invents it.
 
+- **Daily limits with several devices (L4, O2):** the new-card and review limits are counted on each device from the reviews it holds. Before the devices sync, studying on several devices on the same day can exceed a limit in total. This is the product rule (shown under Settings), not an account-wide guarantee.
+- **Device clock (L4-R F10-A):** `reviewedAt` is the device time and is never changed afterwards. While online, a recorded review is refused when the device clock is known (server `Date`) to be off by 5 min or more; offline it is recorded as usual. Reviews stored with a future date are reported (count and dates), not altered.
+
 ## Persistence requirement (open)
 A review writes the updated card and a ReviewLog. Both must be stored in ONE transaction. `ReviewRepository` currently has separate `saveCard` and `appendLog`, so the orchestrator (`features/review/reviewOrchestrator.ts`) depends on a port `ReviewRecorder.recordReview(card, log)` that the repository does not implement yet. It is not wired into the app until the Architecture Coordinator approves adding that method.

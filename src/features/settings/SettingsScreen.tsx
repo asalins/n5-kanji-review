@@ -72,6 +72,7 @@ function StudyLimits() {
           </option>
         ))}
       </select>
+      <p className="text-sm text-stone-600 dark:text-neutral-400">{TEXT.limitsPerDevice}</p>
       <label htmlFor={themeId} className="text-sm font-medium">
         {TEXT.theme}
       </label>

@@ -7,6 +7,8 @@ export const TEXT = {
   limits: 'จำนวนต่อวัน · Study limits',
   newCards: 'การ์ดใหม่ต่อวัน · New cards per day',
   reviews: 'ทบทวนต่อวัน · Reviews per day',
+  limitsPerDevice:
+    'นับแยกในแต่ละอุปกรณ์: ถ้าเรียนหลายเครื่องในวันเดียวกัน จำนวนรวมอาจเกินที่ตั้งไว้ · Counted on each device: studying on several devices on the same day can go over these numbers in total.',
   theme: 'ธีม · Theme',
   kanjiFont: 'ฟอนต์คันจิ · Kanji font',
   kanjiFontChoose: 'เลือกฟอนต์ · Choose a font',
