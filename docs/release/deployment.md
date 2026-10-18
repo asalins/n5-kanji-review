@@ -40,6 +40,13 @@ Used for the PWA update test #13:
 - After promotion check the Deployments page: Production = expected branch and commit, Success; the previous production deployment is still listed.
 
 ## Rollback
+**Since L1 (`4cbcf40`, 2026-10-18, deployment `d77b8f19`) there is no rollback target.** Every earlier build opens
+IndexedDB v2; a browser that has run L1 is at v3, so an earlier build fails at start-up ("เริ่มแอปไม่สำเร็จ") until a
+build with DB ≥ 3 is served again (R-1, reproduced and recovered on Preview `l1-r1-test`). Recovery is **fix-forward**
+only: `docs/release/l1-release.md` → Recovery runbook. Never advise users to clear site data. Cloudflare Rollback is
+allowed only between builds with the same DB version, and only through a Gate. The text below is the record from
+before L1 and no longer applies.
+
 Deployments → the chosen **Production** deployment → "..." → Rollback. Preview deployments cannot be rollback targets. Choose the target by build (`RELEASES.md`), as of 2026-10-12 (current production build `9545af3`, deployment `9c203693`):
 - Fault in the current build (kanji font picker): the latest Production deployment of the previous build `acd3e31`: `ui-import-button · 9b54a57` (`bc9625d0`); earlier deployment of the same build: `acd3e31` (`e592d896`). After such a rollback the large kanji use the system font again; learning data is kept and the stored font choice is ignored.
 - Older builds: `e135edb` (`6b956e1a`, dataset `n5-2026.10.01`), `efb0627` (`a491049e`, `dist` byte-identical to `29d5354`), `29d5354` (`d19948e7`), `thai-review-1 · 7f3cf7d` (`5fc67251`).

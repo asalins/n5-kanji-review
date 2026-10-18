@@ -80,7 +80,36 @@ Production `ui-import-button` = `c6fdf23` before and after every push.
 
 Limits: one browser (PC Chrome tab); not run on Android or as an installed PWA. In V3 the tester did both a reload and
 a close/reopen, so the test does not show whether a reload alone is enough; the runbook keeps "close every tab / the app
-and reopen". V2/V3 deployment ids were not recorded.
+and reopen". Deployment ids: V0 `8f49f536`, V1 `5d8f673b`, V2 `133dfcd6`, V3 `5b22b144`.
+
+## 6. Production release (2026-10-18)
+
+Coordinator: L1 Release Gate **APPROVED WITH CONDITIONS** (D1 release `4cbcf40` unchanged; D2 notice outside the app;
+D3 storage-error text in L2).
+
+Pre-deploy checklist 6/6:
+1. Notice: the only current user is the project owner, who received the notice text and exported backups from
+   Production before the deploy (PC `PROD-pc-before-L1.json`: format 1, DB 2, 18 logs, 20 cards; Android: Home noted,
+   export not shown in evidence). No public announcement was needed.
+2. `origin/ui-import-button` = `c6fdf237…`, `l1-local-ids` = `4cbcf40a…` (local = origin).
+3. Fast-forward; 46 files changed, only `src/`, `tests/`, `README.md`, `docs/`; no `package.json`, lockfile, PWA,
+   Vite, `index.html`, `public/` or workflow change; clean tree.
+4. Cloudflare: Production branch `ui-import-button`, automatic deployments enabled, no deploy hooks, build `npm run build` → `dist`.
+5. Runbook (above) and fix-forward build (`4cbcf40` itself, proven as `r1-fix`).
+6. No Firebase in `4cbcf40`; Production variables: `NODE_VERSION = 22` only.
+
+Deploy: `git push origin l1-local-ids:ui-import-button` → `c6fdf23..4cbcf40` (no force) → Production deployment
+**`d77b8f19`** `ui-import-button · 4cbcf40` Success.
+
+Post-deploy:
+| Device | Result |
+|---|---|
+| PC Chrome (production URL) | Banner on Home → Update. Home 0 · 0 · 0 · — · 0/10 · 0/10 · Due 10 · New 10 · Learned 3/196 (= before). Settings unchanged (10 / 10 / Dark), no account section. `PROD-pc-after-L1.json`: format 2, DB 3; logs 18/18 identical in every field (`deviceId`/`originalId` null), cards 20/20 identical, sessions identical, settings identical + `updatedAt: 0`. No start-up error |
+| Android Chrome | Banner → Update. Home 0 · 0 · 0 · — · 0/100 · 0/30 · Due 10 · New 30 (= before). Export: "Backup file created". No start-up error |
+
+Open observation: one PC screenshot taken at 13:37 still shows the update banner; the tester's sequence was not
+stated (likely taken before tapping Update). The exported file proves L1 was running at 13:39.
+The installed Android PWA was not checked separately.
 
 ## 5. Open point for the Coordinator — "Export before upgrading"
 
