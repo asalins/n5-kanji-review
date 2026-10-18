@@ -40,6 +40,8 @@ Used for the PWA update test #13:
 - After promotion check the Deployments page: Production = expected branch and commit, Success; the previous production deployment is still listed.
 
 ## Rollback
+**L2 (`05dec77`, deployment `8af4b990`) and L1 (`4cbcf40`, `d77b8f19`) share IndexedDB v3**: a Cloudflare Rollback from L2 to `d77b8f19` is possible through a Gate. Nothing before L1.
+
 **Since L1 (`4cbcf40`, 2026-10-18, deployment `d77b8f19`) there is no rollback target.** Every earlier build opens
 IndexedDB v2; a browser that has run L1 is at v3, so an earlier build fails at start-up ("เริ่มแอปไม่สำเร็จ") until a
 build with DB ≥ 3 is served again (R-1, reproduced and recovered on Preview `l1-r1-test`). Recovery is **fix-forward**
