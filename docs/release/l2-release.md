@@ -45,6 +45,23 @@ Pushes, one at a time, all fast-forward: `4cbcf40` → `05dec77` → `1a7f86e` (
 The `l2-upgrade-test` origin is left at DB v4 with the L2 tree (test data only). Commits `1a7f86e` and `f460894` exist
 only on `l2-upgrade-test`.
 
+## 3a. Pre-deploy conditions (Coordinator: L2 Release Gate CONDITIONAL APPROVAL)
+
+**Dark build in a browser** (`05dec77` built without `VITE_FIREBASE_*`, served locally with `vite preview`, Chrome):
+Settings shows only Study limits, Kanji font, Backup & Restore, About & Sources, Danger zone — **no Account, no
+Privacy**; Resource Timing: **no request** to any Google / Firebase / gstatic host and the `firebaseAdapter` chunk is not
+loaded; service-worker precache 18 entries, none Firebase; `localStorage` empty; IndexedDB version **3**.
+Production environment variables in Cloudflare: `NODE_VERSION = 22` only (screenshot 2026-10-18 13:35; to be re-checked
+right before the deploy).
+
+**Android, short run** (Preview `l2-android-test`, Android Chrome tab + installed PWA from that alias):
+| Step | Result |
+|---|---|
+| A0 L1 (`4cbcf40`) | PWA installed; 3 reviews, new cards/day 20; tab and PWA both 3 · 3 · 0 · 100 % · 0/20 · 3/20 · 0 · 17 (one screenshot showed 3/10 · 7, most likely taken before the setting was changed; after closing and reopening the PWA: 3/20 · 17, setting 20) |
+| A1 → L2 RC (`05dec77`) | PWA: banner → Update → Home identical, setting 20, L2 account section visible (Preview config; not signed in), export "Backup file created" (6.22 KB). Chrome tab: banner shown with identical figures |
+
+The exported Android file was not compared field by field (it stays on the phone).
+
 ## 4. Git path to L3 (finding)
 
 `3217a1d` (L3 RC) does **not** contain `05dec77`: both branch from `2852109`. After L2 is released at `05dec77`, the
@@ -52,6 +69,17 @@ L3 release cannot be a fast-forward of `3217a1d`. `git merge-tree l4-remediation
 files of `05dec77` are untouched on the L3 line). Proposal: L3 RC = merge of `05dec77` into `l4-remediation`, re-run CI
 on the merge, then the L3 Gate. The L4/L4-R code is unchanged; the release docs on `l4-remediation` then reach
 `ui-import-button` with the L3 release (no extra production deployment for docs).
+
+**Done (Coordinator: approved, must be tested before any L3 Gate):** L3 Integration Candidate **`846513d`** on
+`l4-l3-integration` = `--no-ff` merge of `05dec77` into `l4-remediation` (`96add42`). Contains both `3217a1d` and
+`05dec77`; compared with `3217a1d` the only code change is the D3 pair (`userMessage.ts`, `newerDatabase.test.ts`), the
+rest is docs. CI:
+- run `39107421919` (CI-only branch `l4-ci-l3-int` = `846513d` + workflow): `npm run verify`, `vitest tests/unit/storage`
+  (migration v3→v4 + D3 `VersionError` regression), account isolation, emulators (Auth + sync on Firestore + rules),
+  E2E Chromium — **all success**
+- run `39107417681` (`l4-l3-integration` itself, existing `emulator-tests`): unit + typecheck + emulators + rules — **success**
+
+Still open for the L3 Gate: `replayCheck.ts` across baseline → RC (D4), Preview upgrade L2 → L3, Firebase Production project.
 
 ## 5. Firebase Production project — preparation only (for the later Login Gate)
 
