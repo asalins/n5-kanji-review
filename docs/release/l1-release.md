@@ -64,6 +64,24 @@ No force push. Production is never touched.
 `l1-r1-test` and are never merged anywhere. Their `dist` is byte-identical to `c6fdf23` and `4cbcf40` respectively
 because the build embeds no commit data.
 
+### Results (2026-10-18, PC Chrome normal profile, tab only; tester: project owner; evidence: screenshots + backup files checked by script)
+
+Commits on `l1-r1-test`: `c6fdf23` → `4cbcf40` → `0166803` (`r1-sim`) → `2c4aea4` (`r1-fix`), every push a fast-forward, one at a time.
+Production `ui-import-button` = `c6fdf23` before and after every push.
+
+| Step | Result | Observed |
+|---|---|---|
+| V0 | PASS | Deployment `8f49f536`. 3 reviews, daily new cards 10 → 20. Home 3 · 3 · 0 · 100 % · 0/20 · 3/20 · Due 0 · new 17. `V0-backup-v1.json`: format 1, DB 2, 3 logs, 10 cards, `dailyNewCards 20` |
+| V1 | PASS | No prompt until a reload (c6fdf23 checks for a new service worker only on navigation; `deployment.md` already says "Reload Home"). Banner on Home only, nothing reloaded by itself → Update → Home identical. 1 review → 4 · 4 · 0 · 4/20 · new 16. `V1-backup-v2.json`: format 2, DB 3; the 3 V0 logs keep id and every value, `deviceId`/`originalId` null; new `log:<uuid>` with a device id; `dailyNewCards 20`, `updatedAt 0`; no `deviceMeta` |
+| B | PASS | `V1-backup-v2.json` into deployment `8f49f536` (c6fdf23, empty origin): "ไฟล์สำรองนี้เป็นเวอร์ชันที่แอปนี้ไม่รองรับ … ข้อมูลการเรียนเดิมของคุณไม่ถูกเปลี่ยนแปลง" (shown at the bottom of Settings); no confirm box; Home all 0 |
+| V2 | R-1 **reproduced** | Reload → banner → Update → **"เริ่มแอปไม่สำเร็จ · ไม่สามารถเปิดที่เก็บข้อมูลในเบราว์เซอร์ได้ (ลองปิดโหมดส่วนตัว หรือตรวจพื้นที่ว่าง)"**, ลองอีกครั้ง, no update banner |
+| V3 | PASS (recovered) | A first look ~1 min after the push still showed the error (build not finished). After the build: reload, then close every tab of the origin and reopen → L1 starts, Home 4 · 4 · 0 · 100 % · 0/20 · 4/20 · new 16 (= after V1). `V3-backup-v2.json` **identical to `V1-backup-v2.json`** (cards, logs, sessions, settings) |
+| V4 | PASS | Import `V0-backup-v1.json` into L1 → 3 · 3 · 0 · 100 % · 0/20 · 3/20 · new 17 (= V0) |
+
+Limits: one browser (PC Chrome tab); not run on Android or as an installed PWA. In V3 the tester did both a reload and
+a close/reopen, so the test does not show whether a reload alone is enough; the runbook keeps "close every tab / the app
+and reopen". V2/V3 deployment ids were not recorded.
+
 ## 5. Open point for the Coordinator — "Export before upgrading"
 
 The decision asks that users are guided to export a backup **before** the upgrade and told about format 2. The
