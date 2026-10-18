@@ -159,3 +159,10 @@ Login + Cloud Sync active on production for the owner (controlled pilot). Not au
 Next: owner-only pilot monitoring 18–25 Oct 2026 (data/sync, Firestore usage vs Spark, Auth/rules, offline→online,
 Android installed PWA, backup + replay), then a Pilot Monitoring Report for a Small Beta Gate. Pre-activation and
 post-sync backups kept apart in `Downloads/n5-backups/` with SHA-256 prefixes in `CHECKSUMS.txt` (outside the repo).
+
+### Incident 2026-10-18 22:48–22:49 (owner, console)
+While cleaning up the **dev** project, `n5-kanji-review.pages.dev` was removed from the authorized domains of
+**`n5-kanji-review-prod`** by mistake (console toast "n5-kanji-review.pages.dev removed"). Effect during ~1 min: new
+Google sign-ins on production would fail (`auth/unauthorized-domain`); existing sessions and sync unaffected; no data
+change. Re-added at 22:49; prod list back to 3 domains (firebaseapp.com, web.app, pages.dev). Lesson for the runbook:
+check the project name (top left / URL `n5-kanji-review-prod` vs `-dev`) before deleting anything in the console.
