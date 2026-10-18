@@ -95,3 +95,21 @@ Nothing below is done yet; it needs the owner (Google account) and a Gate before
 | F6 | **No Firestore database** until the L3 Gate (Cloud Sync stays off) | L3: Standard, `(default)`, `asia-southeast1`, rules from the L3 RC |
 | F7 | Cloudflare: `VITE_FIREBASE_*` **Production** environment only, set in the same change as the Login release | build-time values → the Login build is a new Production build |
 | F8 | Smoke after the Login release: sign in/out (PC, Android, PWA), Privacy, Delete Account, offline start-up | as the L2 manual matrix |
+
+## 6. Production release (2026-10-18)
+
+Coordinator: L2 Release Gate **APPROVED** (one dark deployment). Pre-deploy: `origin/ui-import-button` = `4cbcf40`,
+`l2-release` = `05dec77` (local = origin), fast-forward, clean tree; no `.env*` (other than `.env.example`, not loaded
+by Vite), `wrangler.toml` or Functions in the repo; Cloudflare Production variables `NODE_VERSION = 22` only, no deploy
+hooks (screenshot 14:38).
+
+Deploy: `git push origin l2-release:ui-import-button` → `4cbcf40..05dec77` (no force) → Production deployment
+**`8af4b990`** `ui-import-button · 05dec77` Success.
+
+| Device | Post-deploy |
+|---|---|
+| PC Chrome | Banner → Update. Home 0 · 0 · 0 · — · 0/10 · 0/10 · Due 10 · New 10 · Learned 3/196 (= before). Settings 10 / 10 / Dark; **no account section**. Network filter `google`: 0 / 10 requests; `firebase`: 0 / 20 requests (reload + Settings). `PROD-pc-after-L2.json`: format 2, DB 3; cards, logs, sessions, settings **identical to `PROD-pc-after-L1.json`** |
+| Android Chrome (production) | Update tapped (owner). Home 0 · 0 · 0 · — · 0/100 · 0/30 · Due 10 · New 30 (= before); Settings **no account section**; export "Backup file created" (16.46 KB) |
+
+Limits: the Android banner before Update was not captured (owner confirmed tapping it); the Android export was not
+compared field by field; the installed production PWA was not checked separately from the Chrome tab.
