@@ -60,10 +60,23 @@ Device: Android Chrome / PWA or PC on the Preview of `3217a1d`. Signed in as U1,
 
 | # | Steps | Expected | Result |
 |---|---|---|---|
-| F8-1 | Review 1–2 cards → "Sync now" → cut the network while it says "Syncing…" (flight mode / DevTools Offline) | Shows "offline" at once, or after ≤ 30 s reports offline / network error. **Not stuck on "Syncing…"** | OPEN |
-| F8-2 | While still offline: try Reset progress | Refused ("must be online"); nothing changes | OPEN |
-| F8-3 | Back online | Sync resumes by itself (or with Sync now). Sync log has no duplicate lines in the same minute. Cloud log count = before + reviews, **no duplicate log** | OPEN |
-| F8-4 | Export → `scripts/qa/replayCheck.ts` | `differing = 0` | OPEN |
+| F8-1 | Review 1–2 cards → "Sync now" → cut the network while it says "Syncing…" (flight mode / DevTools Offline) | Shows "offline" at once, or after ≤ 30 s reports offline / network error. **Not stuck on "Syncing…"** | **PASS** |
+| F8-2 | While still offline: try Reset progress | Refused ("must be online"); nothing changes | **PASS** |
+| F8-3 | Back online | Sync resumes by itself (or with Sync now). Sync log has no duplicate lines in the same minute. Cloud log count = before + reviews, **no duplicate log** | **PASS** |
+| F8-4 | Export → `scripts/qa/replayCheck.ts` | `differing = 0` | **NOT RUN** (no Node.js; see below) |
+
+### P2 results (2026-10-18, machine A = PC Chrome, device tag `e3k3`, U1, Preview `3217a1d`)
+Method: Chrome DevTools network profile `F8-slow` (10 kbit/s up/down, 20 000 ms latency) to keep a cycle in flight, then the `Offline` preset. Evidence: owner screenshots.
+
+| Step | Observed |
+|---|---|
+| Baseline | Normal sync 12:21:57 `pulled 0, pushed 2` (2 reviews). |
+| F8-1 timeout | `F8-slow`, 2 more reviews, Sync now → 12:26:30 `sync timed out after 30 s: still waiting for the network; nothing is sent twice`; status "Sync failed; it retries automatically at 12:27:00" (not stuck on "Syncing…"). The request still in flight completed at 12:27:39: `synced (epoch 9): pulled 0, pushed 2` + `late result of the timed-out sync: synced`. No second cycle ran meanwhile (the 12:27:00 retry did not send anything). |
+| F8-1 offline | Switched to `Offline`: Sync box "Offline: syncs when you are back online. Study as usual."; account "Offline: still signed in, not checked with the server"; 12:28:04 `sync failed: network (offline)`. |
+| F8-2 | Reset progress offline (twice): "You must be online so the account can be checked first. Nothing was changed."; 12:29:35 / 12:30:24 `Reset progress refused: offline; nothing changed`. Home before and after: Reviews today 8, Correct 5, Incorrect 3, 63 %, quota 8/10. |
+| F8-3 | `No throttling` → Last synced 12:31:37, no error, no new log line (nothing left to send; the engine logs only changes). Firestore `users/<U1>/logs` = **26** (22 + 4), 18 `kanji:…#n` + 8 `log:<uuid>`, all ids distinct; root still `epoch 9`. Home unchanged. |
+
+Note: the late completion means the case "the cloud wrote, the answer came late" was exercised for real; the 2 logs were not uploaded again on reconnect.
 
 ## 3. P3 — Release Readiness checklist
 
@@ -155,7 +168,7 @@ Other recovery items:
 |---|---|---|
 | U2 account | owner | done (deleted again in A4) |
 | P1 A1–A4 | owner (with Claude guiding) | **PASS** 2026-10-18 |
-| P2 F8 smoke | owner (with Claude guiding) | OPEN |
+| P2 F8 smoke | owner (with Claude guiding) | **PASS** 2026-10-18 (F8-4 replay not run) |
 | 3.1 L3 = `3217a1d` | Coordinator | DECISION |
 | 3.4 Firebase production project, dark L2 or not | Coordinator / owner | DECISION |
 | 3.6 R-1 rollback across DB versions (a or b) | Coordinator | DECISION |
