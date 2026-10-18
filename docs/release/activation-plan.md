@@ -21,7 +21,7 @@ Release of this commit = a normal UI release (dark; DB stays v4; fast-forward fr
 | # | Item | Who | Status |
 |---|---|---|---|
 | L1 | Release `/privacy.html` (above) | Claude (Gate) | prepared |
-| L2 | Add `n5kanjireview.support@gmail.com` as a member of `n5-kanji-review-prod` (Viewer is enough); select it as support e-mail in Authentication → Google and in Google Auth Platform → Branding | owner (needs that mailbox) | open |
+| L2 | Add `n5kanjireview.support@gmail.com` as a member of `n5-kanji-review-prod` (Viewer is enough); select it as support e-mail in Authentication → Google and in Google Auth Platform → Branding | owner (needs that mailbox) | **member added** 2026-10-18 16:04: `n5kanjireview.support@gmail.com` = Viewer, invitation accepted; support e-mail not switched yet (with L3 Branding) |
 | L3 | Branding: home page `https://n5-kanji-review.pages.dev`, privacy `https://n5-kanji-review.pages.dev/privacy.html`, authorized domain `n5-kanji-review.pages.dev`; Save. If Google refuses `pages.dev` as an authorized domain, record it and decide (custom domain or no home-page link) | owner | open |
 | L4 | Publishing status: currently "In production" (set by Firebase); keep for basic scopes (email/profile/openid need no verification) or verify branding — decision | Coordinator | open |
 | L5 | **Smoke test with the production project before Production**: see §4 | owner + Claude | open |
