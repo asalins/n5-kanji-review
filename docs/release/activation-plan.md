@@ -126,3 +126,29 @@ data survives both switches; re-enabling resumes the same binding and uploads on
 | Stop sign-ins | Firebase → Authentication → Sign-in method → Google → Disable | No new sessions; existing tokens stay valid ≤ 1 h | — (console function, not tested) |
 | Resume | Republish `firestore.rules` of the release commit (diff with the repo as in S3); re-add variables + Retry | Same as R3 | §7 R3 |
 | Never | Cloudflare Rollback across DB v4; advising users to clear site data | — | R-1 |
+
+## 9. Production activation — Controlled Pilot (2026-10-18; Coordinator: FINAL ACTIVATION GATE APPROVED)
+
+Pre-activation 6/6: Git `ui-import-button` = `affcca8`, live build without Firebase values (checked by fetching the
+bundle); prod rules = published 17:36 (= repo), key 3 APIs / 2 referrers, authorized domains 3 (no `localhost`), Auth
+empty; backups `PROD-pc-before-activation.json` (DB 4, 18 logs, 20 cards) and `PROD-android-before-activation.json`
+(DB 4, 10 logs, 30 cards), both identical to the post-L3 files; owner account `asalins.khumyu@gmail.com`; freeze rules
+ready; Preview build still on the dev project.
+
+Activation: Cloudflare **Production** variables `VITE_FIREBASE_*` of `n5-kanji-review-prod` (Text) → Retry deployment of
+`affcca8`. Live bundle `index-CbKS4hVF.js`: project `n5-kanji-review-prod`, prod appId and authDomain, key 39 chars
+ending `EPyY`, no `n5-kanji-review-dev`; `firebaseAdapter` not precached; `/privacy.html` → 308 `/privacy` (notice, no script).
+
+| Step | Result |
+|---|---|
+| PC update | Home unchanged; no start-up error; account section + privacy link |
+| PC sign-in (owner) | binding prompt (upload / delete local / do not sync) → upload → `synced (epoch 0): pulled 0, pushed 18, renamed 0, settings uploaded`. Firestore `users/<uid>` epoch 0, 18 logs = the 18 local ids. `PROD-pc-after-pilot.json` identical to before in every field; replay PASS |
+| Android (owner chose upload) | Android and PC both held 10 legacy ids `cardId#1` with different content. Upload → `pulled 18, pushed 10, renamed 10, settings kept`. `PROD-android-after-merge.json`: 28 logs, all ids distinct; PC 18/18 unchanged; Android 10/10 present as `…#1~<hash>` with `originalId`, same time/rating/duration; settings 30/100/light kept; replay PASS |
+| PC pull | `synced (epoch 0): pulled 10, pushed 0`; Firestore 28 logs incl. the 10 renamed, epoch 0. `PROD-pc-after-merge.json`: 28 logs **identical to Android**, reviewed cards identical; PC settings 10/10/dark kept (per device, D5 tie); replay PASS |
+
+No stop condition met: no learning data lost, no wrong account, no duplicate log, no unexpected epoch change.
+Card states changed on both devices to the union of both histories (expected by the owner's choice to merge).
+
+Cleanup: branches `act-recovery-test` and `l4-ci-freeze` deleted (run ids and results recorded in §7–8; freeze rules
+kept in `docs/release/firestore-freeze.rules`). Open: remove `act-recovery-test.n5-kanji-review.pages.dev` from the dev
+project's authorized domains (owner).
