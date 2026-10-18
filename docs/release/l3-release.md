@@ -115,3 +115,21 @@ field-by-field comparison and replay are the PC Preview run (§3).
   fast-forward to `ui-import-button`.
 - User instruction: close every tab and the installed app, reopen; keep any backup file; do not clear site data.
 - The fix-forward build that is proven to open a v4 database is `dff6d4c` itself (Preview Q1/Q2, B1).
+
+## 10. Production release (2026-10-18)
+
+Pre-deploy: B1 Android PWA PASS · B2 production backups before L3: PC `PROD-pc-before-L3` (DB 3, 18 logs, 20 cards),
+Android exported 15:42 and copied to the PC (DB 3, 10 logs, 30 cards, 30/100/light) · B3 `origin/ui-import-button` =
+`05dec77`, RC `origin/l4-l3-integration` = `dff6d4c`, fast-forward, clean tree · B4 Production variables
+`NODE_VERSION = 22` only, no deploy hooks (15:44) · B5 runbook §9.
+
+Deploy: `git push origin dff6d4c:ui-import-button` → `05dec77..dff6d4c` (no force) → Production deployment
+**`8f0c0771`** `ui-import-button · dff6d4c` Success.
+
+| Device | Post-deploy |
+|---|---|
+| PC Chrome | Banner → Update. Home 0 · 0 · 0 · — · 0/10 · 0/10 · Due 10 · New 10 · Learned 3/196 (= before). Settings 10/10/Dark, O2 note shown (L3), **no account section**. Network `google`: 0; `firebase`: 0 / 11 requests. `PROD-pc-after-L3.json`: **DB 4**; cards, logs, sessions, settings identical to before. replayCheck PASS (differs 0) |
+| Android Chrome | Banner → Update. Home 0 · 0 · 0 · — · 0/100 · 0/30 (= before); Settings: no account section; export 15:48 copied to the PC: **DB 4**; cards, logs, sessions, settings identical to before. replayCheck PASS |
+
+Limits: the Android installed production PWA was not checked separately from the tab (B1 covered the installed PWA on
+Preview); the Network check is on PC only.
