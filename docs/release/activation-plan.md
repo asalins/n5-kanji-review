@@ -100,3 +100,29 @@ Accounts: T1 = test Gmail (former U2), T2 = support mailbox; the owner's learnin
 
 Cleanup: server stopped; `.env.local` and the test build deleted; authorized domain `localhost` removed (3 domains
 left); key referrer `http://localhost:4198/*` removed (2 referrers left, 3 APIs kept; saved).
+
+## 7. Switch-off / Recovery test (Coordinator: CONDITIONAL APPROVAL, D3) — Preview, dev project, test data
+
+Branch `act-recovery-test` = `affcca8` (same commit as Production); Cloudflare **Preview** environment variables only;
+account T1 (test Gmail) on `n5-kanji-review-dev`; authorized domain `act-recovery-test.n5-kanji-review.pages.dev` added
+to the dev project for the test. Production variables untouched throughout.
+
+| Step | Build evidence (fetched from each deployment's main JS) | App evidence |
+|---|---|---|
+| R1 configured | `5ae4b787`: `index-DYaCfeMs.js`, dev project id + API key present | 3 reviews → sign-in T1 → upload → `synced (epoch 0): pushed 3`; dev Firestore 3 logs; `R1.json` DB 4, 3 logs |
+| R2 dark | Preview `VITE_FIREBASE_*` deleted → **Retry deployment** → `8ec4b248`, `007b708b` (two retries): `index-z9jBbYl0.js`, **no** project id, **no** key | Update banner → no Account section; Network `firebase` 0/11, `google` 0/22; `R2.json` identical to `R1.json` in every field; 1 review while dark |
+| R3 configured again | 4 variables re-added → **Retry deployment** → `86518617`: `index-DYaCfeMs.js` (**same file as R1**), same key (hash compare) | Update → still signed in as T1, **no binding prompt**, `synced (epoch 0): pulled 0, pushed 1` (the dark review, once); no reset/raise line; dev Firestore 4 logs, all ids distinct, epoch 0; `R3.json` 4 logs, R2 logs unchanged, settings unchanged, replayCheck PASS |
+
+**Proven:** Cloudflare *Retry deployment* rebuilds the same commit with the **current** environment variables (dark build
+has a different bundle without any Firebase value; re-enabling reproduces the R1 bundle byte for byte by name). Local
+data survives both switches; re-enabling resumes the same binding and uploads only what is missing.
+
+## 8. Emergency runbook (after activation)
+
+| Situation | Action | Effect | Evidence |
+|---|---|---|---|
+| Sync misbehaves (client side) | Cloudflare → Settings → **Production** → delete the 4 `VITE_FIREBASE_*` → Deployments → latest Production → **⋯ → Retry deployment** → check the new bundle has no project id | New loads/updates are dark; local data kept; cloud data stays. **Already-open/old builds keep a valid session until they update** | §7 R2 |
+| Cloud writes must stop now (security / data issue) | Firebase → Firestore → Rules → paste `docs/release/firestore-freeze.rules` → Publish (≈1 min) | Owners still read; every create/update/delete refused for all clients (old builds included); app reports sync failure, local data untouched (L3 handles `permission-denied` with back-off) | freeze rules CI run `39138832775` (emulator: owner reads OK, all writes refused) |
+| Stop sign-ins | Firebase → Authentication → Sign-in method → Google → Disable | No new sessions; existing tokens stay valid ≤ 1 h | — (console function, not tested) |
+| Resume | Republish `firestore.rules` of the release commit (diff with the repo as in S3); re-add variables + Retry | Same as R3 | §7 R3 |
+| Never | Cloudflare Rollback across DB v4; advising users to clear site data | — | R-1 |
