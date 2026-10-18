@@ -28,13 +28,31 @@ Pre-checks (before A1):
 
 | # | Steps | Expected | Automated coverage already present | Result |
 |---|---|---|---|---|
-| A1 | A bound to U1 → sign out (keep local data) → sign in U2 | Notice "this device's data belongs to another account", **no upload button**. Firestore `users/<U2>` holds no U1 data | `tests/unit/sync/syncSafety.test.tsx` (binding guard) | OPEN |
-| A2 | A: "Do not sync this device" for U2 → sign out → sign in U1 | Sync with U1 continues, data complete, `replayCheck` `differing = 0`, U1 log count unchanged | — | OPEN |
-| A3 | Rules Playground as U2's uid: get / create on `users/<U1>` and `users/<U1>/logs/<id>`. B signed in as U2 sees no U1 data | Denied for read and write | `tests/rules/firestoreRules.test.ts` "another user can neither read nor write" (root, logs, settings) | OPEN |
-| A4 | C signed in as U2 → B (U2) Delete Account | B: cloud data deleted first, then Auth. Firestore has no `users/<U2>`. C is signed out (L-2 accepted). **U1 untouched** (epoch and log count as in pre-check 2) | `accountService.test.ts` "C2: Delete Account" (order) | OPEN |
+| A1 | A bound to U1 → sign out (keep local data) → sign in U2 | Notice "this device's data belongs to another account", **no upload button**. Firestore `users/<U2>` holds no U1 data | `tests/unit/sync/syncSafety.test.tsx` (binding guard) | **PASS** |
+| A2 | A: "Do not sync this device" for U2 → sign out → sign in U1 | Sync with U1 continues, data complete, `replayCheck` `differing = 0`, U1 log count unchanged | — | **PASS** (see note on replay) |
+| A3 | Rules Playground as U2's uid: get / create on `users/<U1>` and `users/<U1>/logs/<id>`. B signed in as U2 sees no U1 data | Denied for read and write | `tests/rules/firestoreRules.test.ts` "another user can neither read nor write" (root, logs, settings) | **PASS** |
+| A4 | C signed in as U2 → B (U2) Delete Account | B: cloud data deleted first, then Auth. Firestore has no `users/<U2>`. C is signed out (L-2 accepted). **U1 untouched** (epoch and log count as in pre-check 2) | `accountService.test.ts` "C2: Delete Account" (order) | **PASS** |
 
 Safety: before you confirm A4, check that the e-mail shown on B is U2's. A4 deletes only U2.
 Evidence: sync logs of every device, Firestore screenshots (root epoch, log count for U1 and U2), times.
+
+### P1 results (2026-10-18, Preview `l4-remediation.n5-kanji-review.pages.dev` = `3217a1d`, project `n5-kanji-review-dev`)
+Devices: A = PC Chrome (device tag `e3k3`), B = PC Chrome Incognito (`onkx`), C = Android Chrome (`loz0`).
+U1 = `asalins.khumyu@…` uid `wGFnw9Bgz0MsBbiRi5TmLL5x5tQ2`; U2 = test Gmail, uid `7icVsl1udZcPT3RwVVdUCltu2rr1`.
+Evidence: owner screenshots (sync logs, Firestore, Authentication, Rules Playground), both backup files.
+
+| Step | Observed |
+|---|---|
+| Pre-check | U1 root `epoch 9`, `replacedBy b56f3410…`, `resetAt` 11:22:48, **22 logs** (18 `kanji:…#n` + 4 `log:<uuid>`). Auth: U1 only. Baseline backup `A.json` (11:31:49): 20 cards, 22 logs |
+| A1 | 11:50:19 A signed in U2: "This device's progress belongs to another account"; buttons only "Delete this device's progress and use the account's data" / "Do not sync this device" (no upload). Log `asking before binding (other-account); nothing uploaded`. U2 appears in Auth; Firestore: **no `users/<U2>`**, U1 unchanged (epoch 9, 22 logs). Same notice and log line on Android C at 12:11:09 (second device) |
+| A2 | 11:54:37 `binding answered by the user: skip` → "not synced with this account". Sign out → sign in U1 → synced 11:55:37 with no "other account" notice and no log line (nothing pulled or pushed; the engine logs a cycle only when something changed, `syncEngine.ts:200`). U1 Firestore unchanged. `A-after-A2.json` (12:16) vs `A.json`: reviewCards 20/20, reviewLogs 22/22, studySessions 4/4, userSettings **identical** field by field; no uid / `syncMeta` / `syncLedger` in the file. A synced again 12:15:50 after A4 without error |
+| A3 | Rules Playground (Authenticated, provider `google.com`): unauthenticated get `users/<U1>` **denied**; U1 get `users/<U1>` **allowed** (control); U2 get `users/<U1>` **denied**; U2 get `users/<U1>/meta/settings` **denied**; U2 create `users/<U1>/logs/a3-test` **denied**. B (U2): `bound … (this device had no progress)`, `following cloud epoch 0`, 12:00:35 `pulled 0, pushed 2`; Home shows only U2's 2 reviews (Learned 2/196). Firestore: `users/<U2>` epoch 0, 2 logs; U1 still 22 |
+| A4 | B (U2) Delete account: confirm disabled until "I understand", delete-local box not pre-ticked; result three separate lines "account deleted / learning data in the cloud deleted / learning data on this device is kept"; B signed out. Firestore: only `users/<U1>` (epoch 9, `replacedBy`/`resetAt` unchanged). Auth: U1 only. C (signed in as U2, binding not answered) after reload: signed out, no notice (L-2), U1 progress on C kept (Reviews today 4, Due 9) |
+
+Notes / limits:
+- Replay: `scripts/qa/replayCheck.ts` was not run (no Node.js on this machine). `A-after-A2.json` is identical to `A.json`, the S2 export for which the L4-R report recorded `differing = 0`.
+- A3 3d was run with an empty document body, so `validLog` alone could deny it; a valid log from another uid is covered by the rules test (CI rules 25/25). The Location field is truncated in the screenshots of 3c/3d; paths as entered by the owner.
+- A4 on C: the binding question was still open (not "skip") when U2 was deleted.
 
 ## 2. P2 — F8 manual smoke test (one run)
 
@@ -135,8 +153,8 @@ Other recovery items:
 
 | Item | Owner | Status |
 |---|---|---|
-| U2 account | owner | **BLOCKED** until created |
-| P1 A1–A4 | owner (with Claude guiding) | OPEN |
+| U2 account | owner | done (deleted again in A4) |
+| P1 A1–A4 | owner (with Claude guiding) | **PASS** 2026-10-18 |
 | P2 F8 smoke | owner (with Claude guiding) | OPEN |
 | 3.1 L3 = `3217a1d` | Coordinator | DECISION |
 | 3.4 Firebase production project, dark L2 or not | Coordinator / owner | DECISION |
