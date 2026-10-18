@@ -150,8 +150,7 @@ No stop condition met: no learning data lost, no wrong account, no duplicate log
 Card states changed on both devices to the union of both histories (expected by the owner's choice to merge).
 
 Cleanup: branches `act-recovery-test` and `l4-ci-freeze` deleted (run ids and results recorded in §7–8; freeze rules
-kept in `docs/release/firestore-freeze.rules`). Open: remove `act-recovery-test.n5-kanji-review.pages.dev` from the dev
-project's authorized domains (owner).
+kept in `docs/release/firestore-freeze.rules`). Done 22:49: `act-recovery-test.n5-kanji-review.pages.dev` removed from the **dev** project's authorized domains.
 
 ## 10. Post-activation Gate: PASS — CLOSED (Coordinator, 2026-10-18)
 
