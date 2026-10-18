@@ -95,3 +95,23 @@ the storage location (asia-southeast1).
 - Not tested: Android/PWA L2 → L3 upgrade; sign-in and sync on the RC build itself (the Preview alias is not an
   authorized domain of `n5-kanji-review-dev`; L3/L4 sync behaviour is the one tested in L4/L4-R, code unchanged).
 - Real Spark quota: BLOCKED.
+
+## 9. Coordinator: L3 Release Gate APPROVED WITH PRE-DEPLOY CONDITIONS (B1–B5)
+
+### B1 — Android installed PWA, L2 → L3 (Preview `l3-android-test`, simulated data, not signed in)
+| Step | Result |
+|---|---|
+| L2 `05dec77` | PWA installed from the alias; 5 reviews (1 Again), new cards/day 20, reviews/day 20, Dark; app closed and reopened; Home 5 · 4 · 1 · 80 % · 0/20 · 5/20 · Due 0 · 15; export "Backup file created" |
+| → L3 `dff6d4c` (fast-forward push) | Banner in the installed PWA → Update. Home identical. Settings 20 / 20 / Dark; the O2 note "Counted on each device" (L4-R) and the L3 account text are shown → L3 running on DB v4. Export "Backup file created". 1 more review → 6 · 5 · 1 · 83 % · 6/20 (recorded normally) |
+Limit: the phone's backup files were not copied to the PC, so the Android comparison is by the screen figures; the
+field-by-field comparison and replay are the PC Preview run (§3).
+
+### B5 — fix-forward runbook for DB v4 (after the L3 release)
+- **No rollback target**: every earlier build opens DB v3 (L2 `8af4b990`, L1 `d77b8f19`) or v2. Never use Cloudflare Rollback after L3.
+- If L2 were served by mistake: users see the D3 text ("data is still here, close every tab and reopen the latest
+  version, do not clear site data"); L1 would show the old storage text.
+- Fix base = the released commit (`dff6d4c`); keep migrations v1–v4 unchanged; never lower `CURRENT_DB_VERSION`.
+- Fix → CI (verify, emulators, rules, E2E) → Preview alias update from `dff6d4c` to the fix (data kept) → Gate →
+  fast-forward to `ui-import-button`.
+- User instruction: close every tab and the installed app, reopen; keep any backup file; do not clear site data.
+- The fix-forward build that is proven to open a v4 database is `dff6d4c` itself (Preview Q1/Q2, B1).
