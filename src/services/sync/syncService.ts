@@ -13,6 +13,9 @@ import { newUuid } from '../../utils/uuid';
  *  - one sync at a time across tabs and the installed app (Web Locks, `n5-sync`);
  *  - failures back off 30 s -> 2 min -> 10 min -> 1 h; quota (resource-exhausted) pauses for 1 h;
  *  - offline: nothing is attempted; local study is never blocked or changed by sync.
+ *  - F8: going offline shows "offline" at once; a cycle still waiting after CYCLE_TIMEOUT_MS is reported as offline /
+ *    network error (back-off as before). Its request cannot be cancelled, so the cycle keeps the lock until it
+ *    settles (never two cycles at once: nothing is sent twice) and its late result never overwrites a newer status.
  */
 
 export type SyncStatus =
@@ -31,6 +34,7 @@ export type BindingChoice = 'upload' | 'replace-local' | 'skip';
 export const BACKOFF_MS = [30_000, 120_000, 600_000, 3_600_000] as const;
 export const QUOTA_PAUSE_MS = 3_600_000;
 export const CHANGE_DEBOUNCE_MS = 30_000;
+export const CYCLE_TIMEOUT_MS = 30_000;
 const LOCK_NAME = 'n5-sync';
 
 export interface LockManagerLike {
@@ -40,6 +44,8 @@ export interface LockManagerLike {
 export interface SyncEnvironment {
   isOnline(): boolean;
   onOnline(listener: () => void): () => void;
+  /** F8: the browser went offline (optional: environments without it only learn on the next attempt). */
+  onOffline?(listener: () => void): () => void;
   onHidden(listener: () => void): () => void;
   setTimer(fn: () => void, ms: number): unknown;
   clearTimer(handle: unknown): void;
@@ -120,6 +126,8 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
   /** F6: is the pending timer the 30 s debounce of a local change (not a back-off / quota retry)? */
   let debouncePending = false;
   let remoteResetEpoch: number | null = null;
+  /** F8: status updates of a cycle count only while it is the current one (not timed out / overtaken by offline). */
+  let generation = 0;
   const listeners = new Set<() => void>();
   const dataListeners = new Set<(change: DataChange) => void>();
   const dataChanged = (change: DataChange) => {
@@ -146,20 +154,61 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
     debouncePending = false;
   };
 
+  /** Resolves after `ms` with `true`; `cancel()` stops the timer. */
+  const delay = (ms: number) => {
+    let handle: unknown = null;
+    const done = new Promise<true>((resolve) => {
+      handle = env.setTimer(() => resolve(true), ms);
+    });
+    return { done, cancel: () => env.clearTimer(handle) };
+  };
+
+  type CycleResult = { readonly ok: true; readonly outcome: SyncOutcome } | { readonly ok: false; readonly error: unknown };
+
   async function cycle(): Promise<void> {
     const cloud = deps.getCloud();
     if (cloud === null) {
       set({ kind: 'off' });
       return;
     }
+    generation += 1;
+    const gen = generation;
+    const current = () => gen === generation;
     set({ kind: 'syncing' });
-    let outcome: SyncOutcome;
-    try {
-      outcome = await runSyncCycle({ repo, cloud, now: env.now, log: note });
-    } catch (error) {
-      const reason = errorReason(error);
-      if (reason === 'unknown') log(error);
+    const work: Promise<CycleResult> = runSyncCycle({ repo, cloud, now: env.now, log: note }).then(
+      (outcome) => ({ ok: true, outcome }),
+      (error: unknown) => ({ ok: false, error }),
+    );
+    const timeout = delay(CYCLE_TIMEOUT_MS);
+    const first = await Promise.race([work, timeout.done]);
+    timeout.cancel();
+    if (first === true) {
+      // F8: the request may still reach the cloud later; it cannot be cancelled. Report the facts now, keep the lock
+      // until it settles (no second cycle runs meanwhile), and ignore its status.
+      const wasCurrent = current();
+      generation += 1;
+      note(`sync timed out after ${CYCLE_TIMEOUT_MS / 1000} s${env.isOnline() ? '' : ' (offline)'}: still waiting for the network; nothing is sent twice`);
+      if (wasCurrent) {
+        if (!env.isOnline()) {
+          failures = 0;
+          set({ kind: 'offline' }); // retried on `online`
+        } else {
+          const wait = BACKOFF_MS[Math.min(failures, BACKOFF_MS.length - 1)]!;
+          failures += 1;
+          set({ kind: 'error', reason: 'network', retryAt: env.now() + wait });
+          schedule(wait);
+        }
+      }
+      const late = await work;
+      note(`late result of the timed-out sync: ${late.ok ? late.outcome.kind : `failed (${errorReason(late.error)})`}`);
+      if (late.ok) dataChangedBy(late.outcome);
+      return;
+    }
+    if (!first.ok) {
+      const reason = errorReason(first.error);
+      if (reason === 'unknown') log(first.error);
       note(`sync failed: ${reason}${env.isOnline() ? '' : ' (offline)'}`);
+      if (!current()) return; // offline already shown; `online` retries
       if (!env.isOnline()) {
         failures = 0;
         set({ kind: 'offline' }); // retried on `online`
@@ -176,6 +225,9 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
       schedule(wait);
       return;
     }
+    const outcome = first.outcome;
+    dataChangedBy(outcome);
+    if (!current()) return;
     failures = 0;
     switch (outcome.kind) {
       case 'no-user':
@@ -192,13 +244,17 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
         remoteResetEpoch = outcome.epoch;
         set({ kind: 'remote-reset', epoch: outcome.epoch, resetAt: outcome.resetAt, unsynced: outcome.unsynced });
         return;
-      case 'synced': {
-        const cards = outcome.pulled > 0 || outcome.renamed > 0 || outcome.cardsUpdated > 0;
-        const settings = outcome.settings === 'downloaded';
-        if (cards || settings) dataChanged({ cards, settings });
+      case 'synced':
         set({ kind: 'idle', lastSyncAt: (await repo.getMeta()).lastSyncAt });
-      }
     }
+  }
+
+  /** Screens reload what a sync changed on this device (also for a late result: the data is real). */
+  function dataChangedBy(outcome: SyncOutcome) {
+    if (outcome.kind !== 'synced') return;
+    const cards = outcome.pulled > 0 || outcome.renamed > 0 || outcome.cardsUpdated > 0;
+    const settings = outcome.settings === 'downloaded';
+    if (cards || settings) dataChanged({ cards, settings });
   }
 
   /** Runs one cycle (holding the cross-tab lock); a request during a run causes exactly one more run. */
@@ -224,6 +280,10 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
       try {
         do {
           again = false;
+          if (!env.isOnline()) {
+            set({ kind: 'offline' });
+            break;
+          }
           await once();
         } while (again && active && !suspended);
       } catch (error) {
@@ -244,6 +304,13 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
         failures = 0;
         void run();
       }
+    });
+    env.onOffline?.(() => {
+      if (!active) return;
+      // F8: show it now; a running cycle's request keeps waiting (and is ignored for the status).
+      generation += 1;
+      failures = 0;
+      set({ kind: 'offline' });
     });
     env.onHidden(() => {
       // Only a debounced upload is flushed early (the page may be closed). A back-off / quota wait is NOT shortened:
@@ -346,7 +413,17 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
       }
       suspended = true;
       cancelTimer();
-      if (running !== null) await running;
+      if (running !== null) {
+        // F8: a sync still waiting for the network must finish first (never a replace next to a cycle in flight).
+        const wait = delay(CYCLE_TIMEOUT_MS);
+        const timedOut = await Promise.race([running.then(() => false), wait.done]);
+        wait.cancel();
+        if (timedOut) {
+          suspended = false;
+          note(`${what} refused: a sync is still waiting for the network; nothing changed`);
+          throw new ReplaceError('cloud-failed', 'A sync is still in flight');
+        }
+      }
       const task = async () => {
         const meta = await repo.getMeta();
         let uid: string | null;
@@ -406,6 +483,11 @@ export const browserSyncEnvironment = (): SyncEnvironment => ({
     if (typeof window === 'undefined') return () => undefined;
     window.addEventListener('online', listener);
     return () => window.removeEventListener('online', listener);
+  },
+  onOffline(listener) {
+    if (typeof window === 'undefined') return () => undefined;
+    window.addEventListener('offline', listener);
+    return () => window.removeEventListener('offline', listener);
   },
   onHidden(listener) {
     if (typeof document === 'undefined') return () => undefined;

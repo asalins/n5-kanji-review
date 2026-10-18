@@ -30,6 +30,19 @@ export class MemoryCloud {
   beforeBump: (() => void) | null = null;
   /** Tokens of every successful epoch raise. */
   readonly bumps: string[] = [];
+  /**
+   * F8: the next call of `op` hangs until `release()`. 'before' = the request has not reached the server yet (it
+   * runs on release); 'after' = the server already applied it, only the answer is late.
+   */
+  private held: { op: keyof CloudStore; when: 'before' | 'after'; gate: Promise<void> } | null = null;
+  hold(op: keyof CloudStore, when: 'before' | 'after'): { release: () => void } {
+    let release = () => undefined as void;
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    this.held = { op, when, gate };
+    return { release: () => release() };
+  }
 
   account(uid: string): Account {
     let a = this.accounts.get(uid);
@@ -55,11 +68,21 @@ export class MemoryCloud {
         this.failOnce = null;
         return Promise.reject(error);
       }
-      try {
-        return Promise.resolve(fn());
-      } catch (error) {
-        return Promise.reject(error);
+      const run = () => {
+        try {
+          return Promise.resolve(fn());
+        } catch (error) {
+          return Promise.reject(error);
+        }
+      };
+      if (this.held?.op === op) {
+        const { when, gate } = this.held;
+        this.held = null;
+        if (when === 'before') return gate.then(run);
+        const answer = run();
+        return gate.then(() => answer);
       }
+      return run();
     };
     const owner = (uid: string) => {
       if (getUid() !== uid) throw new CloudError('denied', 'not the owner');

@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { createIndexedDbRepositories } from '../../../src/repositories/indexeddb';
 import { CloudError } from '../../../src/services/sync/cloudTypes';
-import { BACKOFF_MS, CHANGE_DEBOUNCE_MS, QUOTA_PAUSE_MS, createSyncService, type LockManagerLike, type SyncEnvironment } from '../../../src/services/sync/syncService';
+import { BACKOFF_MS, CHANGE_DEBOUNCE_MS, CYCLE_TIMEOUT_MS, QUOTA_PAUSE_MS, createSyncService, type LockManagerLike, type SyncEnvironment } from '../../../src/services/sync/syncService';
 import { sampleRecords } from '../../helpers/backupFixtures';
 import { MemoryCloud } from '../../helpers/memoryCloud';
 import { openTestDatabase } from '../../helpers/testDatabase';
@@ -18,10 +18,12 @@ class Env implements SyncEnvironment {
   timers = new Map<number, { fn: () => void; ms: number }>();
   private n = 0;
   private onlineL: (() => void)[] = [];
+  private offlineL: (() => void)[] = [];
   private hiddenL: (() => void)[] = [];
   locks: LockManagerLike | null = null;
   isOnline = () => this.online;
   onOnline = (l: () => void) => (this.onlineL.push(l), () => undefined);
+  onOffline = (l: () => void) => (this.offlineL.push(l), () => undefined);
   onHidden = (l: () => void) => (this.hiddenL.push(l), () => undefined);
   setTimer = (fn: () => void, ms: number) => (this.timers.set(++this.n, { fn, ms }), this.n);
   clearTimer = (h: unknown) => void this.timers.delete(h as number);
@@ -32,6 +34,14 @@ class Env implements SyncEnvironment {
     this.timers.clear();
     for (const t of all) t.fn();
   }
+  /** Fires only the timers of this delay (e.g. the F8 cycle timeout, not a back-off). */
+  fireDelay(ms: number) {
+    for (const [id, t] of [...this.timers]) if (t.ms === ms) (this.timers.delete(id), t.fn());
+  }
+  goOffline() {
+    this.online = false;
+    for (const l of this.offlineL) l();
+  }
   goOnline() {
     this.online = true;
     for (const l of this.onlineL) l();
@@ -41,7 +51,7 @@ class Env implements SyncEnvironment {
   }
 }
 
-async function setup(options: { bound?: boolean; progress?: boolean } = {}) {
+async function setup(options: { bound?: boolean; progress?: boolean; log?: string[] } = {}) {
   const { db, dispose } = await openTestDatabase();
   disposers.push(dispose);
   const repos = createIndexedDbRepositories(db);
@@ -51,7 +61,9 @@ async function setup(options: { bound?: boolean; progress?: boolean } = {}) {
   const env = new Env();
   let loaded = true;
   const changes: unknown[] = [];
-  const service = createSyncService({ repo: repos.sync, getCloud: () => (loaded ? cloud.as(() => 'u') : null), env });
+  const log = options.log;
+  const syncLog = log === undefined ? undefined : { add: (e: string) => void log.push(e), list: () => [], subscribe: () => () => undefined };
+  const service = createSyncService({ repo: repos.sync, getCloud: () => (loaded ? cloud.as(() => 'u') : null), env, ...(syncLog === undefined ? {} : { syncLog }) });
   service.subscribeDataChanged((c) => changes.push(c));
   return { repos, cloud, env, service, changes, unload: () => (loaded = false) };
 }
@@ -73,6 +85,7 @@ describe('sync scheduler', () => {
     service.notifyLocalChange();
     expect(env.delays()).toEqual([CHANGE_DEBOUNCE_MS]);
     env.hide();
+    await settle(); // (the cycle's own F8 timeout timer exists only while it runs)
     expect(env.delays()).toEqual([]); // sent now instead of waiting
   });
 
@@ -209,3 +222,121 @@ describe('sync scheduler', () => {
     expect(service.getStatus()).toEqual({ kind: 'off' });
   });
 });
+
+describe('F8: offline / timed-out sync never shows "Syncing…" forever, and nothing is sent twice', () => {
+  const N = sampleRecords().logs.length;
+
+  it('going offline during a cycle shows "offline" at once; the late result does not overwrite it; online -> one fresh sync', async () => {
+    const { service, env, cloud } = await setup({ progress: true });
+    const held = cloud.hold('pushLogs', 'before');
+    service.setActive(true);
+    await settle();
+    expect(service.getStatus().kind).toBe('syncing');
+    env.goOffline();
+    expect(service.getStatus()).toEqual({ kind: 'offline' });
+    held.release(); // the request reaches the cloud later
+    await settle();
+    expect(service.getStatus()).toEqual({ kind: 'offline' }); // the stale cycle's "idle" is ignored
+    expect(cloud.logsOf('u')).toHaveLength(N);
+    env.goOnline();
+    await expect.poll(() => service.getStatus().kind).toBe('idle');
+    expect(cloud.ops.logWrites).toBe(N); // written once
+  });
+
+  it(`stuck BEFORE reaching the cloud: after ${CYCLE_TIMEOUT_MS / 1000} s -> network error + back-off; no second cycle while it waits`, async () => {
+    const log: string[] = [];
+    const { service, env, cloud } = await setup({ progress: true, log });
+    const held = cloud.hold('pushLogs', 'before');
+    service.setActive(true);
+    await settle();
+    env.fireDelay(CYCLE_TIMEOUT_MS);
+    await settle();
+    expect(service.getStatus()).toEqual({ kind: 'error', reason: 'network', retryAt: env.time + BACKOFF_MS[0] });
+    expect(log).toContain('sync timed out after 30 s: still waiting for the network; nothing is sent twice');
+    env.fireDelay(BACKOFF_MS[0]); // the retry comes while the first request still waits
+    await settle();
+    expect(cloud.ops.pushes).toBe(0); // no concurrent cycle
+    held.release();
+    await expect.poll(() => service.getStatus().kind).toBe('idle'); // the queued fresh cycle
+    expect(cloud.logsOf('u')).toHaveLength(N);
+    expect(cloud.ops.logWrites).toBe(N);
+    expect(log.some((e) => e.startsWith('late result of the timed-out sync: synced'))).toBe(true);
+  });
+
+  it('cloud wrote it but the ANSWER is late: the fresh cycle finds it uploaded (no duplicate, no denied retry storm, epoch unchanged)', async () => {
+    const { service, env, cloud, repos } = await setup({ progress: true });
+    const held = cloud.hold('pushLogs', 'after');
+    service.setActive(true);
+    await settle();
+    expect(cloud.logsOf('u')).toHaveLength(N); // already on the server
+    env.fireDelay(CYCLE_TIMEOUT_MS);
+    await settle();
+    expect(service.getStatus().kind).toBe('error');
+    held.release();
+    await settle();
+    expect(service.getStatus().kind).toBe('error'); // late "synced" does not overwrite
+    await service.syncNow();
+    await expect.poll(() => service.getStatus().kind).toBe('idle');
+    expect(cloud.ops.logWrites).toBe(N);
+    expect(await repos.sync.pendingLogs()).toEqual([]);
+    expect(cloud.account('u').root?.epoch).toBe(0);
+    expect(cloud.bumps).toEqual([]);
+  });
+
+  it('late answer AND the device fails to record it: the next cycle is refused (create-only), pulls, marks — never written twice', async () => {
+    const { service, env, cloud, repos } = await setup({ progress: true });
+    const held = cloud.hold('pushLogs', 'after');
+    service.setActive(true);
+    await settle();
+    env.fireDelay(CYCLE_TIMEOUT_MS);
+    await settle();
+    const real = repos.sync.markUploaded.bind(repos.sync);
+    let lose = true;
+    repos.sync.markUploaded = async (ids, epoch) => {
+      if (lose) {
+        lose = false;
+        throw new Error('tab closed');
+      }
+      return real(ids, epoch);
+    };
+    held.release();
+    await settle();
+    expect((await repos.sync.pendingLogs()).length).toBe(N); // not recorded locally
+    await service.syncNow();
+    await expect.poll(() => service.getStatus().kind).toBe('idle');
+    expect(cloud.ops.logWrites).toBe(N);
+    expect(new Set(cloud.logsOf('u').map((l) => l.id)).size).toBe(N);
+    expect(await repos.sync.pendingLogs()).toEqual([]);
+  });
+
+  it('Reset / Import while a sync still waits for the network: refused after the timeout, nothing changed, no epoch raise', async () => {
+    const { service, env, cloud, repos } = await setup({ progress: true });
+    service.setActive(true);
+    await expect.poll(() => service.getStatus().kind).toBe('idle');
+    await repos.sync.updateMeta({}); // bound and synced at epoch 0
+    const held = cloud.hold('pullLogs', 'before');
+    void service.syncNow();
+    await settle();
+    let wrote = false;
+    const replacing = service.replaceAccount('Reset progress', async () => {
+      wrote = true;
+    });
+    await settle();
+    env.fireDelay(CYCLE_TIMEOUT_MS);
+    await expect(replacing).rejects.toMatchObject({ code: 'cloud-failed' });
+    expect(wrote).toBe(false);
+    expect(cloud.bumps).toEqual([]);
+    expect(cloud.account('u').root?.epoch).toBe(0);
+    held.release();
+    await settle();
+  });
+
+  it('the back-off and quota policies are unchanged by the timeout (F6 still holds)', async () => {
+    const { service, env, cloud } = await setup();
+    cloud.failure = new CloudError('quota', 'resource-exhausted');
+    service.setActive(true);
+    await settle();
+    expect(env.delays()).toEqual([QUOTA_PAUSE_MS]); // no timeout timer left behind
+  });
+});
+
