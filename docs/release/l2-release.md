@@ -113,3 +113,25 @@ Deploy: `git push origin l2-release:ui-import-button` → `4cbcf40..05dec77` (no
 
 Limits: the Android banner before Update was not captured (owner confirmed tapping it); the Android export was not
 compared field by field; the installed production PWA was not checked separately from the Chrome tab.
+
+## 7. Firebase Production project — created (2026-10-18, Coordinator: authorized, no Login / Sync)
+
+Done by the owner in the console, guided step by step; evidence: owner screenshots. No config was put anywhere; the
+API key is not recorded in the repository.
+
+| # | Result |
+|---|---|
+| F1 | Project **`n5-kanji-review-prod`** (Project ID = name), project number `780014542375`, **Spark** plan, Analytics off |
+| F2 | Authentication: **Google** provider only, Enabled. Project support e-mail = owner's account `asalins…@gmail.com` (`n5kanjireview.support@gmail.com` is not a project member yet) |
+| F2b | Google Auth Platform: app name `N5 Kanji Review`, support e-mail as above, User type **External**. Publishing status **In production** (set by Firebase when Google sign-in was enabled; nothing was published by hand). Branding: no logo, no home page / privacy / terms link saved (Google requires a privacy link once a home page is set; changes discarded). Verification not requested |
+| F3 | Authorized domains: `n5-kanji-review-prod.firebaseapp.com`, `n5-kanji-review-prod.web.app`, `n5-kanji-review.pages.dev`; `localhost` removed; no preview alias |
+| F4 | Web app `n5-kanji-review-web`, App ID `1:780014542375:web:fe40c5f961d9ca8a4bb802`, authDomain `n5-kanji-review-prod.firebaseapp.com`, no Hosting |
+| F5 | Browser key (auto created by Firebase): **Websites** `https://n5-kanji-review.pages.dev/*`, `https://n5-kanji-review-prod.firebaseapp.com/*`; **2 APIs**: Identity Toolkit API, Token Service API (was 25 APIs by default) |
+| — | **No Firestore database**, no Cloudflare variable, no Blaze, no Identity Platform upgrade, no billing |
+
+Open for the Login Gate:
+1. Privacy policy URL: the Privacy page exists only inside the app (no own URL). Google requires a privacy link with a home page and for brand verification.
+2. Support e-mail: add `n5kanjireview.support@gmail.com` as a project member, then select it in Authentication and Branding.
+3. Publishing status is already "In production" (deviation from the guide's "Testing"; harmless while Production has no config). Decide: keep, or "Back to testing" until the Login release.
+4. Cloud Firestore API is not in the key's API list; add it at L3 together with the database and rules.
+5. Firebase also created an OAuth web client and the `firebase-adminsdk` service account (defaults, untouched).
