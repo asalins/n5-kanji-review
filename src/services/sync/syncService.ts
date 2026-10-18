@@ -1,7 +1,7 @@
 import type { SyncRepository } from '../../repositories/interfaces';
 import { CloudError, type CloudStore } from './cloudTypes';
 import { runSyncCycle, type SyncOutcome } from './syncEngine';
-import { createSyncLog, type SyncLog } from './syncLog';
+import { createSyncLog, type SyncLog, type SyncLogAddOptions } from './syncLog';
 import { ReplaceError } from './replaceErrors';
 import type { AccountReplace } from '../../repositories/interfaces';
 import { newUuid } from '../../utils/uuid';
@@ -109,7 +109,7 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
   const { repo, env } = deps;
   const log = deps.logError ?? (() => undefined);
   const syncLog = deps.syncLog ?? createSyncLog(null);
-  const note = (event: string) => syncLog.add(event);
+  const note = (event: string, options?: SyncLogAddOptions) => syncLog.add(event, options);
   let status: SyncStatus = { kind: 'off' };
   let active = false;
   let suspended = false;
@@ -182,7 +182,7 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
         set({ kind: 'off' });
         return;
       case 'needs-binding':
-        if (status.kind !== 'needs-binding') note(`asking before binding (${outcome.reason}); nothing uploaded`);
+        if (status.kind !== 'needs-binding') note(`asking before binding (${outcome.reason}); nothing uploaded`, { once: true });
         set({ kind: 'needs-binding', reason: outcome.reason });
         return;
       case 'declined':
@@ -365,10 +365,11 @@ export function createSyncService(deps: SyncServiceDeps): SyncService {
           throw new ReplaceError('not-synced', 'Sync first');
         }
         const from = meta.knownEpoch;
-        note(`${what} on this device: raising the cloud epoch ${from} -> ${from + 1} only if still ${from}`);
+        note(`${what} on this device: asking the cloud to raise epoch ${from} -> ${from + 1} (only if it is still ${from})`);
         let epoch: number;
         try {
           epoch = await cloud.bumpEpoch(uid, from, newUuid());
+          note(`${what}: the cloud raised the epoch to ${epoch}`);
         } catch (cause) {
           if (cause instanceof CloudError && cause.kind === 'conflict') {
             note(`${what} refused: the account was already replaced from another device (epoch is no longer ${from}); nothing changed`);

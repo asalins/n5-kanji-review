@@ -77,6 +77,26 @@ describe('F5: local sync log', () => {
     blocked.add('memory only');
     expect(blocked.list().map((e) => e.event)).toEqual(['memory only']);
   });
+  it('O4: a state line marked `once` is logged once per minute across tabs; ordinary lines always are', () => {
+    const storage = new MemoryStorage();
+    let t = 1_000;
+    const a = createSyncLog(storage, () => t, 'a');
+    const b = createSyncLog(storage, () => t, 'b');
+    a.add('remote reset detected: x', { once: true });
+    b.add('remote reset detected: x', { once: true });
+    t += 59_000;
+    a.add('remote reset detected: x', { once: true });
+    a.add('synced (epoch 1): pushed 1');
+    a.add('synced (epoch 1): pushed 1');
+    t += 2_000;
+    b.add('remote reset detected: x', { once: true });
+    expect(a.list().map((e) => `${e.tab}: ${e.event}`)).toEqual([
+      'a: remote reset detected: x',
+      'a: synced (epoch 1): pushed 1',
+      'a: synced (epoch 1): pushed 1',
+      'b: remote reset detected: x',
+    ]);
+  });
 });
 
 describe('regression for the G1 T3 session (14:14-14:35): only informed Reset / Import raise the epoch (F2), and the log says who', () => {
@@ -136,13 +156,18 @@ describe('regression for the G1 T3 session (14:14-14:35): only informed Reset / 
 
     const incLog = inc.events();
     const norLog = nor.events();
-    expect(incLog.filter((e) => e.includes('raising the cloud epoch'))).toEqual(['t1: Import (Replace) on this device: raising the cloud epoch 0 -> 1 only if still 0']);
+    // F7: the request and its outcome are separate lines; "raised" only after the cloud committed.
+    expect(incLog.filter((e) => e.includes('asking the cloud to raise'))).toEqual(['t1: Import (Replace) on this device: asking the cloud to raise epoch 0 -> 1 (only if it is still 0)']);
+    expect(incLog.filter((e) => e.includes('the cloud raised the epoch'))).toEqual(['t1: Import (Replace): the cloud raised the epoch to 1']);
     expect(incLog).toContain('t1: user accepted the remote reset: local progress cleared, following epoch 2');
     expect(norLog).toContain('t1: Reset progress refused: the account was already replaced from another device (epoch is no longer 0); nothing changed');
-    expect(norLog.filter((e) => e.includes('raising the cloud epoch'))).toEqual([
-      't1: Reset progress on this device: raising the cloud epoch 0 -> 1 only if still 0',
-      't1: Reset progress on this device: raising the cloud epoch 1 -> 2 only if still 1',
+    expect(norLog.filter((e) => e.includes('asking the cloud to raise'))).toEqual([
+      't1: Reset progress on this device: asking the cloud to raise epoch 0 -> 1 (only if it is still 0)',
+      't1: Reset progress on this device: asking the cloud to raise epoch 1 -> 2 (only if it is still 1)',
     ]);
+    expect(norLog.filter((e) => e.includes('the cloud raised the epoch'))).toEqual(['t1: Reset progress: the cloud raised the epoch to 2']); // the refused one is never "raised"
+    // O4: the notice shown again by later cycles / tabs is logged once
+    expect(incLog.filter((e) => e.includes('remote reset detected'))).toHaveLength(1);
   });
 });
 

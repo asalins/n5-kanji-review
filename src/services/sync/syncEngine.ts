@@ -2,6 +2,7 @@ import type { SyncRepository } from '../../repositories/interfaces';
 import type { SyncMeta } from '../../types/entities';
 import { newUuid } from '../../utils/uuid';
 import { CloudError, PULL_PAGE, PUSH_BATCH, type CloudRoot, type CloudStore } from './cloudTypes';
+import type { SyncLogAddOptions } from './syncLog';
 
 /**
  * One sync cycle (L3b). Order: gate -> binding -> root/epoch -> pending replace -> pull -> push -> settings.
@@ -33,7 +34,7 @@ export interface SyncEngineDeps {
   readonly cloud: CloudStore;
   readonly now: () => number;
   /** F5: diagnostic log of decisions (no uid, e-mail or review content). */
-  readonly log?: (event: string) => void;
+  readonly log?: (event: string, options?: SyncLogAddOptions) => void;
 }
 
 async function pull(deps: SyncEngineDeps, uid: string, meta: SyncMeta, epoch: number) {
@@ -97,9 +98,10 @@ async function syncSettings(deps: SyncEngineDeps, uid: string, force: boolean): 
  */
 async function legacyReplace(deps: SyncEngineDeps, uid: string, meta: SyncMeta, root: CloudRoot): Promise<number | null> {
   if (meta.knownEpoch === null || root.epoch !== meta.knownEpoch) return null;
-  deps.log?.(`legacy pending replace: raising the cloud epoch ${meta.knownEpoch} -> ${meta.knownEpoch + 1} only if still ${meta.knownEpoch}`);
+  deps.log?.(`legacy pending replace: asking the cloud to raise epoch ${meta.knownEpoch} -> ${meta.knownEpoch + 1} (only if it is still ${meta.knownEpoch})`);
   try {
     const epoch = await deps.cloud.bumpEpoch(uid, meta.knownEpoch, newUuid());
+    deps.log?.(`legacy pending replace: the cloud raised the epoch to ${epoch}`);
     await deps.repo.updateMeta({ knownEpoch: epoch, pendingReplace: false, cleanupBelow: epoch, pushSettings: true, pullCursor: null });
     return epoch;
   } catch (error) {
@@ -146,7 +148,7 @@ export async function runSyncCycle(deps: SyncEngineDeps): Promise<SyncOutcome> {
     log(`first sync of this binding: following cloud epoch ${root.epoch}`);
   } else if (root.epoch !== meta.knownEpoch || (root.created && meta.lastSyncAt !== null)) {
     // Another device reset / imported (or the cloud data was deleted). Upload nothing; the user decides.
-    log(`remote reset detected: cloud epoch ${root.epoch}${root.created ? ' (cloud data was missing)' : ''}, this device knew ${meta.knownEpoch}; nothing uploaded`);
+    log(`remote reset detected: cloud epoch ${root.epoch}${root.created ? ' (cloud data was missing)' : ''}, this device knew ${meta.knownEpoch}; nothing uploaded`, { once: true });
     return { kind: 'remote-reset', uid, epoch: root.epoch, resetAt: root.resetAt, unsynced: (await repo.pendingLogs()).length };
   }
   const epoch = meta.knownEpoch!;

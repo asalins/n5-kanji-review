@@ -16,8 +16,14 @@ export interface SyncLogEntry {
   readonly event: string;
 }
 
+/** O4: `once` skips the entry when the same event was already logged (by any tab) within ONCE_WINDOW_MS. */
+export interface SyncLogAddOptions {
+  readonly once?: boolean;
+}
+export const ONCE_WINDOW_MS = 60_000;
+
 export interface SyncLog {
-  add(event: string): void;
+  add(event: string, options?: SyncLogAddOptions): void;
   list(): readonly SyncLogEntry[];
   subscribe(listener: () => void): () => void;
 }
@@ -52,8 +58,11 @@ export function createSyncLog(storage: LogStorage | null = browserStorage(), now
     }
   };
   return {
-    add(event) {
-      const next = [...read(), { at: now(), tab, event }].slice(-MAX_ENTRIES);
+    add(event, options) {
+      const current = read();
+      const at = now();
+      if (options?.once === true && current.some((e) => e.event === event && at - e.at >= 0 && at - e.at < ONCE_WINDOW_MS)) return;
+      const next = [...current, { at, tab, event }].slice(-MAX_ENTRIES);
       memory = next;
       try {
         storage?.setItem(SYNC_LOG_KEY, JSON.stringify(next));
