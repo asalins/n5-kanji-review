@@ -56,3 +56,21 @@ Caching: audio is not precached in the service worker by default (size); cache o
 ## 6. Gate 1 (sample approval)
 
 See `audio-gate-1.md`.
+
+## 7. Implementation status (M1 — player ready, no files yet)
+
+Built (branch `claude/admiring-bohr-263ism`, not deployed):
+- `src/services/audio/` — `manifest.ts` (Zod schema, one entry per file), `clips.ts` (bundled list, **empty**), `clipIds.ts` (`reading:<kanjiId>:<on|kun>:<kana>`), `audioPlayer.ts` (file first → device voice fallback; one sound at a time; never uses a voice of another language), `browserAudio.ts` (browser ports).
+- `src/features/audio/` — `PlayAudioButton` (44 px, play/replay, playing/error status in a live region), `PlaybackControls` (0.75x / 1x / 1.25x; male/female switch appears only when a clip exists in both voices), `AudioProvider` (speed/voice in memory for the session).
+- Play buttons on every reading in Kanji Detail and on the **back** of flashcards. Never on the front (it would give away the answer in Modes A/C).
+
+Until files exist every button uses the device voice (`speechSynthesis`, `ja-JP`); on a device without a Japanese voice the button says so.
+
+Not changed (each needs its own approval):
+- Service worker: no runtime caching and no `mp3` in precache (approved policy, locked by tests). Produced files will play online only until an offline policy for audio is decided (options: precache per level, or a "download lesson audio" action).
+- Settings contract: speed and voice are not saved, synced or backed up.
+
+### Adding produced files later (no code change)
+1. Put each MP3 at `public/audio/<area>/<hash-name>.mp3` (ASCII names).
+2. Append its entry to `BUNDLED_CLIPS` in `src/services/audio/clips.ts` with the matching `id` (for readings: `readingClipId(kanjiId, type, kana)`).
+3. `npm run verify` — the manifest test rejects duplicates, unknown fields and bad paths.

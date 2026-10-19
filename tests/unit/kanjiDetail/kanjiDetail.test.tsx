@@ -145,3 +145,20 @@ describe('Kanji detail on the real dataset (水)', () => {
     expect(getById).toHaveBeenCalledTimes(2);
   });
 });
+
+describe('Kanji Detail audio', () => {
+  it('every reading has a play button and the speed choice is shown', async () => {
+    const opened = await openRealRepositories();
+    try {
+      const kanji = (await opened.repos.kanji.getByLevel('N5')).find((k) => k.character === '学')!;
+      const readings = await opened.repos.kanji.getReadings(kanji.id);
+      const detail = buildKanjiDetail(kanji, readings, [null, null, null, null], NOON);
+      render(<KanjiDetailView detail={detail} format={() => ''} />);
+      const unique = new Set(readings.map((r) => `${r.type}:${r.kana}`));
+      expect(screen.getAllByTestId('play-audio')).toHaveLength(unique.size);
+      expect(screen.getByRole('button', { name: '1x' }).getAttribute('aria-pressed')).toBe('true');
+    } finally {
+      await opened.dispose();
+    }
+  });
+});

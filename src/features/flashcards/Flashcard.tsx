@@ -1,4 +1,7 @@
+import { readingClipId, readingSpeechText } from '../../services/audio/clipIds';
+import type { ReadingType } from '../../types/common';
 import type { StudyMode } from '../../types/entities';
+import { PlayAudioButton } from '../audio/PlayAudioButton';
 import { buildFront, groupReadings, selectMeanings, type KanjiCardData, type ReadingView } from './presentation';
 import { MODE_INFO } from './strings';
 
@@ -38,18 +41,20 @@ export function CardFront({ mode, data }: { mode: StudyMode; data: KanjiCardData
   );
 }
 
-function ReadingList({ title, items }: { title: string; items: readonly ReadingView[] }) {
+function ReadingList({ title, kanjiId, type, items }: { title: string; kanjiId: string; type: ReadingType; items: readonly ReadingView[] }) {
   if (items.length === 0) return null;
   return (
     <section aria-label={title} className="flex flex-col items-center gap-1">
       <h3 className="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-neutral-400">{title}</h3>
       <ul className="flex flex-wrap justify-center gap-x-5 gap-y-1">
         {items.map((item) => (
-          <li key={item.kana} className="flex items-baseline gap-2">
-            <span lang="ja" className="font-jp text-2xl">
-              {item.kana}
-            </span>
-            {item.romaji !== null && <span className="text-sm text-stone-500 dark:text-neutral-400">{item.romaji}</span>}
+          <li key={item.kana}>
+            <PlayAudioButton clipId={readingClipId(kanjiId, type, item.kana)} speechText={readingSpeechText(item.kana)} label={item.kana}>
+              <span lang="ja" className="font-jp text-2xl">
+                {item.kana}
+              </span>
+              {item.romaji !== null && <span className="text-sm text-stone-500 dark:text-neutral-400">{item.romaji}</span>}
+            </PlayAudioButton>
           </li>
         ))}
       </ul>
@@ -73,8 +78,8 @@ export function CardBack({ data }: { data: KanjiCardData }) {
           </p>
         )}
       </div>
-      <ReadingList title="On'yomi" items={readings.on} />
-      <ReadingList title="Kun'yomi" items={readings.kun} />
+      <ReadingList title="On'yomi" kanjiId={data.kanji.id} type="on" items={readings.on} />
+      <ReadingList title="Kun'yomi" kanjiId={data.kanji.id} type="kun" items={readings.kun} />
     </div>
   );
 }

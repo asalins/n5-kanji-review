@@ -111,3 +111,21 @@ describe('rating buttons', () => {
     expect(seen).toEqual(['GOOD']);
   });
 });
+
+describe('audio on the card', () => {
+  it('the front never has a play button in any mode (hearing the reading would give the answer away)', () => {
+    for (const mode of ['A', 'B', 'C', 'D'] as const) {
+      const view = show(mode, cards['学']!);
+      expect(view.queryAllByTestId('play-audio')).toEqual([]);
+      view.unmount();
+    }
+  });
+  it('the back has one play button per shown reading, named by its kana', () => {
+    show('A', cards['学']!, 'revealed');
+    const shown = [...document.querySelectorAll('li span[lang="ja"]')].map((el) => el.textContent);
+    const buttons = screen.getAllByTestId('play-audio');
+    expect(buttons).toHaveLength(shown.length);
+    expect(shown.length).toBeGreaterThan(0);
+    for (const kana of shown) expect(screen.getByRole('button', { name: `ฟังเสียง ${kana} · Listen` })).toBeTruthy();
+  });
+});

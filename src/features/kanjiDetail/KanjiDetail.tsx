@@ -1,6 +1,10 @@
 import { useId, type ReactNode } from 'react';
 import { StateMessage } from '../../components/StateMessage';
 import { SECONDARY_BUTTON } from '../../components/styles';
+import { readingClipId, readingSpeechText } from '../../services/audio/clipIds';
+import type { ReadingType } from '../../types/common';
+import { PlayAudioButton } from '../audio/PlayAudioButton';
+import { PlaybackControls } from '../audio/PlaybackControls';
 import { groupReadings, selectMeanings, type ReadingView } from '../flashcards/presentation';
 import { MODE_INFO } from '../flashcards/strings';
 import { STATE_LABEL, TEXT } from './strings';
@@ -20,7 +24,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
-function ReadingList({ label, items }: { label: string; items: readonly ReadingView[] }) {
+function ReadingList({ label, kanjiId, type, items }: { label: string; kanjiId: string; type: ReadingType; items: readonly ReadingView[] }) {
   return (
     <div>
       <dt className="text-sm text-stone-500 dark:text-neutral-400">{label}</dt>
@@ -28,10 +32,12 @@ function ReadingList({ label, items }: { label: string; items: readonly ReadingV
         {items.length === 0
           ? TEXT.none
           : items.map((r) => (
-              <span key={r.kana} className="break-all">
-                {r.kana}
-                {r.romaji !== null && <span lang="en" className="text-sm text-stone-500 dark:text-neutral-400">{` · ${r.romaji}`}</span>}
-              </span>
+              <PlayAudioButton key={r.kana} clipId={readingClipId(kanjiId, type, r.kana)} speechText={readingSpeechText(r.kana)} label={r.kana}>
+                <span className="min-w-0 break-all">
+                  {r.kana}
+                  {r.romaji !== null && <span lang="en" className="text-sm text-stone-500 dark:text-neutral-400">{` · ${r.romaji}`}</span>}
+                </span>
+              </PlayAudioButton>
             ))}
       </dd>
     </div>
@@ -70,9 +76,15 @@ export function KanjiDetailView({ detail, format = (ms) => defaultFormat.format(
         </dl>
       </Section>
       <Section title={TEXT.readings}>
+        <PlaybackControls
+          clipIds={[
+            ...groups.on.map((r) => readingClipId(kanji.id, 'on', r.kana)),
+            ...groups.kun.map((r) => readingClipId(kanji.id, 'kun', r.kana)),
+          ]}
+        />
         <dl className="flex flex-col gap-2">
-          <ReadingList label={TEXT.onyomi} items={groups.on} />
-          <ReadingList label={TEXT.kunyomi} items={groups.kun} />
+          <ReadingList label={TEXT.onyomi} kanjiId={kanji.id} type="on" items={groups.on} />
+          <ReadingList label={TEXT.kunyomi} kanjiId={kanji.id} type="kun" items={groups.kun} />
         </dl>
       </Section>
       <Section title={TEXT.facts}>

@@ -10,6 +10,7 @@ import { ReviewPage } from '../pages/ReviewPage';
 import { SearchPage } from '../pages/SearchPage';
 import { SettingsPage } from '../pages/SettingsPage';
 import { SettingsProvider, useSettings } from '../features/settings/SettingsProvider';
+import { AudioProvider } from '../features/audio/AudioProvider';
 import { StudyPage } from '../pages/StudyPage';
 import { logError, toUserMessage } from '../utils/userMessage';
 import { useAppStore } from './appStore';
@@ -123,6 +124,7 @@ export function App({ bootstrap = bootstrapApp, useUpdate = usePwaUpdate }: AppP
   return (
     <RepositoriesProvider value={repositories}>
       <SettingsProvider>
+        <AudioProvider>
         <SavedTheme />
         <WhenSettingsLoaded>
       {screen === 'home' && (
@@ -145,6 +147,7 @@ export function App({ bootstrap = bootstrapApp, useUpdate = usePwaUpdate }: AppP
       {screen === 'review' && <ReviewPage onExit={goHome} />}
       {screen === 'practice' && <StudyPage onExit={goHome} />}
         </WhenSettingsLoaded>
+        </AudioProvider>
       </SettingsProvider>
     </RepositoriesProvider>
   );
